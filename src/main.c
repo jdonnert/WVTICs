@@ -48,9 +48,11 @@ int main(int argc, char *argv[])
     
     Regularise_sph_particles();
 
-//  Make_Velocities();
-//	Make_Temperatures();
-//	Make_Magnetic_Field();
+ 	Make_Velocities();
+
+	Make_Temperatures();
+	
+	Make_Magnetic_Field();
 
     Write_output();
 

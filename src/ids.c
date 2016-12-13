@@ -1,9 +1,6 @@
 #include "globals.h"
 
-/*
- * Set IDs with spacing so an ID domain
- * decomposition is more balanced
- */
+/* Set IDs with spacing so an ID domain decomposition is more balanced */
 
 void Make_IDs()
 {
