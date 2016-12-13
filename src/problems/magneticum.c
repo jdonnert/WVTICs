@@ -2,8 +2,6 @@
 
 float Magneticum_Density(const int ipart)
 {
-    const double boxsize = 1;
-
 	const float x = P[ipart].Pos[0] / Problem.Boxsize[0];
 	const float y = P[ipart].Pos[1] / Problem.Boxsize[1];
 	const float z = P[ipart].Pos[2] / Problem.Boxsize[2];
