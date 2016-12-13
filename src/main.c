@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
     Setup();
 
-    Make_positions();
+    Make_Positions();
 
     Make_IDs();
     
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 
 	Make_Temperatures();
 	
-	Make_Magnetic_Field();
+	Make_Magnetic_Fields();
 
     Write_output();
 

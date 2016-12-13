@@ -3,10 +3,10 @@
 #define NODES_PER_PARTICLE 0.7
 
 struct Tree_Node {
-    uint32_t Bitfield;     // bit 0-5:level, 6-8:key, 9:local, 10:top, 11-31:free
-    int DNext;               // Distance to the next node; or particle -DNext-1
-    float Pos[3];        // Node Center
-    int Npart;            // Number of particles in node
+    uint32_t Bitfield;  // bit 0-5:level, 6-8:key, 9:local, 10:top, 11-31:free
+    int DNext;          // Distance to the next node; or particle -DNext-1
+    float Pos[3];       // Node Center
+    int Npart;          // Number of particles in node
     float Size;
 } *Tree;
 

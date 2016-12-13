@@ -7,10 +7,13 @@ UnitVelocity_in_cm_per_s     1e5                %  1 km/sec
 
 % Problem
 
-Problem_Flag 0
+Problem_Flag 1
 Problem_Subflag 0
 
 % Problem Descriptions
 %
 % 0 - Constant Density
 % 1 - Magneticum
+% 2 - Ryu & Jones Shock Tubes
+%	0 - ST a
+%	1 - ST b

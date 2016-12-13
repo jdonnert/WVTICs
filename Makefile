@@ -4,7 +4,6 @@ ifndef SYSTYPE
     SYSTYPE := $(shell hostname)
 endif
 
-CC       = icc
 OPTIMIZE = -Wall -O2
 GSL_INCL = $(CPPFLAGS)
 GSL_LIBS = $(LD_LIBRARY_FLAGS)

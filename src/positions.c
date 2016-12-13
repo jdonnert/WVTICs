@@ -1,6 +1,6 @@
 #include "globals.h"
 
-void Make_positions()
+void Make_Positions()
 {
     printf("Sampling positions ..."); fflush(stdout);
 	
@@ -29,7 +29,7 @@ void Make_positions()
     return;
 }
 
-void Make_Velocity()
+void Make_Velocities()
 {
 
     printf("Velocities ..."); fflush(stdout);

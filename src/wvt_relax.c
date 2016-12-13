@@ -15,12 +15,10 @@ static inline double sph_kernel_WC2(const float r, const float h);
 static inline double sph_kernel_WC6(const float r, const float h);
 static inline float gravity_kernel(const float r, const float h);
 
-/*
- * Settle SPH particle with weighted Voronoi tesselations (Diehl+ 2012).
+/* Settle SPH particle with weighted Voronoi tesselations (Diehl+ 2012).
  * Here hsml is not the SPH smoothing length, but is related to a local
  * metric defined ultimately by the density model.
- * Relaxation is done in units of the boxsize, hence the box volume is 1
- */
+ * Relaxation is done in units of the boxsize, hence the box volume is 1 */
 
 void Regularise_sph_particles()
 {
@@ -52,7 +50,7 @@ void Regularise_sph_particles()
 
 	double volume = Problem.Boxsize[0]*Problem.Boxsize[1]*Problem.Boxsize[2];
 	double mean_part_sep = pow( volume / nPart, 1.0/3.0);
-    double step = mean_part_sep / 5;
+    double step = mean_part_sep / 2;
 
     double errLast = DBL_MAX, errLastTree = DBL_MAX;
     double errDiff = DBL_MAX, errDiffLast = DBL_MAX;
@@ -165,7 +163,6 @@ void Regularise_sph_particles()
                 delta[0][ipart] += step * hsml[ipart] * wk * dx/r;
                 delta[1][ipart] += step * hsml[ipart] * wk * dy/r;
                 delta[2][ipart] += step * hsml[ipart] * wk * dz/r;
-
             }
         }
 

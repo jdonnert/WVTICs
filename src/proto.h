@@ -4,19 +4,16 @@ double Gas_Density_Profile(const double, const double, const double);
 void Read_param_file(char *);
 void Set_units();
 void Setup();
-void Make_positions();
+void Make_Positions();
 void Make_IDs();
-void Make_velocities();
-void Make_temperatures();
+void Make_Magnetic_Fields();
+void Make_Velocities();
+void Make_Temperatures();
 void Find_sph_quantities();
 void Wvt_relax();
 void Write_output();
 void Write_positions(char*);
-void Bfld_from_rotA_SPH();
-void Shift_Origin();
 void Regularise_sph_particles();
-void Show_mass_in_r200();
-void Smooth_SPH_quantities();
 
 /* Helper Monkeys */
 
