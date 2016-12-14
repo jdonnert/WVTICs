@@ -90,7 +90,7 @@ void Regularise_sph_particles()
         printf("   #%02d: Err max=%3g mean=%03g diff=%03g"
                 " step=%g\n", it, errMax, errMean,errDiff, step);
 
-        if (errDiff < ERRDIFF_LIMIT && it > 32) { // at least iterate N times
+        if (fabs(errDiff) < ERRDIFF_LIMIT && it > 32) { // at least iterate N times
             printf("Achieved desired error criterion - ");
             break;
         }
