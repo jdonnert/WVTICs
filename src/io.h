@@ -28,6 +28,20 @@ struct Block_Info{
     size_t Bytes_per_element;
 } Block;
 
+// Gadget-2 expects specific block order
+#ifdef SPH_CUBIC_SPLINE
+enum iofields{
+    IO_POS,
+    IO_VEL,
+    IO_ID,
+    IO_U,
+    IO_RHO,
+    IO_HSML,
+    IO_BFLD,
+    IO_RHOMODEL,
+    IO_LASTENTRY
+};
+#else
 enum iofields{
     IO_POS,
     IO_VEL,
@@ -39,6 +53,7 @@ enum iofields{
     IO_BFLD,
     IO_LASTENTRY
 };
+#endif  // SPH_CUBIC_SPLINE
 
 size_t my_fread(void *, size_t, size_t, FILE *, int);
 int find_block(FILE *, char *);

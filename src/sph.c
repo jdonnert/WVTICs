@@ -76,7 +76,7 @@ extern void Find_sph_quantities()
 extern bool Find_hsml(const int ipart, const int *ngblist, const int ngbcnt,
         			  float *dRhodHsml_out, float *hsml_out, float *rho_out)
 {
-    const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1], 
+    const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
 								Problem.Boxsize[2]};
     const double boxhalf[3] = { boxsize[0]/2, boxsize[1]/2, boxsize[2]/2, };
 
@@ -134,8 +134,13 @@ extern bool Find_hsml(const int ipart, const int *ngblist, const int ngbcnt,
 
             double r = sqrt(r2);
 
+#ifdef SPH_CUBIC_SPLINE
+            double wk = sph_kernel_M4(r, hsml);
+            double dwk = sph_kernel_derivative_M4(r, hsml);
+#else
             double wk = sph_kernel_WC6(r, hsml);
             double dwk = sph_kernel_derivative_WC6(r, hsml);
+#endif // SPH_CUBIC_SPLINE
 
             wkNgb += fourpithird*wk*p3(hsml);
 
@@ -189,6 +194,7 @@ extern bool Find_hsml(const int ipart, const int *ngblist, const int ngbcnt,
     *hsml_out = (float) hsml;
     *rho_out = (float) rho;
 
+#ifndef SPH_CUBIC_SPLINE
     if (part_done) {
 
         *dRhodHsml_out = (float) dRhodHsml;
@@ -198,6 +204,7 @@ extern bool Find_hsml(const int ipart, const int *ngblist, const int ngbcnt,
 
         *rho_out += bias_corr;
     }
+#endif  // SPH_CUBIC_SPLINE
 
     return part_done;
 }

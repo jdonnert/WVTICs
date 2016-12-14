@@ -24,12 +24,17 @@ void Regularise_sph_particles()
 {
     const int nPart = Param.Npart;
 
-    const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1], 
+    const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
 								Problem.Boxsize[2]};
     const double boxhalf[3] = { boxsize[0]/2, boxsize[1]/2, boxsize[2]/2, };
 	const double boxinv[3] = { 1/boxsize[0], 1/boxsize[1], 1/boxsize[2] };
 
-	char wvt_filename[CHARBUFSIZE] = "test";
+#ifdef SAVE_WVT_STEPS
+	char problem_name[CHARBUFSIZE] = "";
+	char wvt_stepnumber[CHARBUFSIZE] = "";
+	char wvt_stepname[CHARBUFSIZE] = "";
+	sprintf(problem_name, Problem.Name);
+#endif  // SAVE_WVT_STEPS
 
     printf("Starting iterative SPH regularisation \n"
             "   max %d iterations, tree update every %d iterations\n"
@@ -50,7 +55,11 @@ void Regularise_sph_particles()
 
 	double volume = Problem.Boxsize[0]*Problem.Boxsize[1]*Problem.Boxsize[2];
 	double mean_part_sep = pow( volume / nPart, 1.0/3.0);
+#ifdef SPH_CUBIC_SPLINE
+    double step = 6 * mean_part_sep / 2;
+#else
     double step = mean_part_sep / 2;
+#endif // SPH_CUBIC_SPLINE
 
     double errLast = DBL_MAX, errLastTree = DBL_MAX;
     double errDiff = DBL_MAX, errDiffLast = DBL_MAX;
@@ -89,6 +98,15 @@ void Regularise_sph_particles()
 
         printf("   #%02d: Err max=%3g mean=%03g diff=%03g"
                 " step=%g\n", it, errMax, errMean,errDiff, step);
+
+#ifdef SAVE_WVT_STEPS
+        strcpy(wvt_stepname, problem_name);
+        sprintf(wvt_stepnumber, "_%03d", it);
+        strcat(wvt_stepname, wvt_stepnumber);
+        sprintf(Problem.Name, wvt_stepname);
+        Write_output(0);  // not verbose
+        sprintf(Problem.Name, problem_name);
+#endif // SAVE_WVT_STEPS
 
         if (fabs(errDiff) < ERRDIFF_LIMIT && it > 32) { // at least iterate N times
             printf("Achieved desired error criterion - ");
@@ -163,7 +181,6 @@ void Regularise_sph_particles()
                     continue ;
 
                 float r = sqrt(r2);
-
                 float wk = sph_kernel_WC6(r, h);
 
                 delta[0][ipart] += step * hsml[ipart] * wk * dx/r;
@@ -263,7 +280,7 @@ static inline float sph_kernel_M4(const float r, const float h) // cubic spline
 
 int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist)
 {
-    const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1], 
+    const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
 								Problem.Boxsize[2]};
     const double boxhalf[3] = { boxsize[0]/2, boxsize[1]/2, boxsize[2]/2 };
 
@@ -301,10 +318,10 @@ int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist)
             ngblist[ngbcnt++] = jpart;
 
         if (ngbcnt == NGBMAX) {
-        
+
 			printf("WARNING, ngbcnt == %d, increase NGBMAX ! ",
 					ngbcnt);
-			
+
 			break;
 		}
     }
