@@ -57,8 +57,10 @@ void Regularise_sph_particles()
 
     for (;;) {
 
-        if (it++ >= NUMITER)
+        if (it++ >= NUMITER) {
+            printf("Reached max iterations - ");
             break;
+        }
 
         if ((it % TREEBUILDFREQUENCY) == 0)
             Find_sph_quantities();
@@ -88,11 +90,15 @@ void Regularise_sph_particles()
         printf("   #%02d: Err max=%3g mean=%03g diff=%03g"
                 " step=%g\n", it, errMax, errMean,errDiff, step);
 
-        if (errDiff < ERRDIFF_LIMIT && it > 80) // at least iterate 25 times
+        if (errDiff < ERRDIFF_LIMIT && it > 32) { // at least iterate N times
+            printf("Achieved desired error criterion - ");
             break;
+        }
 
-        if ((errDiff < 0) && (errDiffLast < 0) && (it > 10)) // stop if worse
+        if ((errDiff < 0) && (errDiffLast < 0) && (it > 10)) { // stop if worse
+            printf("Convergence flipped - ");
             break;
+        }
 
         if ((errDiff < 0.01) && (it > 1)) // force convergence
             step *= 0.8;
@@ -212,7 +218,7 @@ void Regularise_sph_particles()
 
     Free(hsml); Free(delta[0]); Free(delta[1]); Free(delta[2]);
 
-    printf("\ndone\n\n"); fflush(stdout);
+    printf("done\n\n"); fflush(stdout);
 
     return ;
 }
