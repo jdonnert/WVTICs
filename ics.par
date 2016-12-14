@@ -14,6 +14,8 @@ Problem_Subflag 0
 %
 % 0 - Constant Density
 % 1 - Magneticum
-% 2 - Ryu & Jones Shock Tubes
+% 2 - Sawtooth Density
+% ----------------------------------- More to come, like
+% 3 - Ryu & Jones Shock Tubes
 %	0 - ST a
 %	1 - ST b

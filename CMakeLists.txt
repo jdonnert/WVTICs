@@ -25,7 +25,9 @@ set(SOURCE_FILES
     src/tree.c
     src/tree.h
     src/unit.c
-    src/wvt_relax.c)
+    src/wvt_relax.c
+    src/problems/sawtooth.c
+)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
