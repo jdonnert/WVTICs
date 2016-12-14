@@ -31,3 +31,9 @@
 # Debug files
 *.dSYM/
 *.su
+
+# IDE files
+.idea
+
+# Temp files
+*.*~
