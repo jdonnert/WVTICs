@@ -45,16 +45,16 @@ int main(int argc, char *argv[])
     Make_Positions();
 
     Make_IDs();
-    
+
     Regularise_sph_particles();
 
  	Make_Velocities();
 
 	Make_Temperatures();
-	
+
 	Make_Magnetic_Fields();
 
-    Write_output();
+    Write_output(1);  // verbose
 
     return EXIT_SUCCESS ;
 }

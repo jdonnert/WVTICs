@@ -36,9 +36,19 @@
 #define CHARBUFSIZE 512        // For any char buffer !
 #define MAXTAGS 300            // In parameter file
 
+#ifdef SPH_CUBIC_SPLINE
+
+#define DESNNGB 50         // SPH kernel weighted number of neighbours
+#define NNGBDEV 0.05       // error tolerance in SPH kernel weighted neighb.
+#define NGBMAX (DESNNGB*8)  // size of neighbour list
+
+#else
+
 #define DESNNGB 295        // SPH kernel weighted number of neighbours
 #define NNGBDEV 0.05       // error tolerance in SPH kernel weighted neighb.
 #define NGBMAX (DESNNGB*8)  // size of neighbour list
+
+#endif // SPH_CUBIC_SPLINE
 
 /* mathematical constants */
 #define pi             M_PI
@@ -84,9 +94,9 @@ extern struct Parameters {
 extern struct ProblemParameters {
     char Name[CHARBUFSIZE];
 	double Mpart;
-    double Boxsize[3]; // [0] is ALWAYS the largest one ! 
+    double Boxsize[3]; // [0] is ALWAYS the largest one !
 	double Rho_Max;
-} Problem; 
+} Problem;
 
 extern struct ParticleData{
     float Pos[3];

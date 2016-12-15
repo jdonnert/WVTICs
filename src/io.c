@@ -8,60 +8,35 @@
 struct GADGET_Header Header;
 int blksize;
 
-void write_header(FILE *fp, bool);
-
-void Write_output()
+void Write_output(bool verbose)
 {
     FILE *fp;
 
     size_t nBytes = 256 + 0.5 * Param.Npart * sizeof(*P)
         + 0.5 * Param.Npart * sizeof(*SphP);
 
-    printf("Output : \n"
-            "   File Name = %s\n"
-            "   File Size ~ %.1f MB\n"
-            , Problem.Name, nBytes/1e6);
+
+    if (verbose == 1)
+    {
+        printf("Output : \n"
+                "   File Name = %s\n"
+                "   File Size ~ %.1f MB\n"
+                , Problem.Name, nBytes/1e6);
+    }
 
     if (!(fp = fopen(Problem.Name,"w")))
         fprintf(stderr, "Can't open file %s\n"
                 ,Problem.Name);
 
-    write_header(fp, 1);
+    write_header(fp, verbose);
 
     for (int iblock = 0; iblock < IO_LASTENTRY; iblock++)
-        add_block(fp, (enum iofields) iblock, 1);
+        add_block(fp, (enum iofields) iblock, verbose);
 
     fclose(fp);
 
-    printf("done\n");
-
-    return;
-}
-
-void Write_positions(char* file)
-{
-    FILE *fp;
-
-    size_t nBytes = 256 + 0.5 * Param.Npart * sizeof(*P)
-        + 0.5 * Param.Npart * sizeof(*SphP);
-
-    // printf("Output : \n"
-    //         "   File Name = %s\n"
-    //         "   File Size ~ %.1f MB\n"
-    //         ,file, nBytes/1e6);
-
-    if (!(fp=fopen(file,"w")))
-        fprintf(stderr, "Can't open file %s\n"
-                ,file);
-
-    write_header(fp, 0);
-
-    for (int iblock=0; iblock<IO_LASTENTRY; iblock++)
-        add_block(fp, (enum iofields) iblock, 0);
-
-    fclose(fp);
-
-    // printf("done\n");
+    if (verbose == 1)
+        printf("done\n");
 
     return;
 }
@@ -93,7 +68,7 @@ void write_header(FILE *fp, bool verbose)
     Header.flag_metals = 0;
 
     /* Write F90 Unformatted Record */
-    
+
 	size_t blocksize = sizeof(int) + 4 * sizeof(char);
 
 	WRITE_F90REC                    // <- uses "blocksize"
@@ -103,13 +78,13 @@ void write_header(FILE *fp, bool verbose)
     size_t nextblock = sizeof(Header) + 2 * sizeof(int);
 
     my_fwrite(&nextblock, sizeof(int), 1, fp);
-    
+
 	WRITE_F90REC
 
     blocksize = sizeof(Header);
 
     WRITE_F90REC
-    
+
 	my_fwrite(&Header, blocksize,1,fp);
 
     WRITE_F90REC
@@ -150,25 +125,25 @@ void add_block(FILE *fp, enum iofields iblock, bool verbose)
     }
 
     size_t blocksize = sizeof(int) + 4 * sizeof(char);
-    
+
 	WRITE_F90REC
-    
+
 	my_fwrite(&Block.Label, sizeof(char), 4, fp);
-    
+
 	size_t nextblock = nData + 2 * sizeof(int);
 
 	my_fwrite(&nextblock, sizeof(int), 1, fp);
-    
+
 	WRITE_F90REC
 
     blocksize = nData;
-    
+
 	WRITE_F90REC
-    
+
 	my_fwrite(write_buffer, blocksize, 1, fp);
-    
+
 	blocksize = nData;
-    
+
 	WRITE_F90REC
 
     free(write_buffer);
@@ -328,7 +303,7 @@ size_t my_fwrite(void *data, size_t size, size_t nItems, FILE *fp)
 }
 
 #undef WRITE_F90REC
- 
+
 /* Read a number of tags from an ascii file the comment sign is % */
 
 #define LASTPARAMETERID -1111
