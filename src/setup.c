@@ -42,17 +42,63 @@ void setup_problem(const int Flag, const int Subflag)
 	Problem.Rho_Max = 1.1;
 
 	switch (Flag) {
-
 		case 0:
 
-			sprintf(Problem.Name, "IC_Constant_Density");
+			switch (Subflag) {
+				case 0:
 
-			Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
-    		Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1] 
-						  * Problem.Boxsize[2];
-	
-			Density_Func_Ptr = &Constant_Density;
+					sprintf(Problem.Name, "IC_Constant_Density");
 
+					Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
+					Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
+									* Problem.Boxsize[2];
+
+					Density_Func_Ptr = &Constant_Density;
+
+					break;
+
+				case 1:
+
+					sprintf(Problem.Name, "IC_Sawtooth");
+
+					Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
+					Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
+									* Problem.Boxsize[2];
+
+					Density_Func_Ptr = &Sawtooth_Density;
+
+					break;
+
+				case 2:
+
+					sprintf(Problem.Name, "IC_TopHat");
+
+					Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
+					Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
+									* Problem.Boxsize[2];
+
+					Density_Func_Ptr = &TopHat_Density;
+
+					break;
+
+				case 3:
+
+					sprintf(Problem.Name, "IC_SineWave");
+
+					Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
+					Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
+									* Problem.Boxsize[2];
+
+					Density_Func_Ptr = &SineWave_Density;
+
+					break;
+
+				default:
+
+					Assert(false, "Effect %d.%d not implemented", Flag, Subflag);
+
+					break;
+			}
 			break;
 
 		case 1:
@@ -64,30 +110,6 @@ void setup_problem(const int Flag, const int Subflag)
 						  * Problem.Boxsize[2];
 	
 			Density_Func_Ptr = &Magneticum_Density;
-
-			break;
-
-		case 2:
-
-			sprintf(Problem.Name, "IC_Sawtooth");
-
-			Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
-			Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
-							* Problem.Boxsize[2];
-
-			Density_Func_Ptr = &Sawtooth_Density;
-
-			break;
-
-		case 3:
-
-			sprintf(Problem.Name, "IC_TopHat");
-
-			Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
-			Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
-							* Problem.Boxsize[2];
-
-			Density_Func_Ptr = &TopHat_Density;
 
 			break;
 

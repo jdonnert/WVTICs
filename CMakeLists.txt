@@ -27,7 +27,9 @@ set(SOURCE_FILES
     src/unit.c
     src/wvt_relax.c
     src/problems/sawtooth.c
-        src/problems/tophat.c)
+    src/problems/tophat.c
+    src/problems/sinewave.c
+        )
 
 add_executable(WVTICs ${SOURCE_FILES})
 
