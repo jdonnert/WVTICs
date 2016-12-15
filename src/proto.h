@@ -40,5 +40,6 @@ double erand48(unsigned short *);
 float Constant_Density(const int ipart);
 float Magneticum_Density(const int ipart);
 float Sawtooth_Density(const int ipart);
+float TopHat_Density(const int ipart);
 
 

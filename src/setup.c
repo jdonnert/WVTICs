@@ -79,6 +79,18 @@ void setup_problem(const int Flag, const int Subflag)
 
 			break;
 
+		case 3:
+
+			sprintf(Problem.Name, "IC_TopHat");
+
+			Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
+			Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
+							* Problem.Boxsize[2];
+
+			Density_Func_Ptr = &TopHat_Density;
+
+			break;
+
 		default:
 
 			Assert(false, "Effect %d.%d not implemented", Flag, Subflag);
