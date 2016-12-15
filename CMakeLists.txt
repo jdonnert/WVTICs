@@ -3,6 +3,18 @@ project(WVTICs)
 
 set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -std=c99 -O2 -Wall -fopenmp")
 
+option(SAVE_WVT_STEPS "Save every relaxation step to file" OFF)
+option(SPH_CUBIC_SPLINE "Use cubic spline instead of wendland c6" OFF)
+
+if(SAVE_WVT_STEPS)
+    add_definitions(-DSAVE_WVT_STEPS)
+endif(SAVE_WVT_STEPS)
+
+if(SPH_CUBIC_SPLINE)
+    add_definitions(-DSPH_CUBIC_SPLINE)
+endif(SPH_CUBIC_SPLINE)
+
+
 set(SOURCE_FILES
     src/problems/constant_density.c
     src/problems/magneticum.c
