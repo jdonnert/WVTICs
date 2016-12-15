@@ -85,8 +85,7 @@ void setup_problem(const int Flag, const int Subflag)
 					sprintf(Problem.Name, "IC_SineWave");
 
 					Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
-					Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
-									* Problem.Boxsize[2];
+					Problem.Mpart = 1.0 / Param.Npart;
 
 					Density_Func_Ptr = &SineWave_Density;
 
