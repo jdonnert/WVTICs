@@ -7,19 +7,22 @@ void Make_Positions()
 	#pragma omp parallel for
     for (int ipart = 0; ipart < Param.Npart; ipart++) {
 
-        for (;;) {
+#ifdef REJECTION_SAMPLING
+        double rho = 0.0, rho_r = 0.0;
 
-            P[ipart].Pos[0] = erand48(Omp.Seed);
-            P[ipart].Pos[1] = erand48(Omp.Seed);
-            P[ipart].Pos[2] = erand48(Omp.Seed);
+        while (rho >= rho_r) {
+            P[ipart].Pos[0] = erand48(Omp.Seed) * Problem.Boxsize[0];
+            P[ipart].Pos[1] = erand48(Omp.Seed) * Problem.Boxsize[1];
+            P[ipart].Pos[2] = erand48(Omp.Seed) * Problem.Boxsize[2];
 
-			double rho = Problem.Rho_Max * erand48(Omp.Seed);
-
-			double rho_r = Density_Func_Ptr(ipart);
-
-			if (rho < rho_r) // rejection sampling
-				break;
+			rho = Problem.Rho_Max * erand48(Omp.Seed);
+			rho_r = Density_Func_Ptr(ipart);
         }
+#else
+        P[ipart].Pos[0] = erand48(Omp.Seed) * Problem.Boxsize[0];
+        P[ipart].Pos[1] = erand48(Omp.Seed) * Problem.Boxsize[1];
+        P[ipart].Pos[2] = erand48(Omp.Seed) * Problem.Boxsize[2];
+#endif //REJECTION_SAMPLING
 		
 		P[ipart].Type = 0;
     }
