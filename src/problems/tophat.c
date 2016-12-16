@@ -12,17 +12,17 @@ float TopHat_Density(const int ipart)
     const double rho0 = mass/volume;
     const double halfstep = DENSITY_STEP * rho0;
 
-    double rho_max = rho0 + halfstep;
-    double rho_min = rho0 - halfstep;
+    const double rho_max = rho0 + halfstep;
+    const double rho_min = rho0 - halfstep;
 
-    if (x < 0.1 || x > 0.9) {
+    if (x <= 0.1 || x > 0.9) {
         return rho_min;
     }
-    if (x > 0.4 && x < 0.6) {
+    if (x > 0.4 && x <= 0.6) {
         return rho_max;
     }
     if (x > 0.6) {
         return rho_max - (rho_max - rho_min) * (x - 0.6) / 0.3;
     }
-    return rho_min + (rho_max - rho_min) * (x - 0.4) / 0.3;
+    return rho_min + (rho_max - rho_min) * (x - 0.1) / 0.3;
 }

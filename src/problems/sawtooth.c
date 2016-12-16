@@ -1,5 +1,6 @@
 #include "../globals.h"
 
+#define DENSITY_STEP 0.5
 
 float Sawtooth_Density(const int ipart)
 {
@@ -11,7 +12,11 @@ float Sawtooth_Density(const int ipart)
     double volume = Problem.Boxsize[0]*Problem.Boxsize[1]*Problem.Boxsize[2];
     double mass = Param.Npart * Problem.Mpart;
 
-    double rho = mass/volume;
+    const double rho0 = mass/volume;
+    const double halfstep = DENSITY_STEP * rho0;
 
-    return 2.0*rho*x;
+    const double rho_max = rho0 + halfstep;
+    const double rho_min = rho0 - halfstep;
+
+    return rho_min + (rho_max - rho_min) * x / 0.5;
 }

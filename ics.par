@@ -14,8 +14,8 @@ Problem_Subflag 3
 %
 % 0 - Simple periodic tests
 %   0 - Constant Density
-%   1 - Sawtooth Density
-%   2 - Top Hat with gradients
+%   1 - Top Hat with gradients
+%   2 - Sawtooth Density
 %   3 - Sine wave
 % 1 - Magneticum
 % ----------------------------------- More to come, like

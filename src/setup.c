@@ -58,25 +58,23 @@ void setup_problem(const int Flag, const int Subflag)
 
 				case 1:
 
-					sprintf(Problem.Name, "IC_Sawtooth");
+					sprintf(Problem.Name, "IC_TopHat");
 
 					Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
-					Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
-									* Problem.Boxsize[2];
+					Problem.Mpart = 1.0 / Param.Npart;
 
-					Density_Func_Ptr = &Sawtooth_Density;
+					Density_Func_Ptr = &TopHat_Density;
 
 					break;
 
 				case 2:
 
-					sprintf(Problem.Name, "IC_TopHat");
+					sprintf(Problem.Name, "IC_Sawtooth");
 
 					Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
-					Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1]
-									* Problem.Boxsize[2];
+					Problem.Mpart = 1.0 / Param.Npart;
 
-					Density_Func_Ptr = &TopHat_Density;
+					Density_Func_Ptr = &Sawtooth_Density;
 
 					break;
 
