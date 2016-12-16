@@ -165,13 +165,15 @@ void Regularise_sph_particles()
                 float dy = (P[ipart].Pos[1] - P[jpart].Pos[1]) * boxinv[1];
                 float dz = (P[ipart].Pos[2] - P[jpart].Pos[2]) * boxinv[2];
 
-                dx = dx > 0.5 ? dx-1 : dx; // find closest image
-                dy = dy > 0.5 ? dy-1 : dy;
-                dz = dz > 0.5 ? dz-1 : dz;
+                if (Problem.Periodic) {
+                    dx = dx > 0.5 ? dx-1 : dx; // find closest image
+                    dy = dy > 0.5 ? dy-1 : dy;
+                    dz = dz > 0.5 ? dz-1 : dz;
 
-                dx = dx < -0.5 ? dx+1 : dx;
-                dy = dy < -0.5 ? dy+1 : dy;
-                dz = dz < -0.5 ? dz+1 : dz;
+                    dx = dx < -0.5 ? dx+1 : dx;
+                    dy = dy < -0.5 ? dy+1 : dy;
+                    dz = dz < -0.5 ? dz+1 : dz;
+                }
 
                 float r2 = (dx*dx + dy*dy + dz*dz);
 
@@ -213,23 +215,47 @@ void Regularise_sph_particles()
             P[ipart].Pos[1] += (float) (delta[1][ipart] * boxsize[1]);
             P[ipart].Pos[2] += (float) (delta[2][ipart] * boxsize[2]);
 
-            while (P[ipart].Pos[0] < 0) // keep it in the box
-                P[ipart].Pos[0] += boxsize[0];
+            if (ipart == 1) printf("relax 1: X = %g\n", P[ipart].Pos[0]);
 
-            while (P[ipart].Pos[0] > boxsize[0])
-                P[ipart].Pos[0] -= boxsize[0];
+            if (Problem.Periodic) {
+                while (P[ipart].Pos[0] < 0) // keep it in the box
+                    P[ipart].Pos[0] += boxsize[0];
 
-            while (P[ipart].Pos[1] < 0)
-                P[ipart].Pos[1] += boxsize[1];
+                while (P[ipart].Pos[0] > boxsize[0])
+                    P[ipart].Pos[0] -= boxsize[0];
 
-            while (P[ipart].Pos[1] > boxsize[1])
-                P[ipart].Pos[1] -= boxsize[1];
+                while (P[ipart].Pos[1] < 0)
+                    P[ipart].Pos[1] += boxsize[1];
 
-            while (P[ipart].Pos[2] < 0)
-                P[ipart].Pos[2] += boxsize[2];
+                while (P[ipart].Pos[1] > boxsize[1])
+                    P[ipart].Pos[1] -= boxsize[1];
 
-            while (P[ipart].Pos[2] > boxsize[2])
-                P[ipart].Pos[2] -= boxsize[2];
+                while (P[ipart].Pos[2] < 0)
+                    P[ipart].Pos[2] += boxsize[2];
+
+                while (P[ipart].Pos[2] > boxsize[2])
+                    P[ipart].Pos[2] -= boxsize[2];
+            } else {
+                if (P[ipart].Pos[0] < 0) // keep it in the box
+                    P[ipart].Pos[0] = 0.0;
+
+                if (P[ipart].Pos[0] > boxsize[0])
+                    P[ipart].Pos[0] = boxsize[0];
+
+                if (P[ipart].Pos[1] < 0)
+                    P[ipart].Pos[1] = 0.0;
+
+                if (P[ipart].Pos[1] > boxsize[1])
+                    P[ipart].Pos[1] = boxsize[1];
+
+                if (P[ipart].Pos[2] < 0)
+                    P[ipart].Pos[2] = 0.0;
+
+                if (P[ipart].Pos[2] > boxsize[2])
+                    P[ipart].Pos[2] = boxsize[2];
+            }
+
+
         }
     }
 
@@ -294,23 +320,25 @@ int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist)
         float dy = (P[ipart].Pos[1] - P[jpart].Pos[1]);
         float dz = (P[ipart].Pos[2] - P[jpart].Pos[2]);
 
-        if (dx > boxhalf[0])    // find closest image
-            dx -= boxsize[0];
+        if (Problem.Periodic) {
+            if (dx > boxhalf[0])    // find closest image
+                dx -= boxsize[0];
 
-        if (dy > boxhalf[1])
-            dy -= boxsize[1];
+            if (dy > boxhalf[1])
+                dy -= boxsize[1];
 
-        if (dz > boxhalf[2])
-            dz -= boxsize[2];
+            if (dz > boxhalf[2])
+                dz -= boxsize[2];
 
-        if (dx < -boxhalf[0])
-            dx += boxsize[0];
+            if (dx < -boxhalf[0])
+                dx += boxsize[0];
 
-        if (dy < -boxhalf[1])
-            dy += boxsize[1];
+            if (dy < -boxhalf[1])
+                dy += boxsize[1];
 
-        if (dz < -boxhalf[2])
-            dz += boxsize[2];
+            if (dz < -boxhalf[2])
+                dz += boxsize[2];
+        }
 
         float r2 = dx*dx + dy*dy + dz*dz;
 

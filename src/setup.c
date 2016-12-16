@@ -12,10 +12,11 @@ void Setup()
 	printf( "Problem %d.%d : %s \n"
 			"   Npart: %d \n"
 			"   Mpart: %g \n"
-			"   Boxsize: %g x %g x %g \n\n"
+			"   Boxsize: %g x %g x %g \n"
+            "   Periodic: %d \n\n"
 			,Param.Problem_Flag, Param.Problem_Subflag, Problem.Name,
 			Param.Npart, Problem.Mpart, Problem.Boxsize[0], 
-			Problem.Boxsize[1], Problem.Boxsize[2] );
+			Problem.Boxsize[1], Problem.Boxsize[2], Problem.Periodic );
 
     size_t nBytes = Param.Npart * sizeof(*P); // allocate particles
 
@@ -44,6 +45,7 @@ void setup_problem(const int Flag, const int Subflag)
 	switch (Flag) {
 		case 0:
 
+			Problem.Periodic = true;
 			switch (Subflag) {
 				case 0:
 
@@ -101,6 +103,7 @@ void setup_problem(const int Flag, const int Subflag)
 
 			sprintf(Problem.Name, "IC_Magneticum");
 
+			Problem.Periodic = false;
 			Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
     		Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1] 
 						  * Problem.Boxsize[2];

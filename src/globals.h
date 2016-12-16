@@ -96,6 +96,7 @@ extern struct ProblemParameters {
 	double Mpart;
     double Boxsize[3]; // [0] is ALWAYS the largest one !
 	double Rho_Max;
+	bool Periodic;
 } Problem;
 
 extern struct ParticleData{
