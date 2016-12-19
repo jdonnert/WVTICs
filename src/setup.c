@@ -40,12 +40,12 @@ void setup_problem(const int Flag, const int Subflag)
 	Velocity_Func_Ptr = &zero_function_vec;
 	Magnetic_Field_Func_Ptr = &zero_function_vec;
 
+    Problem.Periodic = true;
 	Problem.Rho_Max = 1.0;
 
 	switch (Flag) {
 		case 0:
 
-			Problem.Periodic = true;
 			switch (Subflag) {
 				case 0:
 
@@ -104,9 +104,8 @@ void setup_problem(const int Flag, const int Subflag)
 			sprintf(Problem.Name, "IC_Magneticum");
 
 			Problem.Periodic = false;
-			Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
-    		Problem.Mpart = Problem.Boxsize[0] * Problem.Boxsize[1] 
-						  * Problem.Boxsize[2];
+			Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 2;
+    		Problem.Mpart = 1.0 / Param.Npart;
 	
 			Density_Func_Ptr = &Magneticum_Density;
 
