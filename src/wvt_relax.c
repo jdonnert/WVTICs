@@ -218,7 +218,6 @@ void Regularise_sph_particles()
             P[ipart].Pos[1] += (float) (delta[1][ipart] * boxsize[1]);
             P[ipart].Pos[2] += (float) (delta[2][ipart] * boxsize[2]);
 
-            if (Problem.Periodic) {
                 while (P[ipart].Pos[0] < 0) // keep it in the box
                     P[ipart].Pos[0] += boxsize[0];
 
@@ -236,25 +235,6 @@ void Regularise_sph_particles()
 
                 while (P[ipart].Pos[2] > boxsize[2])
                     P[ipart].Pos[2] -= boxsize[2];
-            } else {
-                if (P[ipart].Pos[0] < 0) // keep it in the box
-                    P[ipart].Pos[0] = 0.0;
-
-                if (P[ipart].Pos[0] > boxsize[0])
-                    P[ipart].Pos[0] = boxsize[0];
-
-                if (P[ipart].Pos[1] < 0)
-                    P[ipart].Pos[1] = 0.0;
-
-                if (P[ipart].Pos[1] > boxsize[1])
-                    P[ipart].Pos[1] = boxsize[1];
-
-                if (P[ipart].Pos[2] < 0)
-                    P[ipart].Pos[2] = 0.0;
-
-                if (P[ipart].Pos[2] > boxsize[2])
-                    P[ipart].Pos[2] = boxsize[2];
-            }
 
 
         }
