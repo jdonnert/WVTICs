@@ -4,7 +4,7 @@
 #define WVTNNGB DESNNGB // 145 for WC2 that equals WC6
 
 #define TREEBUILDFREQUENCY 1
-#define NUMITER 64
+#define NUMITER 128
 #define ERRDIFF_LIMIT 0.005
 
 int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist);
@@ -14,6 +14,8 @@ static inline float sph_kernel_M4(const float r, const float h);
 static inline double sph_kernel_WC2(const float r, const float h);
 static inline double sph_kernel_WC6(const float r, const float h);
 static inline float gravity_kernel(const float r, const float h);
+
+void writeStepFile(int it);
 
 /* Settle SPH particle with weighted Voronoi tesselations (Diehl+ 2012).
  * Here hsml is not the SPH smoothing length, but is related to a local
@@ -28,13 +30,6 @@ void Regularise_sph_particles()
 								Problem.Boxsize[2]};
     const double boxhalf[3] = { boxsize[0]/2, boxsize[1]/2, boxsize[2]/2, };
 	const double boxinv[3] = { 1/boxsize[0], 1/boxsize[1], 1/boxsize[2] };
-
-#ifdef SAVE_WVT_STEPS
-	char problem_name[CHARBUFSIZE] = "";
-	char wvt_stepnumber[CHARBUFSIZE] = "";
-	char wvt_stepname[CHARBUFSIZE] = "";
-	sprintf(problem_name, Problem.Name);
-#endif  // SAVE_WVT_STEPS
 
     printf("Starting iterative SPH regularisation \n"
             "   max %d iterations, tree update every %d iterations\n"
@@ -66,16 +61,19 @@ void Regularise_sph_particles()
 
     while (true) {
 
-        if (it++ >= NUMITER) {
+        if ((it % TREEBUILDFREQUENCY) == 0)
+            Find_sph_quantities();
+
+#ifdef SAVE_WVT_STEPS
+        writeStepFile(++it);
+#endif
+
+        if (it > NUMITER) {
             printf("Reached max iterations - ");
             break;
         }
 
-        if ((it % TREEBUILDFREQUENCY) == 0)
-            Find_sph_quantities();
-
         int nIn = 0;
-
         double  errMax = 0, errMean = 0;
 
 		#pragma omp parallel for reduction(+:errMean,nIn) reduction(max:errMax)
@@ -98,15 +96,6 @@ void Regularise_sph_particles()
 
         printf("   #%02d: Err max=%3g mean=%03g diff=%03g"
                 " step=%g\n", it, errMax, errMean,errDiff, step);
-
-#ifdef SAVE_WVT_STEPS
-        strcpy(wvt_stepname, problem_name);
-        sprintf(wvt_stepnumber, "_%03d", it);
-        strcat(wvt_stepname, wvt_stepnumber);
-        sprintf(Problem.Name, wvt_stepname);
-        Write_output(0);  // not verbose
-        sprintf(Problem.Name, problem_name);
-#endif // SAVE_WVT_STEPS
 
         if (fabs(errDiff) < ERRDIFF_LIMIT && it > 32) { // at least iterate N times
             printf("Achieved desired error criterion - ");
@@ -276,6 +265,21 @@ void Regularise_sph_particles()
     printf("done\n\n"); fflush(stdout);
 
     return ;
+}
+
+void writeStepFile(int it) {
+    char problem_name[CHARBUFSIZE] = "";
+    char wvt_stepnumber[CHARBUFSIZE] = "";
+    char wvt_stepname[CHARBUFSIZE] = "";
+    sprintf(problem_name, Problem.Name);
+
+    strcpy(wvt_stepname, problem_name);
+    sprintf(wvt_stepnumber, "_%03d", it);
+    strcat(wvt_stepname, wvt_stepnumber);
+    sprintf(Problem.Name, wvt_stepname);
+    printf("Writing file %s\n", Problem.Name);
+    Write_output(0);  // not verbose
+    sprintf(Problem.Name, problem_name);
 }
 
 static inline double sph_kernel_WC2(const float r, const float h)
