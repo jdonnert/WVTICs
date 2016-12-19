@@ -64,7 +64,7 @@ void Regularise_sph_particles()
     double errLast = DBL_MAX, errLastTree = DBL_MAX;
     double errDiff = DBL_MAX, errDiffLast = DBL_MAX;
 
-    for (;;) {
+    while (true) {
 
         if (it++ >= NUMITER) {
             printf("Reached max iterations - ");
@@ -144,14 +144,15 @@ void Regularise_sph_particles()
         for (int ipart = 0; ipart < nPart; ipart++)
             hsml[ipart] *= norm_hsml;
 
-		#pragma omp parallel for shared(delta, hsml, P) \
+        bool error = false;
+
+		#pragma omp parallel for shared(delta, hsml, P) reduction(||:error) \
         	schedule(dynamic, nPart/Omp.NThreads/256)
         for (int ipart = 0; ipart < nPart; ipart++) {
 
             delta[0][ipart] = delta[1][ipart] = delta[2][ipart] = 0;
 
             int ngblist[NGBMAX] = { 0 };
-
             int ngbcnt = Find_ngb_tree(ipart, hsml[ipart]*boxsize[0], ngblist);
 
             for (int i = 0; i < ngbcnt; i++) { // neighbour loop
@@ -177,6 +178,15 @@ void Regularise_sph_particles()
 
                 float r2 = (dx*dx + dy*dy + dz*dz);
 
+                if (r2 == 0.0f) {
+                    printf("Found two particles at the same location, aborting!");
+                    if (!Problem.Periodic) {
+                        printf(" Consider increase the space between your density field and the box boundaries.");
+                    }
+                    printf("\n Problematic coordinates: (%s, %s, %s)\n", (dx == 0.0f ? "yes" : "no"), (dy == 0.0f ? "yes" : "no"), (dz == 0.0f ? "yes" : "no"));
+                    fflush(stdout);
+                    error = true;
+                }
                 float h = 0.5 * (hsml[ipart] + hsml[jpart]);
 
                 if (r2 > p2(h))
@@ -189,6 +199,10 @@ void Regularise_sph_particles()
                 delta[1][ipart] += step * hsml[ipart] * wk * dy/r;
                 delta[2][ipart] += step * hsml[ipart] * wk * dz/r;
             }
+        }
+
+        if (error) {
+            break;
         }
 
         int cnt = 0, cnt1 = 0, cnt2 = 0;
@@ -214,8 +228,6 @@ void Regularise_sph_particles()
             P[ipart].Pos[0] += (float) (delta[0][ipart] * boxsize[0]); // push !
             P[ipart].Pos[1] += (float) (delta[1][ipart] * boxsize[1]);
             P[ipart].Pos[2] += (float) (delta[2][ipart] * boxsize[2]);
-
-            if (ipart == 1) printf("relax 1: X = %g\n", P[ipart].Pos[0]);
 
             if (Problem.Periodic) {
                 while (P[ipart].Pos[0] < 0) // keep it in the box
