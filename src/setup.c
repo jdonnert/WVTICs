@@ -98,8 +98,31 @@ void setup_problem(const int Flag, const int Subflag)
 					break;
 			}
 			break;
+        case 1:
 
-		case 1:
+            Problem.Periodic = false;
+
+            switch (Subflag) {
+                case 0:
+
+                    sprintf(Problem.Name, "IC_GradientDensity");
+
+                    Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
+                    Problem.Mpart = 1.0 / Param.Npart;
+
+                    Density_Func_Ptr = &Gradient_Density;
+
+                    break;
+
+                default:
+
+                    Assert(false, "Effect %d.%d not implemented", Flag, Subflag);
+
+                    break;
+            }
+            break;
+
+		case 2:
 
 			sprintf(Problem.Name, "IC_Magneticum");
 

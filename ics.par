@@ -17,7 +17,9 @@ Problem_Subflag 3
 %   1 - Top Hat with gradients
 %   2 - Sawtooth Density
 %   3 - Sine wave
-% 1 - Magneticum
+% 1 - Simple non-periodic tests
+    0 - Gradient
+% 2 - Magneticum
 % ----------------------------------- More to come, like
 % 3 - Ryu & Jones Shock Tubes
 %	0 - ST a
