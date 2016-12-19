@@ -61,11 +61,11 @@ void Regularise_sph_particles()
 
     while (true) {
 
-        if ((it % TREEBUILDFREQUENCY) == 0)
+        if ((it++ % TREEBUILDFREQUENCY) == 0)
             Find_sph_quantities();
 
 #ifdef SAVE_WVT_STEPS
-        writeStepFile(++it);
+        writeStepFile(it);
 #endif
 
         if (it > NUMITER) {
