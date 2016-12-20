@@ -126,7 +126,7 @@ void setup_problem(const int Flag, const int Subflag)
 
 			sprintf(Problem.Name, "IC_Magneticum");
 
-			Problem.Periodic = false;
+			Problem.Periodic = true;
 			Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 2;
     		Problem.Mpart = 1.0 / Param.Npart;
 	

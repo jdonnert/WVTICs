@@ -1,13 +1,17 @@
 #include "../globals.h"
 
-#define DENSITY_CONTRAST 0.01
+#define BOUNDARY 0.1
+#define ACTUALREGION (1.0-2.0*BOUNDARY)
+#define DENSITY_CONTRAST 0.1
 
 float Magneticum_Density(const int ipart)
 {
-	const float x = (P[ipart].Pos[0] - 0.25 * Problem.Boxsize[0]) / (0.5 * Problem.Boxsize[0]);
-	const float y = (P[ipart].Pos[1] - 0.25 * Problem.Boxsize[0]) / (0.5 * Problem.Boxsize[1]);
+	const float x = (P[ipart].Pos[0] - BOUNDARY * Problem.Boxsize[0]) / (ACTUALREGION * Problem.Boxsize[0]);
+	const float y = (P[ipart].Pos[1] - BOUNDARY * Problem.Boxsize[0]) / (ACTUALREGION * Problem.Boxsize[1]);
 	
-	double volume = 0.5*Problem.Boxsize[0]*0.5*Problem.Boxsize[1]*0.5*Problem.Boxsize[2]; // Only the central part of the box will be filled
+	double volume = ACTUALREGION*Problem.Boxsize[0]
+                  * ACTUALREGION*Problem.Boxsize[1]
+                  * Problem.Boxsize[2]; // Only the central part of the box will be filled
 	double mass = Param.Npart * Problem.Mpart;
 
 	double rho = mass/volume;

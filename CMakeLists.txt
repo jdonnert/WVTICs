@@ -46,7 +46,7 @@ set(SOURCE_FILES
     src/problems/sawtooth.c
     src/problems/tophat.c
     src/problems/sinewave.c
-        )
+        src/problems/gradient.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
