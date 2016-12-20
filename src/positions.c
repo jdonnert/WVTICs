@@ -11,6 +11,7 @@ void Make_Positions()
         double rho = 0.0, rho_r = 0.0;
 
         while (rho >= rho_r) {
+
             P[ipart].Pos[0] = erand48(Omp.Seed) * Problem.Boxsize[0];
             P[ipart].Pos[1] = erand48(Omp.Seed) * Problem.Boxsize[1];
             P[ipart].Pos[2] = erand48(Omp.Seed) * Problem.Boxsize[2];

@@ -1,4 +1,4 @@
-Npart      100000
+Npart      1000000
 
 %Units
 UnitLength_in_cm             3.085678e21        %  1.0 kpc
@@ -7,8 +7,8 @@ UnitVelocity_in_cm_per_s     1e5                %  1 km/sec
 
 % Problem
 
-Problem_Flag 0
-Problem_Subflag 3
+Problem_Flag 2
+Problem_Subflag 0
 
 % Problem Descriptions
 %

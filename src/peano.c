@@ -45,9 +45,6 @@ static void reorder_particles();
 
 void Sort_Particles_By_Peano_Key()
 {
-    const double box = Problem.Boxsize[0];
-    const double boxhalf = Problem.Boxsize[0] / 2;
-
     if (Keys == NULL)
         Keys = malloc(Param.Npart * sizeof(*Keys));
     else
@@ -61,9 +58,9 @@ void Sort_Particles_By_Peano_Key()
 	#pragma omp parallel for
     for (int ipart = 0; ipart < Param.Npart; ipart++) {
 
-        double px = P[ipart].Pos[0] / box;
-        double py = P[ipart].Pos[1] / box;
-        double pz = P[ipart].Pos[2] / box;
+        double px = P[ipart].Pos[0] / Problem.Boxsize[0];
+        double py = P[ipart].Pos[1] / Problem.Boxsize[1];
+        double pz = P[ipart].Pos[2] / Problem.Boxsize[2];
 
         P[ipart].Key = Keys[ipart] = Peano_Key(px, py, pz);
     }

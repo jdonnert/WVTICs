@@ -7,18 +7,18 @@ struct Tree_Node {
     int DNext;          // Distance to the next node; or particle -DNext-1
     float Pos[3];       // Node Center
     int Npart;          // Number of particles in node
-    float Size;
+    float Size[3];
 } *Tree;
 
 int NNodes = 0;
 int Max_Nodes = 0;
 
-static inline int key_fragment(const int node);
-static inline void add_particle_to_node(const int ipart, const int node);
-static inline bool particle_is_inside_node(const peanoKey key, const int lvl,        const int node);
-static inline void create_node_from_particle(const int ipart,const int parent,
+static int key_fragment(const int node);
+static void add_particle_to_node(const int ipart, const int node);
+static bool particle_is_inside_node(const peanoKey key, const int lvl,        const int node);
+static void create_node_from_particle(const int ipart,const int parent,
         const peanoKey key, const int lvl, int *NNodes);
-void Tree_Build();
+
 void gravity_tree_init();
 int Level(const int node);
 
@@ -40,6 +40,7 @@ int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
         float dz = fabs(pos_i[2] - Tree[node].Pos[2]);
 
         if (Problem.Periodic) {
+
             if (dx > boxhalf[0])
                 dx -= boxsize[0];
             else if (dx < -boxhalf[0])
@@ -56,9 +57,9 @@ int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
                 dz += boxsize[2];
         }
 
-        float dl = 0.5 * sqrt3 * Tree[node].Size + hsml;
+        float dl = 0.5 * sqrt3 * Tree[node].Size[0];
 
-        if (dx*dx + dy*dy + dz*dz < dl*dl) {
+        if ( sqrt(dx*dx+dy*dy+dz*dz) < dl + hsml) {
 
             if (Tree[node].DNext < 0) {
 
@@ -71,8 +72,8 @@ int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
                     float dy = fabs(pos_i[1] - P[jpart].Pos[1]);
                     float dz = fabs(pos_i[2] - P[jpart].Pos[2]);
 
-
                     if (Problem.Periodic) {
+
                         if (dx > boxhalf[0])
                             dx -= boxsize[0];
                         else if (dx < -boxhalf[0])
@@ -88,8 +89,6 @@ int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
                         else if (dz < -boxhalf[2])
                             dz += boxsize[2];
                     }
-
-                    float dl = 0.5 * sqrt3 * Tree[node].Size + hsml;
 
                     if (dx*dx + dy*dy + dz*dz < hsml*hsml)
                         ngblist[ngbcnt++] = jpart;
@@ -120,10 +119,10 @@ extern float Guess_hsml(const size_t ipart, const int DesNumNgb)
 {
     int node = P[ipart].Tree_Parent;
 
-    float numDens = Tree[node].Npart / p3(Tree[node].Size);
-    float size = pow( fourpithird/numDens, 1./3.);
-
-    return 2 * size;
+	float nodeVol = Tree[node].Size[0]*Tree[node].Size[1]*Tree[node].Size[2];
+    float numDens = Tree[node].Npart / nodeVol;
+    
+	return pow( fourpithird/numDens, 1./3.);
 }
 
 
@@ -279,7 +278,8 @@ void Build_Tree()
     return ;
 }
 
-static inline bool particle_is_inside_node(const peanoKey key, const int lvl,        const int node)
+static bool particle_is_inside_node(const peanoKey key, const int lvl,    
+											const int node)
 {
     int part_triplet = key & 0x7;
 
@@ -288,7 +288,7 @@ static inline bool particle_is_inside_node(const peanoKey key, const int lvl,   
     return (node_triplet == part_triplet);
 }
 
-static inline void create_node_from_particle(const int ipart,const int parent,
+static void create_node_from_particle(const int ipart,const int parent,
         const peanoKey key, const int lvl, int *NNodes)
 {
     const int node = (*NNodes)++;
@@ -307,16 +307,20 @@ static inline void create_node_from_particle(const int ipart,const int parent,
     Tree[node].Bitfield = lvl | keyfragment;
 
     const int sign[3] = { -1 + 2 * (P[ipart].Pos[0] > Tree[parent].Pos[0]),
-        -1 + 2 * (P[ipart].Pos[1] > Tree[parent].Pos[1]),
-        -1 + 2 * (P[ipart].Pos[2] > Tree[parent].Pos[2]) };
+        				  -1 + 2 * (P[ipart].Pos[1] > Tree[parent].Pos[1]),
+                          -1 + 2 * (P[ipart].Pos[2] > Tree[parent].Pos[2]) };
 
-    float size = Problem.Boxsize[0] / (1 << lvl);
+    float size[3] = { 	Problem.Boxsize[0] / (1ULL << lvl),
+						Problem.Boxsize[1] / (1ULL << lvl),
+						Problem.Boxsize[2] / (1ULL << lvl) };
 
-    Tree[node].Size = size;
-
-    Tree[node].Pos[0] = Tree[parent].Pos[0] + sign[0] * size * 0.5;
-    Tree[node].Pos[1] = Tree[parent].Pos[1] + sign[1] * size * 0.5;
-    Tree[node].Pos[2] = Tree[parent].Pos[2] + sign[2] * size * 0.5;
+    Tree[node].Size[0] = size[0];
+    Tree[node].Size[1] = size[1];
+    Tree[node].Size[2] = size[2];
+	
+    Tree[node].Pos[0] = Tree[parent].Pos[0] + sign[0] * size[0] * 0.5;
+    Tree[node].Pos[1] = Tree[parent].Pos[1] + sign[1] * size[1] * 0.5;
+    Tree[node].Pos[2] = Tree[parent].Pos[2] + sign[2] * size[2] * 0.5;
 
     P[ipart].Tree_Parent = parent;
 
@@ -325,14 +329,14 @@ static inline void create_node_from_particle(const int ipart,const int parent,
     return ;
 }
 
-static inline void add_particle_to_node(const int ipart, const int node)
+static  void add_particle_to_node(const int ipart, const int node)
 {
     Tree[node].Npart++;
 
     return ;
 }
 
-static inline int key_fragment(const int node)
+static int key_fragment(const int node)
 {
     const uint32_t bitmask = 7UL << 6;
 

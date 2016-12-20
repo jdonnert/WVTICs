@@ -38,6 +38,7 @@ void Regularise_sph_particles()
 
     float *hsml = NULL;
     size_t nBytes = nPart * sizeof(*hsml);
+
     hsml = Malloc(nBytes);
 
     float *delta[3] = { NULL };
@@ -50,16 +51,17 @@ void Regularise_sph_particles()
 
 	double volume = Problem.Boxsize[0]*Problem.Boxsize[1]*Problem.Boxsize[2];
 	double mean_part_sep = pow( volume / nPart, 1.0/3.0);
+
+    double step = mean_part_sep / 4;
+
 #ifdef SPH_CUBIC_SPLINE
-    double step = 6 * mean_part_sep / 2;
-#else
-    double step = mean_part_sep / 2;
+	step *= 6;
 #endif // SPH_CUBIC_SPLINE
 
     double errLast = DBL_MAX, errLastTree = DBL_MAX;
     double errDiff = DBL_MAX, errDiffLast = DBL_MAX;
 
-    while (true) {
+    for (;;) {
 
         if ((it++ % TREEBUILDFREQUENCY) == 0)
             Find_sph_quantities();
@@ -69,6 +71,7 @@ void Regularise_sph_particles()
 #endif
 
         if (it > NUMITER) {
+
             printf("Reached max iterations - ");
             break;
         }
@@ -98,6 +101,7 @@ void Regularise_sph_particles()
                 " step=%g\n", it, errMax, errMean,errDiff, step);
 
         if (fabs(errDiff) < ERRDIFF_LIMIT && it > 32) { // at least iterate N times
+
             printf("Achieved desired error criterion - ");
             break;
         }
@@ -107,8 +111,8 @@ void Regularise_sph_particles()
             break;
         }
 
-        if ((errDiff < 0.01) && (it > 1)) // force convergence
-            step *= 0.8;
+        if ((errDiff < 0.01) && (it > 3)) // force convergence
+            step *= 0.9;
 
         errLast = errMean;
         errDiffLast = errDiff;
@@ -133,9 +137,7 @@ void Regularise_sph_particles()
         for (int ipart = 0; ipart < nPart; ipart++)
             hsml[ipart] *= norm_hsml;
 
-        bool error = false;
-
-		#pragma omp parallel for shared(delta, hsml, P) reduction(||:error) \
+		#pragma omp parallel for shared(delta, hsml, P) \
         	schedule(dynamic, nPart/Omp.NThreads/256)
         for (int ipart = 0; ipart < nPart; ipart++) {
 
@@ -167,15 +169,10 @@ void Regularise_sph_particles()
 
                 float r2 = (dx*dx + dy*dy + dz*dz);
 
-                if (r2 == 0.0f) {
-                    printf("Found two particles at the same location, aborting!");
-                    if (!Problem.Periodic) {
-                        printf(" Consider increase the space between your density field and the box boundaries.");
-                    }
-                    printf("\n Problematic coordinates: (%s, %s, %s)\n", (dx == 0.0f ? "yes" : "no"), (dy == 0.0f ? "yes" : "no"), (dz == 0.0f ? "yes" : "no"));
-                    fflush(stdout);
-                    error = true;
-                }
+				Assert(r2 > 0, "Found two particles %d & %d at the same location. "
+						"Consider increasing the space between your density field "
+						"and the box boundaries.", ipart, jpart);
+
                 float h = 0.5 * (hsml[ipart] + hsml[jpart]);
 
                 if (r2 > p2(h))
@@ -188,10 +185,6 @@ void Regularise_sph_particles()
                 delta[1][ipart] += step * hsml[ipart] * wk * dy/r;
                 delta[2][ipart] += step * hsml[ipart] * wk * dz/r;
             }
-        }
-
-        if (error) {
-            break;
         }
 
         int cnt = 0, cnt1 = 0, cnt2 = 0;
@@ -243,11 +236,10 @@ void Regularise_sph_particles()
     Free(hsml); Free(delta[0]); Free(delta[1]); Free(delta[2]);
 
     printf("done\n\n"); fflush(stdout);
-
-    return ;
 }
 
 void writeStepFile(int it) {
+
     char problem_name[CHARBUFSIZE] = "";
     char wvt_stepnumber[CHARBUFSIZE] = "";
     char wvt_stepname[CHARBUFSIZE] = "";
@@ -317,6 +309,7 @@ int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist)
         float dz = (P[ipart].Pos[2] - P[jpart].Pos[2]);
 
         if (Problem.Periodic) {
+
             if (dx > boxhalf[0])    // find closest image
                 dx -= boxsize[0];
 

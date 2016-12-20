@@ -1,6 +1,6 @@
 #include "../globals.h"
 
-#define ORDER 1
+#define ORDER 4
 
 float SineWave_Density(const int ipart)
 {

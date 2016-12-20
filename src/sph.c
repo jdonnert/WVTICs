@@ -14,16 +14,17 @@ extern void Find_sph_quantities()
 
     Build_Tree();
 
+	int node = 89;
 	#pragma omp parallel for shared(SphP, P) \
     	schedule(dynamic, Param.Npart/Omp.NThreads/64)
-    for (size_t ipart = 0; ipart<Param.Npart; ipart++) {
+    for (int ipart = 0; ipart<Param.Npart; ipart++) {
 
         float hsml = SphP[ipart].Hsml;
 
         if (hsml == 0)
             hsml = 2*Guess_hsml(ipart, DESNNGB); // always too large
 
-        Assert(isfinite(hsml), "hsml not finite ipart=%d parent=%d \n",
+		Assert(isfinite(hsml), "hsml not finite ipart=%d parent=%d \n",
                 ipart, P[ipart].Tree_Parent);
 
         float dRhodHsml = 0;
@@ -33,11 +34,16 @@ extern void Find_sph_quantities()
 
         for (;;) {
 
+			float hsml2 = hsml;
             int ngblist[NGBMAX] = { 0 };
 
             int ngbcnt = Find_ngb_tree(ipart, hsml, ngblist);
 
-            if (ngbcnt == NGBMAX) { // prevent overflow of ngblist
+            //int ngblist2[NGBMAX] = { 0 };
+            //int ngbcnt2 = Find_ngb_simple(ipart, hsml2, ngblist2);
+			//printf("%d %d %d  %g \n",ipart, ngbcnt, ngbcnt2, hsml);
+            
+		if (ngbcnt == NGBMAX) { // prevent overflow of ngblist
 
                 hsml /= 1.24;
 
@@ -67,8 +73,8 @@ extern void Find_sph_quantities()
         SphP[ipart].Rho = rho;
         SphP[ipart].VarHsmlFac = varHsmlFac;
     }
-
-    return;
+    
+	return;
 }
 
 /* solve SPH continuity eq via Newton-Raphson, bisection and tree search */
@@ -93,7 +99,7 @@ extern bool Find_hsml(const int ipart, const int *ngblist, const int ngbcnt,
     for (;;) {
 
         const double pos_i[3] = { P[ipart].Pos[0], P[ipart].Pos[1],
-            P[ipart].Pos[2] };
+            					  P[ipart].Pos[2] };
 
         double wkNgb = 0; // kernel weight number of neighbours
 
@@ -110,6 +116,7 @@ extern bool Find_hsml(const int ipart, const int *ngblist, const int ngbcnt,
             double dz = pos_i[2] - P[jpart].Pos[2];
 
             if (Problem.Periodic) {
+
                 if (dx > boxhalf[0])    // find closest image
                     dx -= boxsize[0];
 
