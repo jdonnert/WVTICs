@@ -6,6 +6,8 @@
 #define TREEBUILDFREQUENCY 1
 #define NUMITER 128
 #define ERRDIFF_LIMIT 0.005
+#define ERRMEAN_LIMIT 0.001
+#define ERRMAX_LIMIT 0.01
 
 int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist);
 int ngblist[NGBMAX] = { 0 }, Ngbcnt ;
@@ -33,8 +35,8 @@ void Regularise_sph_particles()
 
     printf("Starting iterative SPH regularisation \n"
             "   max %d iterations, tree update every %d iterations\n"
-            "   stop at  errmax < %g%%   \n\n",
-            NUMITER, TREEBUILDFREQUENCY, ERRDIFF_LIMIT*100); fflush(stdout);
+            "   stop at errdiff < %g%%, errmean < %g%%, errmax < %g%%   \n\n",
+            NUMITER, TREEBUILDFREQUENCY, ERRDIFF_LIMIT*100, ERRMEAN_LIMIT*100, ERRMAX_LIMIT*100); fflush(stdout);
 
     float *hsml = NULL;
     size_t nBytes = nPart * sizeof(*hsml);
@@ -100,7 +102,7 @@ void Regularise_sph_particles()
         printf("   #%02d: Err max=%3g mean=%03g diff=%03g"
                 " step=%g\n", it, errMax, errMean,errDiff, step);
 
-        if (fabs(errDiff) < ERRDIFF_LIMIT && it > 32) { // at least iterate N times
+        if (fabs(errDiff) < ERRDIFF_LIMIT && fabs(errMean) < ERRMEAN_LIMIT && fabs(errMax) < ERRMAX_LIMIT && it > 32) { // at least iterate N times
 
             printf("Achieved desired error criterion - ");
             break;
