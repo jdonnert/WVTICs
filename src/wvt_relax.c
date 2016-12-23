@@ -146,7 +146,7 @@ void Regularise_sph_particles()
             delta[0][ipart] = delta[1][ipart] = delta[2][ipart] = 0;
 
             int ngblist[NGBMAX] = { 0 };
-            int ngbcnt = Find_ngb_tree(ipart, hsml[ipart]*boxsize[0], ngblist);
+            int ngbcnt = Find_ngb_tree(ipart, hsml[ipart], ngblist);
 
             for (int i = 0; i < ngbcnt; i++) { // neighbour loop
 
