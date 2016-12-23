@@ -155,18 +155,18 @@ void Regularise_sph_particles()
                 if (ipart == jpart)
                     continue;
 
-                float dx = (P[ipart].Pos[0] - P[jpart].Pos[0]) * boxinv[0];
-                float dy = (P[ipart].Pos[1] - P[jpart].Pos[1]) * boxinv[1];
-                float dz = (P[ipart].Pos[2] - P[jpart].Pos[2]) * boxinv[2];
+                float dx = P[ipart].Pos[0] - P[jpart].Pos[0];
+                float dy = P[ipart].Pos[1] - P[jpart].Pos[1];
+                float dz = P[ipart].Pos[2] - P[jpart].Pos[2];
 
                 if (Problem.Periodic) {
-                    dx = dx > 0.5 ? dx-1 : dx; // find closest image
-                    dy = dy > 0.5 ? dy-1 : dy;
-                    dz = dz > 0.5 ? dz-1 : dz;
+                    dx = dx > boxhalf[0] ? dx-boxsize[0] : dx; // find closest image
+                    dy = dy > boxhalf[1] ? dy-boxsize[1] : dy;
+                    dz = dz > boxhalf[2] ? dz-boxsize[2] : dz;
 
-                    dx = dx < -0.5 ? dx+1 : dx;
-                    dy = dy < -0.5 ? dy+1 : dy;
-                    dz = dz < -0.5 ? dz+1 : dz;
+                    dx = dx < -boxhalf[0] ? dx+boxsize[0] : dx;
+                    dy = dy < -boxhalf[1] ? dy+boxsize[1] : dy;
+                    dz = dz < -boxhalf[2] ? dz+boxsize[2] : dz;
                 }
 
                 float r2 = (dx*dx + dy*dy + dz*dz);
@@ -197,7 +197,7 @@ void Regularise_sph_particles()
 
             float rho = (*Density_Func_Ptr) (ipart);
 
-            float d = boxsize[0] * sqrt(p2(delta[0][ipart])
+            float d = sqrt(p2(delta[0][ipart])
                     + p2( delta[1][ipart]) + p2( delta[2][ipart]));
 
             float meanPartSep = pow(Problem.Mpart / rho / DESNNGB, 1.0/3.0);
@@ -209,9 +209,9 @@ void Regularise_sph_particles()
             if (d > 0.01 * meanPartSep)
                 cnt2++;
 
-            P[ipart].Pos[0] += (float) (delta[0][ipart] * boxsize[0]); // push !
-            P[ipart].Pos[1] += (float) (delta[1][ipart] * boxsize[1]);
-            P[ipart].Pos[2] += (float) (delta[2][ipart] * boxsize[2]);
+            P[ipart].Pos[0] += delta[0][ipart]; // push !
+            P[ipart].Pos[1] += delta[1][ipart];
+            P[ipart].Pos[2] += delta[2][ipart];
 
                 while (P[ipart].Pos[0] < 0) // keep it in the box
                     P[ipart].Pos[0] += boxsize[0];
