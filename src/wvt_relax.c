@@ -52,7 +52,7 @@ void Regularise_sph_particles()
 	double volume = Problem.Boxsize[0]*Problem.Boxsize[1]*Problem.Boxsize[2];
 	double mean_part_sep = pow( volume / nPart, 1.0/3.0);
 
-    double step = mean_part_sep / 4;
+    double step = mean_part_sep / 16;
 
 #ifdef SPH_CUBIC_SPLINE
 	step *= 6;
