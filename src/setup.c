@@ -117,9 +117,11 @@ void setup_problem(const int Flag, const int Subflag)
 
 			sprintf(Problem.Name, "IC_Magneticum");
 
-			Problem.Boxsize[0] = 1; 
-			Problem.Boxsize[1] = 0.5;
-			Problem.Boxsize[2] = 0.25;
+			Problem.Boxsize[0] = 1.0;
+			Problem.Boxsize[1] = 1.0;
+			Problem.Boxsize[2] = 0.01;
+
+            Problem.Mpart = 1.0 / Param.Npart * (Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
 	
 			Density_Func_Ptr = &Magneticum_Density;
 
