@@ -22,6 +22,7 @@ static void create_node_from_particle(const int ipart,const int parent,
 void gravity_tree_init();
 int Level(const int node);
 
+int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist);
 int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
 {
     const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1], 
@@ -367,4 +368,60 @@ void gravity_tree_init()
     NNodes = 0;
 
     return ;
+}
+
+int Find_ngb_simple(const int ipart, const float hsml, int *ngblist)
+{
+    const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
+                                Problem.Boxsize[2]};
+    const double boxhalf[3] = { boxsize[0]/2, boxsize[1]/2, boxsize[2]/2 };
+
+    memset(ngblist, 0, NGBMAX*sizeof(*ngblist));
+
+    int ngbcnt = 0;
+
+    for (int jpart = 0; jpart < Param.Npart; jpart++) {
+
+        float dx = (P[ipart].Pos[0] - P[jpart].Pos[0]);
+        float dy = (P[ipart].Pos[1] - P[jpart].Pos[1]);
+        float dz = (P[ipart].Pos[2] - P[jpart].Pos[2]);
+
+        if (Problem.Periodic) {
+
+            if (dx > boxhalf[0])    // find closest image
+                dx -= boxsize[0];
+
+            if (dy > boxhalf[1])
+                dy -= boxsize[1];
+
+            if (dz > boxhalf[2])
+                dz -= boxsize[2];
+
+            if (dx < -boxhalf[0])
+                dx += boxsize[0];
+
+            if (dy < -boxhalf[1])
+                dy += boxsize[1];
+
+            if (dz < -boxhalf[2])
+                dz += boxsize[2];
+        }
+
+        //! @todo add non periodic case
+
+        float r2 = dx*dx + dy*dy + dz*dz;
+
+        if (r2 < hsml*hsml)
+            ngblist[ngbcnt++] = jpart;
+
+        if (ngbcnt == NGBMAX) {
+
+            printf("WARNING, ngbcnt == %d, increase NGBMAX ! ",
+                   ngbcnt);
+
+            break;
+        }
+    }
+
+    return ngbcnt ;
 }
