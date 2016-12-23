@@ -35,9 +35,9 @@ int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
 
     for (;;) {
 
-        float dx = fabs(pos_i[0] - Tree[node].Pos[0]);
-        float dy = fabs(pos_i[1] - Tree[node].Pos[1]);
-        float dz = fabs(pos_i[2] - Tree[node].Pos[2]);
+        float dx = pos_i[0] - Tree[node].Pos[0];
+        float dy = pos_i[1] - Tree[node].Pos[1];
+        float dz = pos_i[2] - Tree[node].Pos[2];
 
         if (Problem.Periodic) {
 
@@ -68,9 +68,9 @@ int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
 
                 for (int jpart = first; jpart < last; jpart++) {
 
-                    float dx = fabs(pos_i[0] - P[jpart].Pos[0]);
-                    float dy = fabs(pos_i[1] - P[jpart].Pos[1]);
-                    float dz = fabs(pos_i[2] - P[jpart].Pos[2]);
+                    float dx = pos_i[0] - P[jpart].Pos[0];
+                    float dy = pos_i[1] - P[jpart].Pos[1];
+                    float dz = pos_i[2] - P[jpart].Pos[2];
 
                     if (Problem.Periodic) {
 
