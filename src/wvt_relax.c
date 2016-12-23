@@ -230,9 +230,9 @@ void Regularise_sph_particles()
 
                 while (P[ipart].Pos[2] > boxsize[2])
                     P[ipart].Pos[2] -= boxsize[2];
-
-
         }
+
+        printf("        %g%% > meanPartSep; %g%% > 0.1 * meanPartSep; %g%% > 0.01 * meanPartSep\n", cnt*100./Param.Npart, cnt1*100./Param.Npart, cnt2*100./Param.Npart);
     }
 
     Free(hsml); Free(delta[0]); Free(delta[1]); Free(delta[2]);
