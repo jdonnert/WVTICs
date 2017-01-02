@@ -2,6 +2,8 @@
 #include "peano.h"
 #include "sort.h"
 
+peanoKey Peano_Key(const double x, const double y, const double z);
+static void reorder_particles();
 
 void Print_Int_Bits128(const peanoKey val)
 {
@@ -16,6 +18,7 @@ void Print_Int_Bits128(const peanoKey val)
 
     return ;
 }
+
 void Print_Int_Bits128r(const peanoKey val)
 {
     for (int i = 127; i >= 0; i--) {
@@ -40,8 +43,6 @@ int compare_peanoKeys(const void * a, const void *b)
 
 static peanoKey *Keys = NULL;
 static size_t *Idx = NULL;
-peanoKey Peano_Key(const double x, const double y, const double z);
-static void reorder_particles();
 
 void Sort_Particles_By_Peano_Key()
 {
@@ -66,7 +67,7 @@ void Sort_Particles_By_Peano_Key()
     }
 
 	#pragma omp parallel
-    Qsort_Index(Omp.NThreads, Idx, Keys, Param.Npart, sizeof(*Keys),
+    Qsort_Index(1, Idx, Keys, Param.Npart, sizeof(*Keys),
            	 	&compare_peanoKeys);
 
     reorder_particles();
@@ -132,7 +133,7 @@ peanoKey Peano_Key(const double x, const double y, const double z)
         if( X[0] & q )
             X[0] ^= P;  // invert
 
-        for(int i = 1; i < 3; i++ ) {
+        for (int i = 1; i < 3; i++ ) {
 
             if( X[i] & q ) {
 
@@ -288,7 +289,8 @@ void test_peanokey()
 
                 peanoKey stdkey =  Peano_Key(a[0], a[1], a[2]);
 
-                printf("%g %g %g %llu  \n", a[0], a[1], a[2], (long long) stdkey );
+                printf("%g %g %g %llu  \n", a[0], a[1], a[2],
+						(long long) stdkey );
 
                 Print_Int_Bits128(stdkey);
 

@@ -2,7 +2,7 @@
 
 #define BOUNDARY 0.0
 #define ACTUALREGION (1.0-2.0*BOUNDARY)
-#define DENSITY_CONTRAST 64
+#define DENSITY_CONTRAST 8
 
 float Magneticum_Density(const int ipart)
 {
@@ -16,7 +16,7 @@ float Magneticum_Density(const int ipart)
     // Following definition is on a box [0,1] x [0,1]
 
     // M
-    if ((0.00 < x && x < 0.02) &&
+ /*   if ((0.00 < x && x < 0.02) &&
         (0.45 < y && y < 0.56))
         return rho;
     else if ((0.04 < x && x < 0.06) &&
@@ -77,6 +77,7 @@ float Magneticum_Density(const int ipart)
     else if ((0.40 < x && x < 0.48) &&
           (0.45 < y && y < 0.47))
         return rho;
+		*/
     // T
     if ((0.53 < x && x < 0.55) &&
         (0.45 < y && y < 0.55))
@@ -85,7 +86,7 @@ float Magneticum_Density(const int ipart)
           (0.53 < y && y < 0.55))
         return rho;
     // I
-    if ((0.63 < x && x < 0.65) &&
+ /*   if ((0.63 < x && x < 0.65) &&
         (0.45 < y && y < 0.55))
         return rho;
     else if ((0.60 < x && x < 0.68) &&
@@ -131,7 +132,7 @@ float Magneticum_Density(const int ipart)
     if ((0.00 < x && x < 1.00) &&
         (0.41 < y && y < 0.43))
         return rho;
-    
+    */
 	
     return rho / DENSITY_CONTRAST; // Default
 }

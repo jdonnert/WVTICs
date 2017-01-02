@@ -53,6 +53,8 @@ void setup_problem(const int Flag, const int Subflag)
 
 					Density_Func_Ptr = &Constant_Density;
 
+					Problem.Boxsize[2] = 0.01;
+
 					break;
 
 				case 1:
@@ -119,7 +121,8 @@ void setup_problem(const int Flag, const int Subflag)
 			Problem.Boxsize[1] = 1.0;
 			Problem.Boxsize[2] = 0.01;
 
-            Problem.Mpart = 1.0 / Param.Npart * (Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
+            Problem.Mpart = 1.0 / Param.Npart * 
+				(Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
 	
 			Density_Func_Ptr = &Magneticum_Density;
 
@@ -131,6 +134,10 @@ void setup_problem(const int Flag, const int Subflag)
 
 			break;
 	}
+
+	Assert(Problem.Boxsize[0] >= Problem.Boxsize[1] && 
+		   Problem.Boxsize[0] >= Problem.Boxsize[2], 
+		   "Boxsize[0] has to be largest for ngb finding to work.");
 
 	return ;
 }

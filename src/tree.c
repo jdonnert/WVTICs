@@ -1,6 +1,6 @@
 #include "globals.h"
 
-#define NODES_PER_PARTICLE 0.7
+#define NODES_PER_PARTICLE 2
 
 struct Tree_Node {
     uint32_t Bitfield;  // bit 0-5:level, 6-8:key, 9:local, 10:top, 11-31:free
@@ -60,7 +60,7 @@ int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
 
         float dl = 0.5 * sqrt3 * Tree[node].Size[0];
 
-        if ( sqrt(dx*dx+dy*dy+dz*dz) < dl + hsml) {
+        if ( dx*dx+dy*dy+dz*dz < p2(dl + hsml)) {
 
             if (Tree[node].DNext < 0) {
 
@@ -126,6 +126,7 @@ extern float Guess_hsml(const size_t ipart, const int DesNumNgb)
 	return pow( fourpithird/numDens, 1./3.);
 }
 
+/* We use the Peano Key, whose triplets represents the tree on every level. */
 
 void Build_Tree()
 {
@@ -153,35 +154,31 @@ void Build_Tree()
 
     for (int ipart = 1; ipart < Param.Npart; ipart++) {
 
-        double px = (P[ipart].Pos[0])/boxsize[0];
-        double py = (P[ipart].Pos[1])/boxsize[1];
-        double pz = (P[ipart].Pos[2])/boxsize[2];
+        double px = P[ipart].Pos[0]/boxsize[0];
+        double py = P[ipart].Pos[1]/boxsize[1];
+        double pz = P[ipart].Pos[2]/boxsize[2];
 
         peanoKey key = Reversed_Peano_Key(px, py, pz);
 
-        int node = 0; //+1        // current node
-        int lvl = 0;    //+1        // counts current level
-        int parent = 0;            // parent of current node
-
-        bool ipart_starts_new_branch = true; // flag to remove leaf nodes
+        int node = 0;	// current node
+        int lvl = 0;	// counts current level
+        int parent = 0;	// parent of current node
 
         while (lvl < N_PEANO_TRIPLETS) {
 
-            if (particle_is_inside_node(key, lvl, node)) { // open node
+            if (particle_is_inside_node(key, lvl, node)) { // open
 
-                if (Tree[node].Npart == 1) {     // refine
+                if (Tree[node].Npart == 1) { // refine
 
                     Tree[node].DNext = 0;
 
                     create_node_from_particle(ipart-1, node, last_key, lvl+1,
-                            &NNodes); // son of node
+                            &NNodes); // new son
 
                     last_key >>= 3;
                 }
 
-                add_particle_to_node(ipart, node); // add ipart to node
-
-                ipart_starts_new_branch &= (node != last_parent);
+                add_particle_to_node(ipart, node);
 
                 parent = node;
 
@@ -204,38 +201,11 @@ void Build_Tree()
 
             P[ipart].Tree_Parent = parent;
 
-            continue;                     // tree cannot be deeper
+            continue;  // tree cannot be deeper
         }
 
-        if (ipart_starts_new_branch) { // collapse particle leaf nodes
-
-            int n = 0;
-
-            if (Tree[node].Npart <= 8)
-                n = node;
-            else if (Tree[last_parent].Npart <= 8)
-                n = last_parent;
-
-            if (n != 0) {
-
-                Tree[n].DNext = -ipart + Tree[n].Npart - 1;
-
-                int nZero = NNodes - n - 1;
-
-                NNodes = n + 1;
-
-                memset(&Tree[NNodes], 0, nZero*sizeof(*Tree));
-
-                int first = -(Tree[n].DNext + 1);
-                int last = first + Tree[n].Npart;
-
-                for (int jpart = first; jpart < last; jpart++)
-                    P[jpart].Tree_Parent = n;
-            }
-        }
-
-        if (Tree[node].DNext == 0)                 // set DNext for internal node
-            Tree[node].DNext = NNodes - node;     // only delta
+        if (Tree[node].DNext == 0) // set DNext for internal node
+            Tree[node].DNext = NNodes - node; // only delta
 
         create_node_from_particle(ipart, parent, key, lvl, &NNodes); // sibling
 
@@ -274,10 +244,11 @@ void Build_Tree()
 
     } // for
 
-    //printf("done \n");
-
     return ;
 }
+
+/* if a particle falls into a node, its peano triplets down to the level
+ * of the node are the same. */
 
 static bool particle_is_inside_node(const peanoKey key, const int lvl,    
 											const int node)
@@ -286,20 +257,17 @@ static bool particle_is_inside_node(const peanoKey key, const int lvl,
 
     int node_triplet = key_fragment(node);
 
-    return (node_triplet == part_triplet);
+    return node_triplet == part_triplet;
 }
+
+/* A new node gets the Peano triplet from the containing particle. */
 
 static void create_node_from_particle(const int ipart,const int parent,
         const peanoKey key, const int lvl, int *NNodes)
 {
     const int node = (*NNodes)++;
 
-    if (*NNodes >= Max_Nodes) {
-
-        printf("Too many nodes ! \n");
-
-        exit(0);
-    }
+	Assert(*NNodes < Max_Nodes, "Too many nodes \n");
 
     Tree[node].DNext = -ipart - 1;
 
@@ -416,8 +384,8 @@ int Find_ngb_simple(const int ipart, const float hsml, int *ngblist)
 
         if (ngbcnt == NGBMAX) {
 
-            printf("WARNING, ngbcnt == %d, increase NGBMAX ! ",
-                   ngbcnt);
+            //printf("WARNING, ngbcnt == %d, increase NGBMAX ! ",
+             //      ngbcnt);
 
             break;
         }

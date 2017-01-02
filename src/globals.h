@@ -40,7 +40,7 @@
 
 #define DESNNGB 50         // SPH kernel weighted number of neighbours
 #define NNGBDEV 0.05       // error tolerance in SPH kernel weighted neighb.
-#define NGBMAX (DESNNGB*8)  // size of neighbour list
+#define NGBMAX (DESNNGB*16)  // size of neighbour list
 
 #else
 

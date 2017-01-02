@@ -4,7 +4,7 @@
 #define WVTNNGB DESNNGB // 145 for WC2 that equals WC6
 
 #define TREEBUILDFREQUENCY 1
-#define NUMITER 128
+#define NUMITER 64
 #define ERRDIFF_LIMIT 0.005
 #define ERRMEAN_LIMIT 0.001
 #define ERRMAX_LIMIT 0.01
@@ -36,7 +36,8 @@ void Regularise_sph_particles()
     printf("Starting iterative SPH regularisation \n"
             "   max %d iterations, tree update every %d iterations\n"
             "   stop at errdiff < %g%%, errmean < %g%%, errmax < %g%%   \n\n",
-            NUMITER, TREEBUILDFREQUENCY, ERRDIFF_LIMIT*100, ERRMEAN_LIMIT*100, ERRMAX_LIMIT*100); fflush(stdout);
+            NUMITER, TREEBUILDFREQUENCY, ERRDIFF_LIMIT*100, ERRMEAN_LIMIT*100,
+			ERRMAX_LIMIT*100); fflush(stdout);
 
     float *hsml = NULL;
     size_t nBytes = nPart * sizeof(*hsml);
@@ -54,7 +55,7 @@ void Regularise_sph_particles()
 	double volume = Problem.Boxsize[0]*Problem.Boxsize[1]*Problem.Boxsize[2];
 	double mean_part_sep = pow( volume / nPart, 1.0/3.0);
 
-    double step = mean_part_sep / 16;
+    double step = mean_part_sep / 5;
 
 #ifdef SPH_CUBIC_SPLINE
 	step *= 6;
@@ -102,13 +103,16 @@ void Regularise_sph_particles()
         printf("   #%02d: Err max=%3g mean=%03g diff=%03g"
                 " step=%g\n", it, errMax, errMean,errDiff, step);
 
-        if (fabs(errDiff) < ERRDIFF_LIMIT && fabs(errMean) < ERRMEAN_LIMIT && fabs(errMax) < ERRMAX_LIMIT && it > 32) { // at least iterate N times
+        if (fabs(errDiff) < ERRDIFF_LIMIT && 
+			fabs(errMean) < ERRMEAN_LIMIT && 
+			fabs(errMax) < ERRMAX_LIMIT && it > 32) {
 
             printf("Achieved desired error criterion - ");
             break;
         }
 
-        if ((errDiff < 0) && (errDiffLast < 0) && (it > 10)) { // stop if worse
+        if ((errDiff < 0) && (errDiffLast < 0) && (it > 10)) { //stop if worse
+
             printf("Convergence flipped - ");
             break;
         }
@@ -128,7 +132,7 @@ void Regularise_sph_particles()
 
             SphP[ipart].Rho_Model= rho;
 
-            hsml[ipart] = pow(WVTNNGB * Problem.Mpart /rho /fourpithird, 1./3.);
+            hsml[ipart] = pow(WVTNNGB*Problem.Mpart/rho/fourpithird, 1./3.);
 
             vSphSum += p3(hsml[ipart]);
         }
@@ -147,6 +151,7 @@ void Regularise_sph_particles()
 
             int ngblist[NGBMAX] = { 0 };
             int ngbcnt = Find_ngb_tree(ipart, hsml[ipart], ngblist);
+            //int ngbcnt = Find_ngb_simple(ipart, hsml[ipart], ngblist);
 
             for (int i = 0; i < ngbcnt; i++) { // neighbour loop
 
@@ -160,7 +165,8 @@ void Regularise_sph_particles()
                 float dz = P[ipart].Pos[2] - P[jpart].Pos[2];
 
                 if (Problem.Periodic) {
-                    dx = dx > boxhalf[0] ? dx-boxsize[0] : dx; // find closest image
+
+                    dx = dx > boxhalf[0] ? dx-boxsize[0] : dx; // closest image
                     dy = dy > boxhalf[1] ? dy-boxsize[1] : dy;
                     dz = dz > boxhalf[2] ? dz-boxsize[2] : dz;
 
@@ -171,9 +177,10 @@ void Regularise_sph_particles()
 
                 float r2 = (dx*dx + dy*dy + dz*dz);
 
-				Assert(r2 > 0, "Found two particles %d & %d at the same location. "
-						"Consider increasing the space between your density field "
-						"and the box boundaries.", ipart, jpart);
+				Assert(r2 > 0, 
+					"Found two particles %d & %d at the same location. "
+					"Consider increasing the space between your density field"
+					" and the box boundaries.", ipart, jpart);
 
                 float h = 0.5 * (hsml[ipart] + hsml[jpart]);
 
