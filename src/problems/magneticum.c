@@ -2,7 +2,7 @@
 
 #define BOUNDARY 0.0
 #define ACTUALREGION (1.0-2.0*BOUNDARY)
-#define DENSITY_CONTRAST 8
+#define DENSITY_CONTRAST 16
 
 float Magneticum_Density(const int ipart)
 {

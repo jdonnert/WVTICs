@@ -53,8 +53,6 @@ void setup_problem(const int Flag, const int Subflag)
 
 					Density_Func_Ptr = &Constant_Density;
 
-					Problem.Boxsize[2] = 0.01;
-
 					break;
 
 				case 1:
@@ -119,7 +117,7 @@ void setup_problem(const int Flag, const int Subflag)
 
 			Problem.Boxsize[0] = 1.0;
 			Problem.Boxsize[1] = 1.0;
-			Problem.Boxsize[2] = 0.01;
+			Problem.Boxsize[2] = 0.125;
 
             Problem.Mpart = 1.0 / Param.Npart * 
 				(Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
@@ -153,6 +151,25 @@ void zero_function_vec(const int ipart, float out[3])
 
 	return;
 }
+/* beautiful and elegant C code, but impossible to optimize. You know N, the 
+ * compiler doesnt.
+ *
+ *  const int N = 100;
+ *
+ *  for (int i = 0; i < N-1; i++) {
+ *
+ *  // here he does and he knows the loop iteration is fixed. 
+ *     
+ *      P[0].Pos[0] = i * d + d/2; 
+ *      // if d and d/2 are precomputed const, this is a single cycle/FMA instruction
+ *     }
+ *
+ * If your style avoids non-standard loops, your code will likely become faster
+ * on its own. This is one of the reasons why Fortran is nearly always faster than C, 
+ * it doesnt allow these constructs. At Cray they call this style "Ctran". C that
+ * is written Fortran style. Sounds bad, but its usually not harder to read.
+ * Its how HPC C99 should be written. 
+ */
 
 void calculateParticleMassByIntegration()
 {

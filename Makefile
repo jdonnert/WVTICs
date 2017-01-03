@@ -2,8 +2,8 @@ SHELL = /bin/bash
 
 ## OPTIONS  ##
 #OPT     += -DSAVE_WVT_STEPS         # write IC file for every WVT step
-#OPT     += -DSPH_CUBIC_SPLINE      # for use with Gadget2
-#OPT     += -DREJECTION_SAMPLING      # use von Neumann rejection sampling to improve initial random positions
+OPT     += -DSPH_CUBIC_SPLINE      # for use with Gadget2
+OPT     += -DREJECTION_SAMPLING      # use von Neumann rejection sampling to improve initial random positions
 
 
 ifndef SYSTYPE

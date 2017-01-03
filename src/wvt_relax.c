@@ -6,7 +6,7 @@
 #define TREEBUILDFREQUENCY 1
 #define NUMITER 64
 #define ERRDIFF_LIMIT 0.005
-#define ERRMEAN_LIMIT 0.001
+#define ERRMEAN_LIMIT 0.05
 #define ERRMAX_LIMIT 0.01
 
 int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist);
@@ -41,7 +41,6 @@ void Regularise_sph_particles()
 
     float *hsml = NULL;
     size_t nBytes = nPart * sizeof(*hsml);
-
     hsml = Malloc(nBytes);
 
     float *delta[3] = { NULL };
@@ -52,13 +51,15 @@ void Regularise_sph_particles()
 
     int it = -1;
 
-	double volume = Problem.Boxsize[0]*Problem.Boxsize[1]*Problem.Boxsize[2];
-	double mean_part_sep = pow( volume / nPart, 1.0/3.0);
+	double npart_1D = pow(nPart, 1.0/3.0);
 
-    double step = mean_part_sep / 5;
-
+    double step[3] = {  Problem.Boxsize[0]/npart_1D /5, 
+						Problem.Boxsize[1]/npart_1D /5, 
+						Problem.Boxsize[2]/npart_1D /5 } ;
 #ifdef SPH_CUBIC_SPLINE
-	step *= 6;
+	step[0] *= 6;
+	step[1] *= 6;
+	step[2] *= 6;
 #endif // SPH_CUBIC_SPLINE
 
     double errLast = DBL_MAX, errLastTree = DBL_MAX;
@@ -101,11 +102,12 @@ void Regularise_sph_particles()
         errDiff = (errLast - errMean) / errMean;
 
         printf("   #%02d: Err max=%3g mean=%03g diff=%03g"
-                " step=%g\n", it, errMax, errMean,errDiff, step);
+                " step=%g %g %g \n", it, errMax, errMean,errDiff, 
+				step[0], step[1], step[2]);
 
-        if (fabs(errDiff) < ERRDIFF_LIMIT && 
-			fabs(errMean) < ERRMEAN_LIMIT && 
-			fabs(errMax) < ERRMAX_LIMIT && it > 32) {
+        if ((fabs(errDiff) < ERRDIFF_LIMIT || 
+			fabs(errMean) < ERRMEAN_LIMIT || 
+			fabs(errMax) < ERRMAX_LIMIT) && it > 8) {
 
             printf("Achieved desired error criterion - ");
             break;
@@ -117,8 +119,11 @@ void Regularise_sph_particles()
             break;
         }
 
-        if ((errDiff < 0.01) && (it > 3)) // force convergence
-            step *= 0.9;
+        if ((errDiff < 0.01) && (it > 3)) { // force convergence
+            step[0] *= 0.9;
+            step[1] *= 0.9;
+            step[2] *= 0.9;
+		}
 
         errLast = errMean;
         errDiffLast = errDiff;
@@ -188,11 +193,16 @@ void Regularise_sph_particles()
                     continue ;
 
                 float r = sqrt(r2);
-                float wk = sph_kernel_WC6(r, h);
 
-                delta[0][ipart] += step * hsml[ipart] * wk * dx/r;
-                delta[1][ipart] += step * hsml[ipart] * wk * dy/r;
-                delta[2][ipart] += step * hsml[ipart] * wk * dz/r;
+#ifdef SPH_CUBIC_SPLINE
+                float wk = sph_kernel_WC2(r, h);
+#else
+                float wk = sph_kernel_WC6(r, h);
+#endif
+
+                delta[0][ipart] += step[0] * hsml[ipart] * wk * dx/r;
+                delta[1][ipart] += step[1] * hsml[ipart] * wk * dy/r;
+                delta[2][ipart] += step[2] * hsml[ipart] * wk * dz/r;
             }
         }
 
@@ -207,39 +217,40 @@ void Regularise_sph_particles()
             float d = sqrt(p2(delta[0][ipart])
                     + p2( delta[1][ipart]) + p2( delta[2][ipart]));
 
-            float meanPartSep = pow(Problem.Mpart / rho / DESNNGB, 1.0/3.0);
+            float d_mean = pow(Problem.Mpart / rho / DESNNGB, 1.0/3.0);
 
-            if (d > 1 * meanPartSep)
+            if (d > 1 * d_mean)
                 cnt++;
-            if (d > 0.1 * meanPartSep)
+            if (d > 0.1 * d_mean)
                 cnt1++;
-            if (d > 0.01 * meanPartSep)
+            if (d > 0.01 * d_mean)
                 cnt2++;
 
             P[ipart].Pos[0] += delta[0][ipart]; // push !
             P[ipart].Pos[1] += delta[1][ipart];
             P[ipart].Pos[2] += delta[2][ipart];
 
-                while (P[ipart].Pos[0] < 0) // keep it in the box
-                    P[ipart].Pos[0] += boxsize[0];
+            while (P[ipart].Pos[0] < 0) // keep it in the box
+                P[ipart].Pos[0] += boxsize[0];
 
-                while (P[ipart].Pos[0] > boxsize[0])
-                    P[ipart].Pos[0] -= boxsize[0];
+            while (P[ipart].Pos[0] > boxsize[0])
+                P[ipart].Pos[0] -= boxsize[0];
 
-                while (P[ipart].Pos[1] < 0)
-                    P[ipart].Pos[1] += boxsize[1];
+            while (P[ipart].Pos[1] < 0)
+                P[ipart].Pos[1] += boxsize[1];
 
-                while (P[ipart].Pos[1] > boxsize[1])
-                    P[ipart].Pos[1] -= boxsize[1];
+            while (P[ipart].Pos[1] > boxsize[1])
+                P[ipart].Pos[1] -= boxsize[1];
 
-                while (P[ipart].Pos[2] < 0)
-                    P[ipart].Pos[2] += boxsize[2];
+            while (P[ipart].Pos[2] < 0)
+                P[ipart].Pos[2] += boxsize[2];
 
-                while (P[ipart].Pos[2] > boxsize[2])
-                    P[ipart].Pos[2] -= boxsize[2];
+            while (P[ipart].Pos[2] > boxsize[2])
+                P[ipart].Pos[2] -= boxsize[2];
         }
 
-        printf("        %g%% > meanPartSep; %g%% > 0.1 * meanPartSep; %g%% > 0.01 * meanPartSep\n", cnt*100./Param.Npart, cnt1*100./Param.Npart, cnt2*100./Param.Npart);
+        printf("        Del %g%% > dp; %g%% > dp/10; %g%% > dp/100\n", 
+				cnt*100./Param.Npart, cnt1*100./Param.Npart, cnt2*100./Param.Npart);
     }
 
     Free(hsml); Free(delta[0]); Free(delta[1]); Free(delta[2]);
