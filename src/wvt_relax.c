@@ -119,7 +119,7 @@ void Regularise_sph_particles()
             break;
         }
 
-        if ((errDiff < 0.01) && (it > 3)) { // force convergence
+        if ((errDiff < 0.01)) { // force convergence
             step[0] *= 0.9;
             step[1] *= 0.9;
             step[2] *= 0.9;

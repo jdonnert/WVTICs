@@ -1,6 +1,7 @@
 #include "globals.h"
 #include "peano.h"
-#include "sort.h"
+#include <gsl/gsl_heapsort.h>
+
 
 peanoKey Peano_Key(const double x, const double y, const double z);
 static void reorder_particles();
@@ -65,10 +66,8 @@ void Sort_Particles_By_Peano_Key()
 
         P[ipart].Key = Keys[ipart] = Peano_Key(px, py, pz);
     }
-
-	#pragma omp parallel
-    Qsort_Index(1, Idx, Keys, Param.Npart, sizeof(*Keys),
-           	 	&compare_peanoKeys);
+	
+	gsl_heapsort_index(Idx, Keys, Param.Npart, sizeof(*Keys),&compare_peanoKeys);
 
     reorder_particles();
 

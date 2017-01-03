@@ -35,21 +35,10 @@ extern void Find_sph_quantities()
 
 			float hsml2 = hsml;
             int ngblist[NGBMAX] = { 0 };
-           // int ngblist2[NGBMAX] = { 0 };
 
            // int ngbcnt = Find_ngb_simple(ipart, hsml, ngblist);
             int ngbcnt = Find_ngb_tree(ipart, hsml, ngblist);
 			
-			/*if (ngbcnt != ngbcnt2) {
-
-				printf("%d %d %d  %g \n",ipart, ngbcnt, ngbcnt2, hsml);
-
-				for (int i=0; i<max(ngbcnt,ngbcnt2); i++)
-					printf("%d %d %d \n",i, ngblist[i], ngblist2[i]);
-
-            	exit(0);
-			}*/
-
 			if (ngbcnt == NGBMAX) { // prevent overflow of ngblist
 
                 hsml /= 1.24;

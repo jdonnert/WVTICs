@@ -1,4 +1,4 @@
-Npart      1000000
+Npart      500000
 
 %Units
 UnitLength_in_cm             3.085678e21        %  1.0 kpc
