@@ -257,7 +257,7 @@ void set_block_info(enum iofields blocknr)
             strncpy(Block.Name, "MagneticFIeld",16);
             Block.Npart[0] = Param.Npart;
             Block.Val_per_element = 3;
-            Block.Bytes_per_element = sizeof(SphP[0].Bfld);
+            Block.Bytes_per_element = sizeof(SphP[0].Bfld[0]);
             break;
         case IO_LASTENTRY:
             strncpy(Block.Label,"LAST",4);
@@ -335,19 +335,6 @@ void Read_param_file(char *filename)
 	strcpy(tag[nt], "Problem_Subflag");
     addr[nt] = &Param.Problem_Subflag;
     id[nt++] = INT;
-
-    /* System of Units */
-    strcpy(tag[nt], "UnitLength_in_cm");
-    addr[nt] = &Unit.Length;
-    id[nt++] = REAL;
-
-    strcpy(tag[nt], "UnitMass_in_g");
-    addr[nt] = &Unit.Mass;
-    id[nt++] = REAL;
-
-    strcpy(tag[nt], "UnitVelocity_in_cm_per_s");
-    addr[nt] = &Unit.Vel;
-    id[nt++] = REAL;
 
     /* Add above */
     id[nt] = LASTPARAMETERID;

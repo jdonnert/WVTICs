@@ -3,7 +3,7 @@
 void Make_Positions()
 {
     printf("Sampling positions ..."); fflush(stdout);
-	
+
 	#pragma omp parallel for
     for (int ipart = 0; ipart < Param.Npart; ipart++) {
 
@@ -24,7 +24,7 @@ void Make_Positions()
         P[ipart].Pos[1] = erand48(Omp.Seed) * Problem.Boxsize[1];
         P[ipart].Pos[2] = erand48(Omp.Seed) * Problem.Boxsize[2];
 #endif //REJECTION_SAMPLING
-		
+
 		P[ipart].Type = 0;
     }
 
@@ -40,7 +40,7 @@ void Make_Velocities()
 
 	#pragma omp parallel for
     for (int ipart = 0; ipart < Param.Npart; ipart++) {
-	
+
 		(*Velocity_Func_Ptr) (ipart, P[ipart].Vel);
 	}
 
@@ -72,9 +72,12 @@ void Make_Magnetic_Fields()
 
 	#pragma omp parallel for
     for (int ipart = 0; ipart < Param.Npart; ipart++) {
-	
+
 		(*Magnetic_Field_Func_Ptr) (ipart, SphP[ipart].Bfld);
-	}
+		SphP[ipart].Bfld[0] = 0.0;
+		SphP[ipart].Bfld[1] = 0.0;
+		SphP[ipart].Bfld[2] = 0.0;
+    }
 
     printf(" done\n");
 

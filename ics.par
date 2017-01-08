@@ -1,10 +1,5 @@
 Npart      500000
 
-%Units
-UnitLength_in_cm             3.085678e21        %  1.0 kpc
-UnitMass_in_g                1.989e43           %  1.0e10 solar masses
-UnitVelocity_in_cm_per_s     1e5                %  1 km/sec
-
 % Problem
 
 Problem_Flag 2
