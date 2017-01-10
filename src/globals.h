@@ -55,28 +55,6 @@
 #define sqrt3       1.73205080756887719
 #define fourpithird 4.18879032135009765
 
-/* physical constants cgs */
-#define c            GSL_CONST_CGSM_SPEED_OF_LIGHT
-#define k_B         GSL_CONST_CGSM_BOLTZMANN
-#define m_p         GSL_CONST_CGSM_MASS_PROTON
-#define m_e            GSL_CONST_CGSM_MASS_ELECTRON
-#define Grav        GSL_CONST_CGSM_GRAVITATIONAL_CONSTANT
-
-/* unit conversions */
-#define Msol2cgs    (1.98892e33)
-#define kpc2cgs     (3.08568025e21)
-#define K2eV        (1.5*8.617343e-5)
-#define DEG2RAD        (pi / 180)
-
-/* chemistry */
-#define H_frac        0.76                    /* Hydrogen fraction */
-#define He_frac        (1.0-H_frac)            /* Helium fraction */
-#define u_mol        (4.0/(5.0*H_frac+3.0))    /* Mean mol. weight in hydr. mass */
-#define n2ne         ((H_frac+0.5*He_frac)/(2.0*H_frac+0.75*He_frac))
-#define yHelium        He_frac / (4.0 *H_frac)
-#define mean_mol_weight (1.0+4.0*yHelium)/(1.0+3.0*yHelium+1.0)
-#define adiabatic_index (5./3.)
-
 extern struct OpenMP_infos{
     int NThreads;          // Number of openMP threads
     int ThreadID;          // Thread ID of this thread
@@ -116,17 +94,6 @@ extern struct GasParticleData {
     float Rho_Model;
     float Bfld[3];
 } *SphP;
-
-/* code units */
-
-extern struct Units{
-    double Length;
-    double Mass;
-    double Vel;
-    double Time;
-    double Density;
-    double Energy;
-} Unit;
 
 extern float (*Density_Func_Ptr) (const int);
 extern float (*U_Func_Ptr) (const int);

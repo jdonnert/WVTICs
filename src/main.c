@@ -2,7 +2,6 @@
 
 struct ParticleData *P;
 struct GasParticleData *SphP;
-struct Units Unit;
 
 struct Parameters Param = { 0 };
 struct ProblemParameters Problem = { 0 };
@@ -37,8 +36,6 @@ int main(int argc, char *argv[])
     Assert(argc == 2, "Usage : ./wvtbox $parameterfile\n");
 
     Read_param_file(argv[1]);
-
-    Set_units();
 
     Setup();
 
