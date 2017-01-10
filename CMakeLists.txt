@@ -35,8 +35,6 @@ set(SOURCE_FILES
     src/positions.c
     src/proto.h
     src/setup.c
-    src/sort.c
-    src/sort.h
     src/sph.c
     src/sph.h
     src/tree.c
