@@ -4,7 +4,8 @@
 #define WVTNNGB DESNNGB // 145 for WC2 that equals WC6
 
 #define TREEBUILDFREQUENCY 1
-#define NUMITER 64
+#define MAXITER 64
+#define MINITER 8
 #define ERRDIFF_LIMIT 0.005
 #define ERRMEAN_LIMIT 0.05
 #define ERRMAX_LIMIT 0.01
@@ -36,7 +37,7 @@ void Regularise_sph_particles()
     printf("Starting iterative SPH regularisation \n"
             "   max %d iterations, tree update every %d iterations\n"
             "   stop at errdiff < %g%%, errmean < %g%%, errmax < %g%%   \n\n",
-            NUMITER, TREEBUILDFREQUENCY, ERRDIFF_LIMIT*100, ERRMEAN_LIMIT*100,
+            MAXITER, TREEBUILDFREQUENCY, ERRDIFF_LIMIT*100, ERRMEAN_LIMIT*100,
 			ERRMAX_LIMIT*100); fflush(stdout);
 
     float *hsml = NULL;
@@ -52,10 +53,11 @@ void Regularise_sph_particles()
     int it = -1;
 
 	double npart_1D = pow(nPart, 1.0/3.0);
+    const double stepDivisor = 5.0;
 
-    double step[3] = {  Problem.Boxsize[0]/npart_1D /5, 
-						Problem.Boxsize[1]/npart_1D /5, 
-						Problem.Boxsize[2]/npart_1D /5 } ;
+    double step[3] = {  Problem.Boxsize[0] / npart_1D / stepDivisor,
+						Problem.Boxsize[1] / npart_1D / stepDivisor,
+						Problem.Boxsize[2] / npart_1D / stepDivisor } ;
 #ifdef SPH_CUBIC_SPLINE
 	step[0] *= 6;
 	step[1] *= 6;
@@ -74,7 +76,7 @@ void Regularise_sph_particles()
         writeStepFile(it);
 #endif
 
-        if (it > NUMITER) {
+        if (it > MAXITER) {
 
             printf("Reached max iterations - ");
             break;
@@ -105,9 +107,9 @@ void Regularise_sph_particles()
                 " step=%g %g %g \n", it, errMax, errMean,errDiff, 
 				step[0], step[1], step[2]);
 
-        if ((fabs(errDiff) < ERRDIFF_LIMIT || 
-			fabs(errMean) < ERRMEAN_LIMIT || 
-			fabs(errMax) < ERRMAX_LIMIT) && it > 8) {
+        if ((fabs(errDiff) < ERRDIFF_LIMIT &&
+			fabs(errMean) < ERRMEAN_LIMIT &&
+			fabs(errMax) < ERRMAX_LIMIT) && it > MINITER) {
 
             printf("Achieved desired error criterion - ");
             break;

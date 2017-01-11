@@ -151,40 +151,22 @@ void zero_function_vec(const int ipart, float out[3])
 
 	return;
 }
-/* beautiful and elegant C code, but impossible to optimize. You know N, the 
- * compiler doesnt.
- *
- *  const int N = 100;
- *
- *  for (int i = 0; i < N-1; i++) {
- *
- *  // here he does and he knows the loop iteration is fixed. 
- *     
- *      P[0].Pos[0] = i * d + d/2; 
- *      // if d and d/2 are precomputed const, this is a single cycle/FMA instruction
- *     }
- *
- * If your style avoids non-standard loops, your code will likely become faster
- * on its own. This is one of the reasons why Fortran is nearly always faster than C, 
- * it doesnt allow these constructs. At Cray they call this style "Ctran". C that
- * is written Fortran style. Sounds bad, but its usually not harder to read.
- * Its how HPC C99 should be written. 
- */
 
 void calculateParticleMassByIntegration()
 {
-    int N = 100;
-    double d = Problem.Boxsize[0]/N, tot_mass = 0.0;
+    const int N = 100;
+    const double d = Problem.Boxsize[0]/N;
+    double tot_mass = 0.0;
 
-    for(double x=d/2; x<Problem.Boxsize[0]; x+=d)
+    for (int i = 0; i < N; i++)
     {
-        P[0].Pos[0] = x;
-        for(double y=d/2; y<Problem.Boxsize[1]; y+=d)
+        P[0].Pos[0] = (i + 0.5) * d;
+        for (int j = 0; j < N; j++)
         {
-            P[0].Pos[1] = y;
-            for(double z=d/2; z<Problem.Boxsize[2]; z+=d)
+            P[0].Pos[1] = (j + 0.5) * d;
+            for (int k = 0; k < N; k++)
             {
-                P[0].Pos[2] = z;
+                P[0].Pos[2] = (k + 0.5) * d;
                 tot_mass += Density_Func_Ptr(0) * p3(d);
             }
         }
