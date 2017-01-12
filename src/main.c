@@ -43,7 +43,16 @@ int main(int argc, char *argv[])
 
     Make_IDs();
 
-    Regularise_sph_particles();
+    const int reg_steps = 10;
+    for (int i = 0; i < reg_steps; ++i) {
+        printf("\nStarting regularisation loop %d of maximal %d\n\n", i+1, reg_steps);
+
+        bool doContinue = Regularise_sph_particles();
+
+        if (!doContinue) {
+            break;
+        }
+    }
 
  	Make_Velocities();
 
