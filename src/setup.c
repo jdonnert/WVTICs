@@ -155,19 +155,19 @@ void zero_function_vec(const int ipart, float out[3])
 void calculateParticleMassByIntegration()
 {
     const int N = 100;
-    const double d = Problem.Boxsize[0]/N;
+    const double dx = Problem.Boxsize[0]/N, dy = Problem.Boxsize[1]/N, dz = Problem.Boxsize[2]/N;
     double tot_mass = 0.0;
 
     for (int i = 0; i < N; i++)
     {
-        P[0].Pos[0] = (i + 0.5) * d;
+        P[0].Pos[0] = (i + 0.5) * dx;
         for (int j = 0; j < N; j++)
         {
-            P[0].Pos[1] = (j + 0.5) * d;
+            P[0].Pos[1] = (j + 0.5) * dy;
             for (int k = 0; k < N; k++)
             {
-                P[0].Pos[2] = (k + 0.5) * d;
-                tot_mass += Density_Func_Ptr(0) * p3(d);
+                P[0].Pos[2] = (k + 0.5) * dz;
+                tot_mass += Density_Func_Ptr(0) * dx * dy * dz;
             }
         }
     }
