@@ -11,8 +11,9 @@
 #define ERRMEAN_LIMIT 0.05
 #define ERRMAX_LIMIT 0.01
 
-#define STEP_DIVISOR 5.0
-#define STEP_DECLINE 0.9
+#define STEP_DIVISOR 1.0
+#define STEP_DECLINE 1.0
+#define GLOBAL_STEP_FAC_DECLINE 0.9
 
 int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist);
 int ngblist[NGBMAX] = { 0 }, Ngbcnt ;
@@ -25,6 +26,7 @@ static inline float gravity_kernel(const float r, const float h);
 void writeStepFile(int it);
 
 static int global_it = -1;
+static double global_step_fac = 1.0;
 
 /* Settle SPH particle with weighted Voronoi tesselations (Diehl+ 2012).
  * Here hsml is not the SPH smoothing length, but is related to a local
@@ -63,9 +65,9 @@ bool Regularise_sph_particles()
 
 	double npart_1D = pow(nPart, 1.0/3.0);
 
-    double step[3] = {  Problem.Boxsize[0] / npart_1D / STEP_DIVISOR,
-                        Problem.Boxsize[1] / npart_1D / STEP_DIVISOR,
-                        Problem.Boxsize[2] / npart_1D / STEP_DIVISOR } ;
+    double step[3] = {  Problem.Boxsize[0] / npart_1D / STEP_DIVISOR * global_step_fac,
+                        Problem.Boxsize[1] / npart_1D / STEP_DIVISOR * global_step_fac,
+                        Problem.Boxsize[2] / npart_1D / STEP_DIVISOR * global_step_fac } ;
 #ifdef SPH_CUBIC_SPLINE
 	step[0] *= 6;
 	step[1] *= 6;
@@ -134,7 +136,7 @@ bool Regularise_sph_particles()
         if ((errDiff < 0) && (errDiffLast < 0) && (it-global_it+1 > 10)) { //stop if worse
 
             printf("Convergence flipped - ");
-            returnCode = false;
+            returnCode = true;//false;
             break;
         }
 
@@ -177,6 +179,9 @@ bool Regularise_sph_particles()
             int ngbcnt = Find_ngb_tree(ipart, hsml[ipart], ngblist);
             //int ngbcnt = Find_ngb_simple(ipart, hsml[ipart], ngblist);
 
+            const float rho = (*Density_Func_Ptr) (ipart);
+            const float mean_dist = pow(Problem.Mpart / rho / DESNNGB, 1.0/3.0);
+            const float d_max = 1.0 * mean_dist;
             for (int i = 0; i < ngbcnt; i++) { // neighbour loop
 
                 int jpart = ngblist[i];
@@ -223,6 +228,9 @@ bool Regularise_sph_particles()
                 delta[1][ipart] += step[1] * hsml[ipart] * wk * dy/r;
                 delta[2][ipart] += step[2] * hsml[ipart] * wk * dz/r;
             }
+            delta[0][ipart] = fmin(delta[0][ipart], d_max);
+            delta[1][ipart] = fmin(delta[1][ipart], d_max);
+            delta[2][ipart] = fmin(delta[2][ipart], d_max);
         }
 
         int cnt = 0, cnt1 = 0, cnt2 = 0;
@@ -273,6 +281,7 @@ bool Regularise_sph_particles()
     }
 
     global_it = it;
+    global_step_fac *= GLOBAL_STEP_FAC_DECLINE;
 
     Free(hsml); Free(delta[0]); Free(delta[1]); Free(delta[2]);
 
