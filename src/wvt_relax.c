@@ -77,6 +77,9 @@ bool Regularise_sph_particles()
     double errLast = DBL_MAX, errLastTree = DBL_MAX;
     double errDiff = DBL_MAX, errDiffLast = DBL_MAX;
 
+    const double volume = Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2];
+    const double rho_mean = nPart * Problem.Mpart / volume;
+
     for (;;) {
 
         if ((it++ % TREEBUILDFREQUENCY) == 0)
@@ -180,8 +183,12 @@ bool Regularise_sph_particles()
             //int ngbcnt = Find_ngb_simple(ipart, hsml[ipart], ngblist);
 
             const float rho = (*Density_Func_Ptr) (ipart);
+            //! @todo does this make sense? also below again
             const float mean_dist = pow(Problem.Mpart / rho / DESNNGB, 1.0/3.0);
+
+            const float softening = mean_dist * 0.1;
             const float d_max = 1.0 * mean_dist;
+
             for (int i = 0; i < ngbcnt; i++) { // neighbour loop
 
                 int jpart = ngblist[i];
@@ -224,10 +231,13 @@ bool Regularise_sph_particles()
                 float wk = sph_kernel_WC6(r, h);
 #endif
 
-                delta[0][ipart] += step[0] * hsml[ipart] * wk * dx/r;
-                delta[1][ipart] += step[1] * hsml[ipart] * wk * dy/r;
-                delta[2][ipart] += step[2] * hsml[ipart] * wk * dz/r;
+                const double dens_contrast = pow(SphP[ipart].Rho_Model/rho_mean, 1/3);
+
+                delta[0][ipart] += step[0] / dens_contrast * hsml[ipart] * wk * dx / (r /*+ softening*/);
+                delta[1][ipart] += step[1] / dens_contrast * hsml[ipart] * wk * dy / (r /*+ softening*/);
+                delta[2][ipart] += step[2] / dens_contrast * hsml[ipart] * wk * dz / (r /*+ softening*/);
             }
+
             delta[0][ipart] = fmin(delta[0][ipart], d_max);
             delta[1][ipart] = fmin(delta[1][ipart], d_max);
             delta[2][ipart] = fmin(delta[2][ipart], d_max);

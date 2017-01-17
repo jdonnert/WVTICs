@@ -3,7 +3,7 @@ project(WVTICs)
 
 set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -std=c99 -O2 -Wall -fopenmp")
 
-option(SAVE_WVT_STEPS "Save every relaxation step to file" OFF)
+option(SAVE_WVT_STEPS "Save every relaxation step to file" ON)
 option(SPH_CUBIC_SPLINE "Use cubic spline instead of wendland c6" OFF)
 option(REJECTION_SAMPLING "Use von Neumann rejection sampling to improve initial random positions" ON)
 
