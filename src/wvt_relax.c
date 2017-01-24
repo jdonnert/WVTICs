@@ -5,8 +5,8 @@
 
 #define TREEBUILDFREQUENCY 1
 
-#define MAXITER 64
-#define MINITER 8
+#define MAXITER 16
+#define MINITER 2
 #define ERRDIFF_LIMIT 0.005
 #define ERRMEAN_LIMIT 0.05
 #define ERRMAX_LIMIT 0.01
@@ -27,6 +27,7 @@ void writeStepFile(int it);
 
 static int global_it = -1;
 static double global_step_fac = 1.0;
+static double global_hsml_fac = 1.5;
 
 /* Settle SPH particle with weighted Voronoi tesselations (Diehl+ 2012).
  * Here hsml is not the SPH smoothing length, but is related to a local
@@ -153,8 +154,9 @@ bool Regularise_sph_particles()
         errDiffLast = errDiff;
 
         double vSphSum = 0; // total volume defined by hsml
+        double hsmlmean = 0, hsmlmax = 0, hsmlmin = DBL_MAX;
 
-		#pragma omp parallel for shared(hsml) reduction(+:vSphSum)
+		#pragma omp parallel for shared(hsml) reduction(+:vSphSum,hsmlmean) reduction(max:hsmlmax) reduction(min:hsmlmin)
         for (int ipart = 0; ipart < nPart; ipart++) { // find hsml
 
             float rho = (*Density_Func_Ptr) (ipart);
@@ -164,13 +166,22 @@ bool Regularise_sph_particles()
             hsml[ipart] = pow(WVTNNGB*Problem.Mpart/rho/fourpithird, 1./3.);
 
             vSphSum += p3(hsml[ipart]);
+
+            hsmlmean += hsml[ipart];
+            hsmlmax = fmax(hsmlmax, hsml[ipart]);
+            hsmlmin = fmin(hsmlmin, hsml[ipart]);
         }
+        hsmlmean /= nPart;
 
         float norm_hsml = pow(WVTNNGB/vSphSum/fourpithird , 1.0/3.0);
 
+        printf("Min hsml: %g; Mean hsml: %g; Max hsml %g; Times norm: %g; Times global factor %g\n", hsmlmin, hsmlmean, hsmlmax, norm_hsml, global_hsml_fac);
+
 		#pragma omp parallel for
-        for (int ipart = 0; ipart < nPart; ipart++)
-            hsml[ipart] *= norm_hsml;
+        for (int ipart = 0; ipart < nPart; ipart++) {
+            hsml[ipart] *= norm_hsml * global_hsml_fac;
+            hsml[ipart] = fmin(hsml[ipart], boxsize[0]);
+        }
 
 		#pragma omp parallel for shared(delta, hsml, P) \
         	schedule(dynamic, nPart/Omp.NThreads/256)

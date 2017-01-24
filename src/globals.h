@@ -45,7 +45,8 @@
 
 #define DESNNGB 295        // SPH kernel weighted number of neighbours
 #define NNGBDEV 0.05       // error tolerance in SPH kernel weighted neighb.
-#define NGBMAX (DESNNGB*8)  // size of neighbour list
+//! @todo if the V algorithm works we need to do this properly and set it to Param.NPart in some kind of static way...
+#define NGBMAX 100000 //(DESNNGB*8)  // size of neighbour list
 
 #endif // SPH_CUBIC_SPLINE
 
