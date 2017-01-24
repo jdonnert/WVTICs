@@ -336,6 +336,12 @@ void Read_param_file(char *filename)
     addr[nt] = &Param.Problem_Subflag;
     id[nt++] = INT;
 
+#ifdef EAT_PNG
+    strcpy(tag[nt], "PNG_Filename");
+    addr[nt] = &Image.Name;
+    id[nt++] = STRING;
+#endif
+
     /* Add above */
     id[nt] = LASTPARAMETERID;
 

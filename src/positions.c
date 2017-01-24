@@ -73,10 +73,8 @@ void Make_Magnetic_Fields()
 	#pragma omp parallel for
     for (int ipart = 0; ipart < Param.Npart; ipart++) {
 
-		(*Magnetic_Field_Func_Ptr) (ipart, SphP[ipart].Bfld);
-		SphP[ipart].Bfld[0] = 0.0;
-		SphP[ipart].Bfld[1] = 0.0;
-		SphP[ipart].Bfld[2] = 0.0;
+        (*Magnetic_Field_Func_Ptr) (ipart, SphP[ipart].Bfld);
+
     }
 
     printf(" done\n");

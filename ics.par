@@ -2,8 +2,10 @@ Npart      100000
 
 % Problem
 
-Problem_Flag 0
+Problem_Flag 2
 Problem_Subflag 1
+
+PNG_Filename DarthVader.png
 
 % Problem Descriptions
 %
@@ -14,7 +16,9 @@ Problem_Subflag 1
 %   3 - Sine wave
 % 1 - Simple non-periodic tests
     0 - Gradient
-% 2 - Magneticum
+% 2 - Write Logos 
+%   0 - Magneticum
+%   1 - PNG
 % ----------------------------------- More to come, like
 % 3 - Ryu & Jones Shock Tubes
 %	0 - ST a
