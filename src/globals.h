@@ -30,6 +30,14 @@
 #include "peano.h"
 #include "proto.h"
 
+
+/* To eat PNG density files */
+#ifdef EAT_PNG
+    #include "png.h"
+    #include "zlib.h"
+#endif
+
+
 /* Code parameters */
 
 #define CHARBUFSIZE 512        // For any char buffer !
@@ -86,6 +94,17 @@ extern struct ProblemParameters {
 	double Rho_Max;
 	bool Periodic;
 } Problem;
+
+#ifdef EAT_PNG
+extern struct ImageProperties {
+    char Name[CHARBUFSIZE];
+    float *Density;
+    int Xpix;
+    int Ypix;
+    int Zpix;
+} Image;
+#endif
+
 
 extern struct ParticleData{
     float Pos[3];

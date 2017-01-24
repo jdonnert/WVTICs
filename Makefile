@@ -1,10 +1,12 @@
 SHELL = /bin/bash
 
 ## OPTIONS  ##
-#OPT     += -DSAVE_WVT_STEPS         # write IC file for every WVT step
+OPT     += -DSAVE_WVT_STEPS         # write IC file for every WVT step
 #OPT     += -DSPH_CUBIC_SPLINE      # for use with Gadget2
 OPT     += -DREJECTION_SAMPLING      # use von Neumann rejection sampling to improve initial random positions
 #OPT     += -DSPH_WC2               #wendland c2 kernel
+OPT     += -DEAT_PNG                 # Eat density profile from a png file
+
 
 
 ifndef SYSTYPE
@@ -14,6 +16,9 @@ endif
 OPTIMIZE = -Wall -O3
 GSL_INCL = $(CPPFLAGS)
 GSL_LIBS = $(LD_LIBRARY_FLAGS)
+PNG_LIBS = -L/usr/local/Cellar/libpng/1.6.21/lib -lpng -lz
+PNG_INCL = -I/usr/local/Cellar/libpng/1.6.21/include
+
 
 ## TARGET ##
 
@@ -29,9 +34,9 @@ OBJFILES = $(SRCFILES:.c=.o)
 INCLFILES := ${shell find src -name \*.h -print} # all .h files in SRCDIR
 INCLFILES += Makefile
 
-CFLAGS  = -std=c99 -fopenmp $(OPTIMIZE) $(OPT) $(GSL_INCL) $(FFTW_INCL)
+CFLAGS  = -std=c99 -fopenmp $(OPTIMIZE) $(OPT) $(GSL_INCL) $(PNG_INCL)
 
-LINK    = $(GSL_LIBS) -lm -lgsl -lgslcblas 
+LINK    = $(GSL_LIBS) -lm -lgsl -lgslcblas $(PNG_LIBS)
 
 ## RULES ##
 

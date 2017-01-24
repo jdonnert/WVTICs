@@ -12,6 +12,9 @@ void Find_sph_quantities();
 void Wvt_relax();
 void Write_output(bool);
 void Regularise_sph_particles();
+#ifdef EAT_PNG
+void Setup_Density_From_Image();
+#endif
 
 /* Helper Monkeys */
 
@@ -37,6 +40,9 @@ double erand48(unsigned short *);
 
 float Constant_Density(const int ipart);
 float Magneticum_Density(const int ipart);
+#ifdef EAT_PNG
+float Png_Density(const int ipart);
+#endif
 float Sawtooth_Density(const int ipart);
 float TopHat_Density(const int ipart);
 float SineWave_Density(const int ipart);

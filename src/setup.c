@@ -141,13 +141,49 @@ void setup_problem(const int Flag, const int Subflag)
 
 		case 2:
 
-			sprintf(Problem.Name, "IC_Magneticum");
+			switch (Subflag) {
 
-			Problem.Boxsize[0] = 1;
-			Problem.Boxsize[1] = 1;
-			Problem.Boxsize[2] = 0.8;
+				case 0:
 
-			Density_Func_Ptr = &Magneticum_Density;
+
+					sprintf(Problem.Name, "IC_Magneticum");
+
+					Problem.Boxsize[0] = 1;
+					Problem.Boxsize[1] = 1;
+					Problem.Boxsize[2] = 0.8;
+
+					Density_Func_Ptr = &Magneticum_Density;
+
+					break;
+
+
+				case 1:
+#ifndef EAT_PNG
+					printf("Error: must use OPT += -DEAT_PNG in Makefile\n");
+
+					exit(1);
+#else
+
+					sprintf(Problem.Name, "IC_Png");
+
+					Setup_Density_From_Image();
+
+					Density_Func_Ptr = &Png_Density;
+
+					// Problem.Periodic = false;
+					// Problem.Boxsize[0] = Image.Xpix;
+					// Problem.Boxsize[1] = Image.Ypix;
+					// Problem.Boxsize[2] = Image.Zpix;
+#endif // EAT_PNG
+
+					break;
+
+				default:
+
+					Assert(false, "Effect %d.%d not implemented", Flag, Subflag);
+
+					break;
+			}
 
 			break;
 
@@ -177,8 +213,8 @@ void setup_problem(const int Flag, const int Subflag)
 			break;
 	}
 
-	Assert(Problem.Boxsize[0] >= Problem.Boxsize[1] && 
-		   Problem.Boxsize[0] >= Problem.Boxsize[2], 
+	Assert(Problem.Boxsize[0] >= Problem.Boxsize[1] &&
+		   Problem.Boxsize[0] >= Problem.Boxsize[2],
 		   "Boxsize[0] has to be largest for ngb finding to work.");
 
 	return ;
