@@ -205,6 +205,7 @@ void Regularise_sph_particles()
                 delta[1][ipart] += step[1] / dens_contrast * hsml[ipart] /boxsize[1] * wk * dy / r ;
                 delta[2][ipart] += step[2] / dens_contrast * hsml[ipart] /boxsize[2] * wk * dz / r ;
             }
+
         }
 
         int cnt = 0, cnt1 = 0, cnt2 = 0;
