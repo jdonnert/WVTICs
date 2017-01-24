@@ -136,7 +136,7 @@ bool Regularise_sph_particles()
             break;
         }
 
-        if ((errDiff < 0) && (errDiffLast < 0) && (it-global_it+1 > 10)) { //stop if worse
+        if ((errDiff < 0) && (errDiffLast < 0) && (it-global_it+1 > MINITER)) { //stop if worse
 
             printf("Convergence flipped - ");
             returnCode = true;//false;
