@@ -118,7 +118,7 @@ void Regularise_sph_particles()
             break;
         }
 
-        if ((errDiff < 0) && (errDiffLast < 0) && (it > 10)) { //stop if worse
+        if ((errDiff < 0) && (errDiffLast < 0) && (it > MINITER)) { //stop if worse
 
             printf("Convergence flipped - ");
             break;
