@@ -4,11 +4,15 @@
 #define WVTNNGB DESNNGB // 145 for WC2 that equals WC6
 
 #define TREEBUILDFREQUENCY 1
+
 #define MAXITER 64
 #define MINITER 8
 #define ERRDIFF_LIMIT 0.005
 #define ERRMEAN_LIMIT 0.05
 #define ERRMAX_LIMIT 0.01
+
+#define STEP_DIVISOR 5.0
+#define STEP_DECLINE 0.9
 
 int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist);
 int ngblist[NGBMAX] = { 0 }, Ngbcnt ;
@@ -20,13 +24,18 @@ static inline float gravity_kernel(const float r, const float h);
 
 void writeStepFile(int it);
 
+static int global_it = -1;
+
 /* Settle SPH particle with weighted Voronoi tesselations (Diehl+ 2012).
  * Here hsml is not the SPH smoothing length, but is related to a local
  * metric defined ultimately by the density model.
- * Relaxation is done in units of the boxsize, hence the box volume is 1 */
+ * Relaxation is done in units of the boxsize, hence the box volume is 1
+ * Return code true means that rerun could be usefull */
 
-void Regularise_sph_particles()
+bool Regularise_sph_particles()
 {
+    bool returnCode = false;
+
     const int nPart = Param.Npart;
 
     const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
@@ -50,14 +59,13 @@ void Regularise_sph_particles()
     delta[1] = Malloc(nBytes);
     delta[2] = Malloc(nBytes);
 
-    int it = -1;
+    int it = global_it;
 
 	double npart_1D = pow(nPart, 1.0/3.0);
-    const double stepDivisor = 5.0;
 
-    double step[3] = {  Problem.Boxsize[0] / npart_1D / stepDivisor,
-						Problem.Boxsize[1] / npart_1D / stepDivisor,
-						Problem.Boxsize[2] / npart_1D / stepDivisor } ;
+    double step[3] = {  Problem.Boxsize[0] / npart_1D / STEP_DIVISOR,
+                        Problem.Boxsize[1] / npart_1D / STEP_DIVISOR,
+                        Problem.Boxsize[2] / npart_1D / STEP_DIVISOR } ;
 #ifdef SPH_CUBIC_SPLINE
 	step[0] *= 6;
 	step[1] *= 6;
@@ -79,9 +87,10 @@ void Regularise_sph_particles()
         writeStepFile(it);
 #endif
 
-        if (it > MAXITER) {
+        if (it-global_it+1 > MAXITER) {
 
             printf("Reached max iterations - ");
+            returnCode = true;
             break;
         }
 
@@ -110,24 +119,32 @@ void Regularise_sph_particles()
                 " step=%g %g %g \n", it, errMax, errMean,errDiff, 
 				step[0], step[1], step[2]);
 
-        if ((fabs(errDiff) < ERRDIFF_LIMIT &&
-			fabs(errMean) < ERRMEAN_LIMIT &&
-			fabs(errMax) < ERRMAX_LIMIT) && it > MINITER) {
+        if (fabs(errDiff) < ERRDIFF_LIMIT && it-global_it+1 > MINITER) {
+
+            printf("Mean error hardly improves anymore - ");
+            returnCode = true;
+            break;
+        }
+
+        if ((fabs(errMean) < ERRMEAN_LIMIT &&
+			fabs(errMax) < ERRMAX_LIMIT) && it-global_it+1 > MINITER) {
 
             printf("Achieved desired error criterion - ");
+            returnCode = false;
             break;
         }
 
-        if ((errDiff < 0) && (errDiffLast < 0) && (it > MINITER)) { //stop if worse
+        if ((errDiff < 0) && (errDiffLast < 0) && (it-global_it+1 > MINITER)) { //stop if worse
 
             printf("Convergence flipped - ");
+            returnCode = false;
             break;
         }
 
-        if ((errDiff < 0.01)) { // force convergence
-            step[0] *= 0.9;
-            step[1] *= 0.9;
-            step[2] *= 0.9;
+        if ((fabs(errDiff) < 0.01)) { // force convergence
+            step[0] *= STEP_DECLINE;
+            step[1] *= STEP_DECLINE;
+            step[2] *= STEP_DECLINE;
 		}
 
         errLast = errMean;
@@ -261,9 +278,13 @@ void Regularise_sph_particles()
 				cnt*100./Param.Npart, cnt1*100./Param.Npart, cnt2*100./Param.Npart);
     }
 
+    global_it = it;
+
     Free(hsml); Free(delta[0]); Free(delta[1]); Free(delta[2]);
 
     printf("done\n\n"); fflush(stdout);
+
+    return returnCode;
 }
 
 void writeStepFile(int it) {
