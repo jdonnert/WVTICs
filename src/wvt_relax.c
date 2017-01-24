@@ -67,6 +67,9 @@ void Regularise_sph_particles()
     double errLast = DBL_MAX, errLastTree = DBL_MAX;
     double errDiff = DBL_MAX, errDiffLast = DBL_MAX;
 
+    const double volume = Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2];
+    const double rho_mean = nPart * Problem.Mpart / volume;
+
     for (;;) {
 
         if ((it++ % TREEBUILDFREQUENCY) == 0)
@@ -202,10 +205,13 @@ void Regularise_sph_particles()
                 float wk = sph_kernel_WC6(r, h);
 #endif
 
-                delta[0][ipart] += step[0] * hsml[ipart] * wk * dx/r;
-                delta[1][ipart] += step[1] * hsml[ipart] * wk * dy/r;
-                delta[2][ipart] += step[2] * hsml[ipart] * wk * dz/r;
+                const double dens_contrast = pow(SphP[ipart].Rho_Model/rho_mean, 1/3);
+
+                delta[0][ipart] += step[0] / dens_contrast * hsml[ipart] * wk * dx / r;
+                delta[1][ipart] += step[1] / dens_contrast * hsml[ipart] * wk * dy / r;
+                delta[2][ipart] += step[2] / dens_contrast * hsml[ipart] * wk * dz / r;
             }
+
         }
 
         int cnt = 0, cnt1 = 0, cnt2 = 0;
