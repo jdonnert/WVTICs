@@ -164,7 +164,7 @@ void setup_problem(const int Flag, const int Subflag)
 					exit(1);
 #else
 
-					sprintf(Problem.Name, "IC_Png");
+					sprintf(Problem.Name, "IC_PNG");
 
 					Setup_Density_From_Image();
 
