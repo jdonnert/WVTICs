@@ -1,9 +1,9 @@
-Npart      100000
+Npart      1000000
 
 % Problem
 
 Problem_Flag 0
-Problem_Subflag 1
+Problem_Subflag 0
 
 % Problem Descriptions
 %

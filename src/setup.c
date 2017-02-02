@@ -51,10 +51,10 @@ void setup_problem(const int Flag, const int Subflag)
 
                     Problem.Boxsize[0] = 1;
                     Problem.Boxsize[1] = 1;
-                    Problem.Boxsize[2] = 0.1;
+                    Problem.Boxsize[2] = 0.5;
 
-                    Problem.Mpart = 1.0 / Param.Npart *
-                                    (Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
+                    Problem.Mpart = 1.0 / Param.Npart * 
+						(Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
 
 					sprintf(Problem.Name, "IC_Constant_Density");
 

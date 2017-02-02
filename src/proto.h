@@ -11,7 +11,7 @@ void Make_Temperatures();
 void Find_sph_quantities();
 void Wvt_relax();
 void Write_output(bool);
-bool Regularise_sph_particles();
+void Regularise_sph_particles();
 
 /* Helper Monkeys */
 

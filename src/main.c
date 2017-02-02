@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 {
     printf("--- This is %s, Version %s ---\n", PROG_NAME, VERSION);
 
-#pragma omp parallel
+	#pragma omp parallel
     {
 
         Omp.ThreadID = omp_get_thread_num();
@@ -43,16 +43,7 @@ int main(int argc, char *argv[])
 
     Make_IDs();
 
-    const int reg_steps = 25;
-    for (int i = 0; i < reg_steps; ++i) {
-        printf("\nStarting regularisation loop %d of maximal %d\n\n", i+1, reg_steps);
-
-        bool doContinue = Regularise_sph_particles();
-
-        if (!doContinue) {
-            break;
-        }
-    }
+    Regularise_sph_particles();
 
  	Make_Velocities();
 
