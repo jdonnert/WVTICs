@@ -4,7 +4,7 @@ float zero_function(const int ipart);
 void zero_function_vec(const int ipart, float out[3]);
 
 void setup_problem(const int Flag, const int Subflag);
-void calculateParticleMassByIntegration();
+void mpart_from_intgral();
 
 void Setup()
 {
@@ -17,7 +17,8 @@ void Setup()
 	memset(SphP, 0, nBytes);
 
     setup_problem(Param.Problem_Flag, Param.Problem_Subflag);
-    calculateParticleMassByIntegration();
+
+    mpart_from_intgral();
 
     printf( "Problem %d.%d : %s \n"
                     "   Npart: %d \n"
@@ -51,7 +52,7 @@ void setup_problem(const int Flag, const int Subflag)
 
                     Problem.Boxsize[0] = 1;
                     Problem.Boxsize[1] = 1;
-                    Problem.Boxsize[2] = 0.5;
+                    Problem.Boxsize[2] = 0.25;
 
                     Problem.Mpart = 1.0 / Param.Npart * 
 						(Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
@@ -63,6 +64,10 @@ void setup_problem(const int Flag, const int Subflag)
 					break;
 
 				case 1:
+                    
+					Problem.Boxsize[0] = 1;
+                    Problem.Boxsize[1] = 0.5;
+                    Problem.Boxsize[2] = 0.5;
 
 					sprintf(Problem.Name, "IC_TopHat");
 
@@ -81,6 +86,10 @@ void setup_problem(const int Flag, const int Subflag)
 				case 3:
 
 					sprintf(Problem.Name, "IC_SineWave");
+
+					Problem.Boxsize[0] = 1;
+                    Problem.Boxsize[1] = 0.75;
+                    Problem.Boxsize[2] = 0.75;
 
 					Density_Func_Ptr = &SineWave_Density;
 
@@ -124,7 +133,7 @@ void setup_problem(const int Flag, const int Subflag)
 
 			Problem.Boxsize[0] = 1;
 			Problem.Boxsize[1] = 1;
-			Problem.Boxsize[2] = 0.1;
+			Problem.Boxsize[2] = 1;
 
             Problem.Mpart = 1.0 / Param.Npart * 
 				(Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
@@ -159,12 +168,16 @@ void zero_function_vec(const int ipart, float out[3])
 	return;
 }
 
-void calculateParticleMassByIntegration()
+void mpart_from_intgral()
 {
-    const int N = 100;
-    const double dx = Problem.Boxsize[0]/N, dy = Problem.Boxsize[1]/N, dz = Problem.Boxsize[2]/N;
-    double tot_mass = 0.0;
+    const int N = 1ULL << 9;
+    const double dx = Problem.Boxsize[0]/N, 
+		  		 dy = Problem.Boxsize[1]/N, 
+				 dz = Problem.Boxsize[2]/N;
 
+    double tot_mass = 0.0;
+	
+	#pragma omp parallel for reduction(+:tot_mass)
     for (int i = 0; i < N; i++)
     {
         P[0].Pos[0] = (i + 0.5) * dx;
@@ -178,5 +191,8 @@ void calculateParticleMassByIntegration()
             }
         }
     }
+
     Problem.Mpart = tot_mass / Param.Npart;
+
+	return ;
 }

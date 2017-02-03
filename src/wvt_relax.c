@@ -3,8 +3,6 @@
 
 #define WVTNNGB DESNNGB // 145 for WC2 that equals WC6
 
-#define MAXITER 64
-
 int Find_ngb_simple(const int ipart,  const float hsml, int *ngblist);
 int ngblist[NGBMAX] = { 0 }, Ngbcnt ;
 
@@ -23,19 +21,18 @@ void writeStepFile(int it);
 
 void Regularise_sph_particles()
 {
+	const int maxiter = 128;
+	const double mps_frac = 5; 		// move this fraction of the mean particle sep
+	const double step_red = 0.95; 	// force convergence at this rate
+
     const int nPart = Param.Npart;
-	const double mps_frac = 2; // move this fraction of the mean particle sep
-	const double step_red = 0.95; // force convergence at this rate
 
     const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
 								Problem.Boxsize[2]};
     const double boxhalf[3] = { boxsize[0]/2, boxsize[1]/2, boxsize[2]/2, };
 	const double boxinv[3] = { 1/boxsize[0], 1/boxsize[1], 1/boxsize[2] };
 
-    printf("Starting iterative SPH regularisation, max %d iterations \n\n",
-            MAXITER); 
-
-	fflush(stdout);
+    printf("Starting iterative SPH regularisation \n\n"); fflush(stdout);
 
     float *hsml = NULL;
     size_t nBytes = nPart * sizeof(*hsml);
@@ -57,32 +54,24 @@ void Regularise_sph_particles()
                         Problem.Boxsize[1] / npart_1D / mps_frac,
                         Problem.Boxsize[2] / npart_1D / mps_frac } ;
 
-#ifdef SPH_CUBIC_SPLINE
-	step[0] *= 6;
-	step[1] *= 6;
-	step[2] *= 6;
-#endif // SPH_CUBIC_SPLINE
-
     double errLast = DBL_MAX, errLastTree = DBL_MAX;
     double errDiff = DBL_MAX, errDiffLast = DBL_MAX;
 
     const double volume = Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2];
     const double rho_mean = nPart * Problem.Mpart / volume;
 
-	double last_mean_delta = -1;
+	double last_cnt = DBL_MAX;
 
     for (;;) {
 
         Find_sph_quantities();
 
-		it++;
+		if (it++ > maxiter)
+			break;
 
 #ifdef SAVE_WVT_STEPS
         writeStepFile(it);
 #endif
-
-        if (it == MAXITER)
-			break;
 
         int nIn = 0;
         double  errMax = 0, errMean = 0;
@@ -115,8 +104,9 @@ void Regularise_sph_particles()
         errDiffLast = errDiff;
 
         double vSphSum = 0; // total volume defined by hsml
+		double max_hsml = 0;
 
-		#pragma omp parallel for shared(hsml) reduction(+:vSphSum)
+		#pragma omp parallel for shared(hsml) reduction(+:vSphSum,max_hsml)
         for (int ipart = 0; ipart < nPart; ipart++) { // find hsml
 
             float rho = (*Density_Func_Ptr) (ipart);
@@ -126,7 +116,15 @@ void Regularise_sph_particles()
             hsml[ipart] = pow(WVTNNGB*Problem.Mpart/rho/fourpithird, 1./3.);
 
             vSphSum += p3(hsml[ipart]);
+
+			max_hsml = max(max_hsml, hsml[ipart]);
         }
+
+		Assert((max_hsml < 2*Problem.Boxsize[2]) && 
+			   (max_hsml < 2*Problem.Boxsize[1]), 
+				"Not enough particles or Boxsize too small :"
+				"   max(hsml) = %g > 2*(%g %g %g) !",
+				max_hsml, Problem.Boxsize[0],Problem.Boxsize[1],Problem.Boxsize[2]);
 
         float norm_hsml = pow(WVTNNGB/vSphSum/fourpithird , 1.0/3.0);
 
@@ -241,20 +239,20 @@ void Regularise_sph_particles()
                 P[ipart].Pos[2] -= boxsize[2];
         }
 
-        printf("        Del %g%% > dmps; %g%% > dmps/10; %g%% > dmps/100\n", 
+        printf("        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100\n", 
 				cnt*100./Param.Npart, cnt1*100./Param.Npart, cnt2*100./Param.Npart);
 
-		if (cnt1*100./Param.Npart < 0.01)
+		if (cnt1*100./Param.Npart < 0.001)
 			break;
     
-		if (fabs(errDiff) > last_mean_delta) { // force convergence
+		if (cnt1 > last_cnt) { // force convergence if distribution doesnt tighten
+
             step[0] *= step_red;
             step[1] *= step_red;
             step[2] *= step_red;
 		}
 
-		last_mean_delta = cnt1*100./Param.Npart;
-
+		last_cnt = cnt1;
     }
 
     Free(hsml); Free(delta[0]); Free(delta[1]); Free(delta[2]);
