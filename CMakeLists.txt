@@ -5,6 +5,7 @@ set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -std=c99 -O2 -Wall -fopenmp")
 
 option(SAVE_WVT_STEPS "Save every relaxation step to file" ON)
 option(SPH_CUBIC_SPLINE "Use cubic spline instead of wendland c6" OFF)
+option(SPH_WC2 "Use wendland c2 instead of wendland c6" OFF)
 option(REJECTION_SAMPLING "Use von Neumann rejection sampling to improve initial random positions" ON)
 
 if(SAVE_WVT_STEPS)
@@ -14,6 +15,10 @@ endif(SAVE_WVT_STEPS)
 if(SPH_CUBIC_SPLINE)
     add_definitions(-DSPH_CUBIC_SPLINE)
 endif(SPH_CUBIC_SPLINE)
+
+if(SPH_WC2)
+    add_definitions(-DSPH_WC2)
+endif(SPH_WC2)
 
 if(REJECTION_SAMPLING)
     add_definitions(-DREJECTION_SAMPLING)

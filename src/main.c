@@ -35,6 +35,11 @@ int main(int argc, char *argv[])
 
     Assert(argc == 2, "Usage : ./wvtbox $parameterfile\n");
 
+#if defined(SPH_CUBIC_SPLINE) && defined(SPH_WC2)
+    printf("Please decide wether cubic spline or wendland c2 (or standard wc6) shall be used, both may not be definde at the same time\n");
+    return 1;
+#endif
+
     Read_param_file(argv[1]);
 
     Setup();

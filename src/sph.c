@@ -5,6 +5,9 @@
 static inline float sph_kernel_M4(const float r, const float h);
 static inline float sph_kernel_derivative_M4(const float r, const float h);
 
+static inline float sph_kernel_WC2(const float r, const float h);
+static inline float sph_kernel_derivative_WC2(const float r, const float h);
+
 static inline float sph_kernel_WC6(const float r, const float h);
 static inline float sph_kernel_derivative_WC6(const float r, const float h);
 
@@ -143,8 +146,13 @@ extern bool Find_hsml(const int ipart, const int *ngblist, const int ngbcnt,
             double wk = sph_kernel_M4(r, hsml);
             double dwk = sph_kernel_derivative_M4(r, hsml);
 #else
+#ifdef SPH_WC2
+            double wk = sph_kernel_WC2(r, hsml);
+            double dwk = sph_kernel_derivative_WC2(r, hsml);
+#else
             double wk = sph_kernel_WC6(r, hsml);
             double dwk = sph_kernel_derivative_WC6(r, hsml);
+#endif // SPH_WC2
 #endif // SPH_CUBIC_SPLINE
 
             wkNgb += fourpithird*wk*p3(hsml);
@@ -200,6 +208,17 @@ extern bool Find_hsml(const int ipart, const int *ngblist, const int ngbcnt,
     *rho_out = (float) rho;
 
 #ifndef SPH_CUBIC_SPLINE
+#ifdef SPH_WC2
+    if (part_done) {
+
+        *dRhodHsml_out = (float) dRhodHsml;
+
+        double bias_corr = -0.0294 * pow(DESNNGB*0.01, -0.977)
+            * Problem.Mpart * sph_kernel_WC6(0, hsml); // WC6 (Dehnen+ 12)
+
+        *rho_out += bias_corr;
+    }
+#else
     if (part_done) {
 
         *dRhodHsml_out = (float) dRhodHsml;
@@ -209,6 +228,7 @@ extern bool Find_hsml(const int ipart, const int *ngblist, const int ngbcnt,
 
         *rho_out += bias_corr;
     }
+#endif // SPH_WC2
 #endif  // SPH_CUBIC_SPLINE
 
     return part_done;
@@ -229,6 +249,22 @@ static inline float sph_kernel_derivative_WC6(const float r, const float h)
     const double t = 1-u;
 
     return 1365.0/(64*pi)/(h*h*h*h) * -22.0 *t*t*t*t*t*t*t*u*(16*u*u+7*u+1);
+}
+
+static inline float sph_kernel_WC2(const float r, const float h)
+{
+    const double u= r/h;
+    const double t = 1-u;
+
+    return 21.0/(2*pi)/p3(h) *t*t*t*t*(1+4*u);
+}
+
+static inline float sph_kernel_derivative_WC2(const float r, const float h)
+{
+    const float u = r/h;
+    const double t = 1-u;
+
+    return 21.0/(2*pi)/(h*h*h*h) * -20.0 *t*t*t*u;
 }
 
 static inline float sph_kernel_M4(const float r, const float h) // cubic spline

@@ -190,9 +190,13 @@ void Regularise_sph_particles()
                 float r = sqrt(r2);
 
 #ifdef SPH_CUBIC_SPLINE
+                float wk = sph_kernel_M4(r, h);
+#else
+#ifdef SPH_WC2
                 float wk = sph_kernel_WC2(r, h);
 #else
                 float wk = sph_kernel_WC6(r, h);
+#endif
 #endif
 
                 const double dens_contrast = pow(SphP[ipart].Rho_Model/rho_mean, 1/3);

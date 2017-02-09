@@ -43,10 +43,19 @@
 
 #else
 
+#ifdef SPH_WC2
+
+#define DESNNGB 64         // SPH kernel weighted number of neighbours
+#define NNGBDEV 0.05       // error tolerance in SPH kernel weighted neighb.
+#define NGBMAX (DESNNGB*8)  // size of neighbour list
+
+#else
+
 #define DESNNGB 295        // SPH kernel weighted number of neighbours
 #define NNGBDEV 0.05       // error tolerance in SPH kernel weighted neighb.
 #define NGBMAX (DESNNGB*8)  // size of neighbour list
 
+#endif // SPH_WC2
 #endif // SPH_CUBIC_SPLINE
 
 /* mathematical constants */
