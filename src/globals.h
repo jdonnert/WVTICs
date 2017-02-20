@@ -1,7 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#define PROG_NAME "WVT Box"
+#define PROG_NAME "WVT ICs"
 #define VERSION "1.0"
 
 /* C std lib */
@@ -54,6 +54,8 @@
 #define sqrt2        M_SQRT2
 #define sqrt3       1.73205080756887719
 #define fourpithird 4.18879032135009765
+
+extern const double ULength, UMass, UVel; // Standard Gadget units (setup.c)
 
 extern struct OpenMP_infos{
     int NThreads;          // Number of openMP threads

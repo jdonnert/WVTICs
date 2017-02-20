@@ -1,5 +1,10 @@
 #include "globals.h"
 
+/* Standard Gadget units */
+const double ULength = 3.08568025e21; 	// kpc in cgs
+const double UMass = 1.989e43;			// 10^10 Msol in cgs
+const double UVel = 1e5;					// km/s in cgs
+
 float zero_function(const int ipart);
 void zero_function_vec(const int ipart, float out[3]);
 
@@ -37,10 +42,12 @@ void setup_problem(const int Flag, const int Subflag)
 	Velocity_Func_Ptr = &zero_function_vec;
 	Magnetic_Field_Func_Ptr = &zero_function_vec;
 
+	Problem.Mpart = 1; // required to renormalize later
+
     Problem.Periodic = true; // standard settings
 	Problem.Rho_Max = 1.0;
 	Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
-	Problem.Mpart = 1.0 / Param.Npart;
+
 
 	switch (Flag) {
 
@@ -52,10 +59,7 @@ void setup_problem(const int Flag, const int Subflag)
 
                     Problem.Boxsize[0] = 1;
                     Problem.Boxsize[1] = 1;
-                    Problem.Boxsize[2] = 0.25;
-
-                    Problem.Mpart = 1.0 / Param.Npart * 
-						(Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
+                    Problem.Boxsize[2] = 0.5;
 
 					sprintf(Problem.Name, "IC_Constant_Density");
 
@@ -66,7 +70,7 @@ void setup_problem(const int Flag, const int Subflag)
 				case 1:
                     
 					Problem.Boxsize[0] = 1;
-                    Problem.Boxsize[1] = 0.5;
+                    Problem.Boxsize[1] = 1;
                     Problem.Boxsize[2] = 0.5;
 
 					sprintf(Problem.Name, "IC_TopHat");
@@ -135,10 +139,23 @@ void setup_problem(const int Flag, const int Subflag)
 			Problem.Boxsize[1] = 1;
 			Problem.Boxsize[2] = 0.8;
 
-            Problem.Mpart = 1.0 / Param.Npart * 
-				(Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);
-	
 			Density_Func_Ptr = &Magneticum_Density;
+
+			break;
+
+		case 3:
+
+			sprintf(Problem.Name, "IC_DoubleShock");
+
+			Problem.Boxsize[0] = 1000; // [kpc]
+			Problem.Boxsize[1] = 1000;
+			Problem.Boxsize[2] = 1000;
+
+			Density_Func_Ptr = &Double_Shock_Density;
+			U_Func_Ptr = &Double_Shock_U;
+			Velocity_Func_Ptr = &Double_Shock_Velocity;
+
+			Setup_Double_Shock(Subflag);
 
 			break;
 
@@ -181,18 +198,24 @@ void mpart_from_intgral()
     for (int i = 0; i < N; i++)
     {
         P[0].Pos[0] = (i + 0.5) * dx;
+
         for (int j = 0; j < N; j++)
         {
             P[0].Pos[1] = (j + 0.5) * dy;
+
             for (int k = 0; k < N; k++)
             {
                 P[0].Pos[2] = (k + 0.5) * dz;
+
                 tot_mass += Density_Func_Ptr(0) * dx * dy * dz;
             }
         }
     }
 
     Problem.Mpart = tot_mass / Param.Npart;
+
+	Assert(Problem.Mpart > 0, 
+			"Particle mass has to be finite, have %g", Problem.Mpart);
 
 	return ;
 }

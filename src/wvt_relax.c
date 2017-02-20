@@ -118,13 +118,13 @@ void Regularise_sph_particles()
 			max_hsml = max(max_hsml, hsml[ipart]);
         }
 
-		Assert((max_hsml < 2*Problem.Boxsize[2]) && 
-			   (max_hsml < 2*Problem.Boxsize[1]), 
+		Assert((max_hsml < Problem.Boxsize[2]) && 
+			   (max_hsml < Problem.Boxsize[1]), 
 				"Not enough particles or Boxsize too small :"
-				"   max(hsml) = %g > 2*(%g %g %g) !",
+				"   max(hsml) = %g > (%g %g %g) !",
 				max_hsml, Problem.Boxsize[0],Problem.Boxsize[1],Problem.Boxsize[2]);
 
-        float norm_hsml = pow(WVTNNGB/vSphSum/fourpithird , 1.0/3.0);
+        float norm_hsml = pow(WVTNNGB/vSphSum/fourpithird , 1.0/3.0) *boxsize[0];
 
 		#pragma omp parallel for
         for (int ipart = 0; ipart < nPart; ipart++)
@@ -139,7 +139,7 @@ void Regularise_sph_particles()
             int ngbcnt = Find_ngb_tree(ipart, hsml[ipart], ngblist);
             //int ngbcnt = Find_ngb_simple(ipart, hsml[ipart], ngblist);
 
-            const float rho = (*Density_Func_Ptr) (ipart);
+            const float rho = SphP[ipart].Rho_Model;
 
             const float mean_dist = pow(Problem.Mpart / rho / DESNNGB, 1.0/3.0);
 
@@ -187,9 +187,9 @@ void Regularise_sph_particles()
 
                 const double dens_contrast = pow(SphP[ipart].Rho_Model/rho_mean, 1/3);
 
-                delta[0][ipart] += step[0] / dens_contrast * hsml[ipart] * wk * dx / r ;
-                delta[1][ipart] += step[1] / dens_contrast * hsml[ipart] * wk * dy / r ;
-                delta[2][ipart] += step[2] / dens_contrast * hsml[ipart] * wk * dz / r ;
+                delta[0][ipart] += step[0] / dens_contrast * hsml[ipart] /boxsize[0] * wk * dx / r ;
+                delta[1][ipart] += step[1] / dens_contrast * hsml[ipart] /boxsize[1] * wk * dy / r ;
+                delta[2][ipart] += step[2] / dens_contrast * hsml[ipart] /boxsize[2] * wk * dz / r ;
             }
         }
 
@@ -238,7 +238,7 @@ void Regularise_sph_particles()
         printf("        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100\n", 
 				cnt*100./Param.Npart, cnt1*100./Param.Npart, cnt2*100./Param.Npart);
 
-		if (cnt1*100./Param.Npart < 0.001)
+		if (cnt1*100./Param.Npart < 1)
 			break;
     
 		if (cnt1 > last_cnt) { // force convergence if distribution doesnt tighten

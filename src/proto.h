@@ -42,4 +42,7 @@ float TopHat_Density(const int ipart);
 float SineWave_Density(const int ipart);
 float Gradient_Density(const int ipart);
 
-
+void Setup_Double_Shock(const int subflag);
+float Double_Shock_Density(const int ipart);
+float Double_Shock_U(const int ipart);
+void Double_Shock_Velocity(const int ipart, float vel[3]);

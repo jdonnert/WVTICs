@@ -2,8 +2,8 @@ Npart      1000000
 
 % Problem
 
-Problem_Flag 3
-Problem_Subflag 0
+Problem_Flag 0
+Problem_Subflag 1
 
 % Problem Descriptions
 %
@@ -16,6 +16,5 @@ Problem_Subflag 0
     0 - Gradient
 % 2 - Magneticum
 % ----------------------------------- More to come, like
-% 3 - Ryu & Jones Shock Tubes
-%	0 - ST a
-%	1 - ST b
+% 3 - Double Shock test
+%	0 - Mach 2

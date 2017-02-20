@@ -22,7 +22,7 @@ extern void Find_sph_quantities()
 
         if (hsml == 0)
             hsml = 2*Guess_hsml(ipart, DESNNGB); // always too large
-
+		
 		Assert(isfinite(hsml), "hsml not finite ipart=%d parent=%d \n",
                 ipart, P[ipart].Tree_Parent);
 
