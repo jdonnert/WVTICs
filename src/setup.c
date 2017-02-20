@@ -147,9 +147,9 @@ void setup_problem(const int Flag, const int Subflag)
 
 			sprintf(Problem.Name, "IC_DoubleShock");
 
-			Problem.Boxsize[0] = 1000; // [kpc]
-			Problem.Boxsize[1] = 250;
-			Problem.Boxsize[2] = 250;
+			Problem.Boxsize[0] = 2000; // [kpc]
+			Problem.Boxsize[1] = 200;
+			Problem.Boxsize[2] = 100;
 
 			Density_Func_Ptr = &Double_Shock_Density;
 			U_Func_Ptr = &Double_Shock_U;
