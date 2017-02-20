@@ -133,7 +133,7 @@ void setup_problem(const int Flag, const int Subflag)
 
 			Problem.Boxsize[0] = 1;
 			Problem.Boxsize[1] = 1;
-			Problem.Boxsize[2] = 1;
+			Problem.Boxsize[2] = 0.8;
 
             Problem.Mpart = 1.0 / Param.Npart * 
 				(Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]);

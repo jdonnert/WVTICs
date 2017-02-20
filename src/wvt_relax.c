@@ -98,8 +98,6 @@ void Regularise_sph_particles()
                 " step=%g %g %g \n", it, errMax, errMean,errDiff, 
 				step[0], step[1], step[2]);
 
-
-
         errLast = errMean;
         errDiffLast = errDiff;
 
@@ -132,8 +130,7 @@ void Regularise_sph_particles()
         for (int ipart = 0; ipart < nPart; ipart++)
             hsml[ipart] *= norm_hsml;
 
-		#pragma omp parallel for shared(delta, hsml, P) \
-        	schedule(dynamic, nPart/Omp.NThreads/256)
+		#pragma omp parallel for shared(delta, hsml, P) schedule(dynamic, nPart/Omp.NThreads/256)
         for (int ipart = 0; ipart < nPart; ipart++) {
 
             delta[0][ipart] = delta[1][ipart] = delta[2][ipart] = 0;
@@ -198,8 +195,7 @@ void Regularise_sph_particles()
 
         int cnt = 0, cnt1 = 0, cnt2 = 0;
 
-		#pragma omp parallel for shared(delta,P) \
-        	reduction(+:cnt) reduction(+:cnt1) reduction(+:cnt2)
+		#pragma omp parallel for shared(delta,P) reduction(+:cnt,cnt1,cnt2)
         for (int ipart = 0; ipart < nPart; ipart++) { // move particles
 
             float rho = (*Density_Func_Ptr) (ipart);
