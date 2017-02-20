@@ -10,7 +10,7 @@ ifndef SYSTYPE
     SYSTYPE := $(shell hostname)
 endif
 
-OPTIMIZE = -Wall -O2
+OPTIMIZE = -Wall -fast
 GSL_INCL = $(CPPFLAGS)
 GSL_LIBS = $(LD_LIBRARY_FLAGS)
 
@@ -39,6 +39,7 @@ LINK    = $(GSL_LIBS) -lm -lgsl -lgslcblas
 	@$(CC) $(CFLAGS)  -o $@ -c $<
 
 $(EXEC) : $(OBJFILES)
+	@echo $(CC) 
 	$(CC) $(CFLAGS) $(OBJFILES) $(LINK) -o $(EXEC)
 	@ctags -w $(SRCFILES) $(INCLFILES)
 

@@ -17,12 +17,11 @@ float TopHat_Density(const int ipart)
 
     if (x <= 0.1 || x > 0.9) {
         return rho_min;
-    }
-    if (x > 0.4 && x <= 0.6) {
+    } else if (x > 0.4 && x <= 0.6) {
         return rho_max;
-    }
-    if (x > 0.6) {
+    } else if (x > 0.6) {
         return rho_max - (rho_max - rho_min) * (x - 0.6) / 0.3;
     }
+
     return rho_min + (rho_max - rho_min) * (x - 0.1) / 0.3;
 }

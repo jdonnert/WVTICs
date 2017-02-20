@@ -48,7 +48,6 @@ void setup_problem(const int Flag, const int Subflag)
 	Problem.Rho_Max = 1.0;
 	Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
 
-
 	switch (Flag) {
 
 		case 0:
@@ -70,10 +69,13 @@ void setup_problem(const int Flag, const int Subflag)
 				case 1:
                     
 					Problem.Boxsize[0] = 1;
-                    Problem.Boxsize[1] = 0.25;
+                    Problem.Boxsize[1] = 0.5;
                     Problem.Boxsize[2] = 0.1;
 
 					sprintf(Problem.Name, "IC_TopHat");
+
+					Problem.Rho_Max = 10* Param.Npart * Problem.Mpart 
+						/ (Problem.Boxsize[0] * Problem.Boxsize[0] * Problem.Boxsize[2]) ;
 
 					Density_Func_Ptr = &TopHat_Density;
 
@@ -84,6 +86,9 @@ void setup_problem(const int Flag, const int Subflag)
 					sprintf(Problem.Name, "IC_Sawtooth");
 
 					Density_Func_Ptr = &Sawtooth_Density;
+
+					Problem.Rho_Max = 10* Param.Npart * Problem.Mpart 
+						/ (Problem.Boxsize[0] * Problem.Boxsize[0] * Problem.Boxsize[2]) ;
 
 					break;
 
@@ -96,6 +101,9 @@ void setup_problem(const int Flag, const int Subflag)
                     Problem.Boxsize[2] = 0.75;
 
 					Density_Func_Ptr = &SineWave_Density;
+
+					Problem.Rho_Max = 10* Param.Npart * Problem.Mpart 
+						/ (Problem.Boxsize[0] * Problem.Boxsize[0] * Problem.Boxsize[2]) ;
 
 					break;
 

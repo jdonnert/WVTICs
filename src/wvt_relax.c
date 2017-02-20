@@ -24,7 +24,7 @@ void Regularise_sph_particles()
 	const int maxiter = 128;
 	const double mps_frac = 5; 		// move this fraction of the mean particle sep
 	const double step_red = 0.95; 	// force convergence at this rate
-	const double bin_limits[3] = { -1, 0.1, -1};
+	const double bin_limits[3] = { -1, 1, -1};
 
     const int nPart = Param.Npart;
 
@@ -33,7 +33,7 @@ void Regularise_sph_particles()
     const double boxhalf[3] = { boxsize[0]/2, boxsize[1]/2, boxsize[2]/2, };
 	const double boxinv[3] = { 1/boxsize[0], 1/boxsize[1], 1/boxsize[2] };
 
-	const double min_boxsize = fmin(boxsize[0], fmin(boxsize[1], boxsize[2]));
+	const double mean_boxsize = (boxsize[0]+boxsize[1]+boxsize[2])/3;
 
     printf("Starting iterative SPH regularisation \n"
 			"   Maxiter=%d, mps_frac=%g step_red=%g bin_limits=(%g,%g,%g)\n\n",
@@ -124,13 +124,7 @@ void Regularise_sph_particles()
 			max_hsml = max(max_hsml, hsml[ipart]);
         }
 
-		/*Assert((max_hsml < Problem.Boxsize[2]) && 
-			   (max_hsml < Problem.Boxsize[1]), 
-				"Not enough particles or Boxsize too small :"
-				"   max(hsml) = %g > (%g %g %g) !",
-				max_hsml, Problem.Boxsize[0],Problem.Boxsize[1],Problem.Boxsize[2]);
-*/
-        float norm_hsml = pow(WVTNNGB/vSphSum/fourpithird , 1.0/3.0) *min_boxsize;
+        float norm_hsml = pow(WVTNNGB/vSphSum/fourpithird , 1.0/3.0) *mean_boxsize;
 
 		#pragma omp parallel for
         for (int ipart = 0; ipart < nPart; ipart++)
@@ -255,7 +249,7 @@ void Regularise_sph_particles()
 				cnt*100./Param.Npart, cnt1*100./Param.Npart, cnt2*100./Param.Npart);
 
 		if (   (cnt* 100./Param.Npart < bin_limits[0])
-			|| (cnt2*100./Param.Npart < bin_limits[1])
+			|| (cnt1*100./Param.Npart < bin_limits[1])
 			|| (cnt2*100./Param.Npart < bin_limits[2]) )
 			break;
     
@@ -329,4 +323,3 @@ static inline float sph_kernel_M4(const float r, const float h) // cubic spline
 
     return wk/p3(h);
 }
-
