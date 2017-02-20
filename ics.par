@@ -2,8 +2,8 @@ Npart      1000000
 
 % Problem
 
-Problem_Flag 0
-Problem_Subflag 1
+Problem_Flag 3
+Problem_Subflag 0
 
 % Problem Descriptions
 %
@@ -15,6 +15,8 @@ Problem_Subflag 1
 % 1 - Simple non-periodic tests
     0 - Gradient
 % 2 - Magneticum
-% ----------------------------------- More to come, like
 % 3 - Double Shock test
 %	0 - Mach 2
+%	1 - Mach 3
+%	2 - Mach 4
+% ----------------------------------- More to come, like

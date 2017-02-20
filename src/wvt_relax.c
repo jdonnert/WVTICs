@@ -24,6 +24,7 @@ void Regularise_sph_particles()
 	const int maxiter = 128;
 	const double mps_frac = 5; 		// move this fraction of the mean particle sep
 	const double step_red = 0.95; 	// force convergence at this rate
+	const double bin_limits[3] = { -1, 0.1, -1};
 
     const int nPart = Param.Npart;
 
@@ -32,7 +33,12 @@ void Regularise_sph_particles()
     const double boxhalf[3] = { boxsize[0]/2, boxsize[1]/2, boxsize[2]/2, };
 	const double boxinv[3] = { 1/boxsize[0], 1/boxsize[1], 1/boxsize[2] };
 
-    printf("Starting iterative SPH regularisation \n\n"); fflush(stdout);
+	const double min_boxsize = fmin(boxsize[0], fmin(boxsize[1], boxsize[2]));
+
+    printf("Starting iterative SPH regularisation \n"
+			"   Maxiter=%d, mps_frac=%g step_red=%g bin_limits=(%g,%g,%g)\n\n",
+			maxiter, mps_frac, step_red, bin_limits[0], bin_limits[1], bin_limits[2]); 
+	fflush(stdout);
 
     float *hsml = NULL;
     size_t nBytes = nPart * sizeof(*hsml);
@@ -118,13 +124,13 @@ void Regularise_sph_particles()
 			max_hsml = max(max_hsml, hsml[ipart]);
         }
 
-		Assert((max_hsml < Problem.Boxsize[2]) && 
+		/*Assert((max_hsml < Problem.Boxsize[2]) && 
 			   (max_hsml < Problem.Boxsize[1]), 
 				"Not enough particles or Boxsize too small :"
 				"   max(hsml) = %g > (%g %g %g) !",
 				max_hsml, Problem.Boxsize[0],Problem.Boxsize[1],Problem.Boxsize[2]);
-
-        float norm_hsml = pow(WVTNNGB/vSphSum/fourpithird , 1.0/3.0) *boxsize[0];
+*/
+        float norm_hsml = pow(WVTNNGB/vSphSum/fourpithird , 1.0/3.0) *min_boxsize;
 
 		#pragma omp parallel for
         for (int ipart = 0; ipart < nPart; ipart++)
@@ -155,14 +161,24 @@ void Regularise_sph_particles()
                 float dz = P[ipart].Pos[2] - P[jpart].Pos[2];
 
                 if (Problem.Periodic) {
+ 
+					while (dx > boxhalf[0]) // closest image
+		                dx -= boxsize[0];
 
-                    dx = dx > boxhalf[0] ? dx-boxsize[0] : dx; // closest image
-                    dy = dy > boxhalf[1] ? dy-boxsize[1] : dy;
-                    dz = dz > boxhalf[2] ? dz-boxsize[2] : dz;
+        		    while (dx < -boxhalf[0])
+                		dx += boxsize[0];
 
-                    dx = dx < -boxhalf[0] ? dx+boxsize[0] : dx;
-                    dy = dy < -boxhalf[1] ? dy+boxsize[1] : dy;
-                    dz = dz < -boxhalf[2] ? dz+boxsize[2] : dz;
+		            while (dy > boxhalf[1])
+        		        dy -= boxsize[1];
+            
+					while (dy < -boxhalf[1])
+        		        dy += boxsize[1];
+
+		            while (dz > boxhalf[2])
+        		        dz -= boxsize[2];
+	
+		            while (dz < -boxhalf[2])
+    		            dz += boxsize[2];
                 }
 
                 float r2 = (dx*dx + dy*dy + dz*dz);
@@ -216,29 +232,31 @@ void Regularise_sph_particles()
             P[ipart].Pos[1] += delta[1][ipart];
             P[ipart].Pos[2] += delta[2][ipart];
 
-            if (P[ipart].Pos[0] < 0) // keep it in the box
+            while (P[ipart].Pos[0] < 0) // keep it in the box
                 P[ipart].Pos[0] += boxsize[0];
 
-            if (P[ipart].Pos[0] > boxsize[0])
+            while (P[ipart].Pos[0] > boxsize[0])
                 P[ipart].Pos[0] -= boxsize[0];
 
-            if (P[ipart].Pos[1] < 0)
+            while (P[ipart].Pos[1] < 0)
                 P[ipart].Pos[1] += boxsize[1];
 
-            if (P[ipart].Pos[1] > boxsize[1])
+            while (P[ipart].Pos[1] > boxsize[1])
                 P[ipart].Pos[1] -= boxsize[1];
 
-            if (P[ipart].Pos[2] < 0)
+            while (P[ipart].Pos[2] < 0)
                 P[ipart].Pos[2] += boxsize[2];
 
-            if (P[ipart].Pos[2] > boxsize[2])
+            while (P[ipart].Pos[2] > boxsize[2])
                 P[ipart].Pos[2] -= boxsize[2];
         }
 
         printf("        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100\n", 
 				cnt*100./Param.Npart, cnt1*100./Param.Npart, cnt2*100./Param.Npart);
 
-		if (cnt1*100./Param.Npart < 1)
+		if (   (cnt* 100./Param.Npart < bin_limits[0])
+			|| (cnt2*100./Param.Npart < bin_limits[1])
+			|| (cnt2*100./Param.Npart < bin_limits[2]) )
 			break;
     
 		if (cnt1 > last_cnt) { // force convergence if distribution doesnt tighten

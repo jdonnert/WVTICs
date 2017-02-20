@@ -70,8 +70,8 @@ void setup_problem(const int Flag, const int Subflag)
 				case 1:
                     
 					Problem.Boxsize[0] = 1;
-                    Problem.Boxsize[1] = 1;
-                    Problem.Boxsize[2] = 0.5;
+                    Problem.Boxsize[1] = 0.25;
+                    Problem.Boxsize[2] = 0.1;
 
 					sprintf(Problem.Name, "IC_TopHat");
 
@@ -148,8 +148,8 @@ void setup_problem(const int Flag, const int Subflag)
 			sprintf(Problem.Name, "IC_DoubleShock");
 
 			Problem.Boxsize[0] = 1000; // [kpc]
-			Problem.Boxsize[1] = 1000;
-			Problem.Boxsize[2] = 1000;
+			Problem.Boxsize[1] = 250;
+			Problem.Boxsize[2] = 250;
 
 			Density_Func_Ptr = &Double_Shock_Density;
 			U_Func_Ptr = &Double_Shock_U;

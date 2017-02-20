@@ -42,19 +42,22 @@ int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
 
         if (Problem.Periodic) {
 
-            if (dx > boxhalf[0])
+            while (dx > boxhalf[0])
                 dx -= boxsize[0];
-            else if (dx < -boxhalf[0])
+
+            while (dx < -boxhalf[0])
                 dx += boxsize[0];
 
-            if (dy > boxhalf[1])
+            while (dy > boxhalf[1])
                 dy -= boxsize[1];
-            else if (dy < -boxhalf[1])
+            
+			while (dy < -boxhalf[1])
                 dy += boxsize[1];
 
-            if (dz > boxhalf[2])
+            while (dz > boxhalf[2])
                 dz -= boxsize[2];
-            else if (dz < -boxhalf[2])
+
+            while (dz < -boxhalf[2])
                 dz += boxsize[2];
         }
 
@@ -74,21 +77,24 @@ int Find_ngb_tree(const int ipart, const float hsml, int ngblist[NGBMAX])
                     float dz = pos_i[2] - P[jpart].Pos[2];
 
                     if (Problem.Periodic) {
+        			
+						while (dx > boxhalf[0])
+		                	dx -= boxsize[0];
 
-                        if (dx > boxhalf[0])
-                            dx -= boxsize[0];
-                        else if (dx < -boxhalf[0])
-                            dx += boxsize[0];
+	        		    while (dx < -boxhalf[0])
+			                dx += boxsize[0];
 
-                        if (dy > boxhalf[1])
-                            dy -= boxsize[1];
-                        else if (dy < -boxhalf[1])
-                            dy += boxsize[1];
+        			    while (dy > boxhalf[1])
+		    	            dy -= boxsize[1];
+            
+						while (dy < -boxhalf[1])
+			                dy += boxsize[1];
 
-                        if (dz > boxhalf[2])
-                            dz -= boxsize[2];
-                        else if (dz < -boxhalf[2])
-                            dz += boxsize[2];
+        			    while (dz > boxhalf[2])
+		    	            dz -= boxsize[2];
+
+		        	    while (dz < -boxhalf[2])
+                			dz += boxsize[2];
                     }
 
                     if (dx*dx + dy*dy + dz*dz < hsml*hsml)
@@ -356,22 +362,22 @@ int Find_ngb_simple(const int ipart, const float hsml, int *ngblist)
 
         if (Problem.Periodic) {
 
-            if (dx > boxhalf[0])    // find closest image
+            while (dx > boxhalf[0])    // find closest image
                 dx -= boxsize[0];
 
-            if (dy > boxhalf[1])
+            while (dy > boxhalf[1])
                 dy -= boxsize[1];
 
-            if (dz > boxhalf[2])
+            while (dz > boxhalf[2])
                 dz -= boxsize[2];
 
-            if (dx < -boxhalf[0])
+            while (dx < -boxhalf[0])
                 dx += boxsize[0];
 
-            if (dy < -boxhalf[1])
+            while (dy < -boxhalf[1])
                 dy += boxsize[1];
 
-            if (dz < -boxhalf[2])
+            while (dz < -boxhalf[2])
                 dz += boxsize[2];
         }
 
