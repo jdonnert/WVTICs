@@ -255,7 +255,7 @@ void Regularise_sph_particles()
 				cnt*100./Param.Npart, cnt1*100./Param.Npart, cnt2*100./Param.Npart);
 
 		if (   (cnt* 100./Param.Npart < bin_limits[0])
-			|| (cnt2*100./Param.Npart < bin_limits[1])
+			|| (cnt1*100./Param.Npart < bin_limits[1])
 			|| (cnt2*100./Param.Npart < bin_limits[2]) )
 			break;
     
