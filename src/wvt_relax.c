@@ -33,7 +33,7 @@ void Regularise_sph_particles()
     const double boxhalf[3] = { boxsize[0]/2, boxsize[1]/2, boxsize[2]/2, };
 	const double boxinv[3] = { 1/boxsize[0], 1/boxsize[1], 1/boxsize[2] };
 
-	const double mean_boxsize = (boxsize[0]+boxsize[1]+boxsize[2])/3;
+	const double mean_boxsize = (boxsize[0]+boxsize[1]+boxsize[2])/5;
 
     printf("Starting iterative SPH regularisation \n"
 			"   Maxiter=%d, mps_frac=%g step_red=%g bin_limits=(%g,%g,%g)\n\n",
