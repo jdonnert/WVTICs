@@ -1,6 +1,5 @@
 #include "../globals.h"
 
-static const float gamma = 5.0/3.0; // adiabatic index
 static float XBoxhalf;
 static float Rho[3] = { 0 }, U[3] = { 0 }, Velx[3] = { 0 };
 
@@ -46,7 +45,7 @@ float find_M1(const float cs_up, const float v_dw, const float gamma)
 	return M;
 }
 
-void set_shock_tube(float cs[3], float Mach[3]) {
+void set_shock_tube(const float gamma, float cs[3], float Mach[3]) {
 	
 	Velx[0] = 0; // frame of upstream gas
 
@@ -78,6 +77,8 @@ void set_shock_tube(float cs[3], float Mach[3]) {
 void Setup_Double_Shock(const int subflag)
 {			
 
+	const float gamma = 5.0/3.0; // adiabatic index
+
 	XBoxhalf = Problem.Boxsize[0]/2;
 
 	float cs[3] = { Params[subflag][0] ,0 ,0 }; // km/s
@@ -87,7 +88,7 @@ void Setup_Double_Shock(const int subflag)
 	Rho[0] = 1e-28 * (p3(ULength) / UMass);
 	U[0] = cs[0]*cs[0]/gamma/(gamma-1);
 
-	set_shock_tube(cs, Mach);
+	set_shock_tube(gamma, cs, Mach);
 	
 	Problem.Rho_Max = Rho[2]*1.1;
 
