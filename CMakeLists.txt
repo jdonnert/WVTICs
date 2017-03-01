@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 2.8)
 project(WVTICs)
 
 set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -std=c99 -O2 -Wall -fopenmp")
@@ -43,7 +43,8 @@ set(SOURCE_FILES
     src/problems/sawtooth.c
     src/problems/tophat.c
     src/problems/sinewave.c
-        src/problems/gradient.c)
+        src/problems/gradient.c
+        src/problems/doubleshock.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
