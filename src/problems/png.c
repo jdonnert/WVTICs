@@ -101,6 +101,7 @@ void Setup_Density_From_Image()
                 red   = *src++;
                 green = *src++;
                 blue  = *src++;
+	        // YUV color modell: rgb -> luminosity
                 gray = (0.2989 * red + 0.5870 * green + 0.1140 * blue);
                 rho = DENSITY;
                 if (gray > 150)
