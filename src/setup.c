@@ -171,9 +171,9 @@ void setup_problem(const int Flag, const int Subflag)
 					Density_Func_Ptr = &Png_Density;
 
 					// Problem.Periodic = false;
-					// Problem.Boxsize[0] = Image.Xpix;
-					// Problem.Boxsize[1] = Image.Ypix;
-					// Problem.Boxsize[2] = Image.Zpix;
+				        Problem.Boxsize[0] = Image.Xpix;
+					Problem.Boxsize[1] = Image.Ypix;
+					Problem.Boxsize[2] = Image.Zpix;
 #endif // EAT_PNG
 
 					break;
