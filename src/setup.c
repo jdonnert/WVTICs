@@ -9,7 +9,7 @@ float zero_function(const int ipart);
 void zero_function_vec(const int ipart, float out[3]);
 
 void setup_problem(const int Flag, const int Subflag);
-void mpart_from_intgral();
+void mpart_from_integral();
 
 void Setup()
 {
@@ -23,7 +23,7 @@ void Setup()
 
     setup_problem(Param.Problem_Flag, Param.Problem_Subflag);
 
-    mpart_from_intgral();
+    mpart_from_integral();
 
     printf( "Problem %d.%d : %s \n"
                     "   Npart: %d \n"
@@ -232,7 +232,7 @@ void zero_function_vec(const int ipart, float out[3])
 	return;
 }
 
-void mpart_from_intgral()
+void mpart_from_integral()
 {
     const int N = 1ULL << 9;
     const double dx = Problem.Boxsize[0]/N, 
