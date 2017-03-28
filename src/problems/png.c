@@ -3,11 +3,6 @@
 #include "../globals.h"
 #include "../readpng.h"
 
-#define BOUNDARY 0.0
-#define ACTUALREGION (1.0-2.0*BOUNDARY)
-#define DENSITY 1.0
-#define DENSITY_CONTRAST 128
-
 /*
  * Read x,y density from 2D grayscale png image
  */
@@ -92,7 +87,7 @@ void Setup_Density_From_Image()
 
     float gray;
     unsigned char *src;
-    float rho = DENSITY;
+    float rho;
     int index;
     for (int row=0;  row < Image.Ypix;  row++) {
         src = image_data + row*image_rowbytes;
@@ -103,11 +98,9 @@ void Setup_Density_From_Image()
                 blue  = *src++;
 	        // YUV color modell: rgb -> luminosity
                 gray = (0.2989 * red + 0.5870 * green + 0.1140 * blue);
-                rho = DENSITY;
-                if (gray > 150)
-                   rho /= DENSITY_CONTRAST;
-                // rho = gray/255;
-                index = row*Image.Xpix + i;
+                rho = (255 - gray) / 255.;
+	        // printf("gray = %f; rho = %f\n", gray, rho);
+	        index = row*Image.Xpix + i;
                 Image.Density[index] = rho;
                 // printf("Image.Density[%d] = %g for gray = %g\n",
                 //    index, Image.Density[index], gray);
@@ -124,23 +117,11 @@ float Png_Density(const int ipart)
 {
     const float x = P[ipart].Pos[0] * Image.Xpix / Problem.Boxsize[0];
     const float y = P[ipart].Pos[1] * Image.Ypix / Problem.Boxsize[1];
-    const float z = P[ipart].Pos[2] * Image.Zpix / Problem.Boxsize[2];
-
-    float rho = DENSITY;
-
-    // if (z < 0.1 || z > 0.9)
-    //    return rho/DENSITY_CONTRAST;
-
 
     int index = (floor(Image.Ypix-y)*Image.Xpix + floor(x));
 
     // printf("x, y, z, index, density = %g %g %g, %d, %g\n", x, y, z, index,  Image.Density[index]);
     return Image.Density[index];
 }
-
-#undef BOUNDARY
-#undef ACTUALREGION
-#undef DENSITY
-#undef DENSITY_CONTRAST
 
 #endif  // EAT_PNG
