@@ -238,10 +238,9 @@ void mpart_from_integral()
     const double dx = Problem.Boxsize[0]/N, 
 		  		 dy = Problem.Boxsize[1]/N, 
 				 dz = Problem.Boxsize[2]/N;
-
-    double tot_mass = 0.0;
 	
-	#pragma omp parallel for reduction(+:tot_mass)
+    double tot_mass = 0.0;
+
     for (int i = 0; i < N; i++)
     {
         P[0].Pos[0] = (i + 0.5) * dx;
