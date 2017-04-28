@@ -33,11 +33,8 @@ extern void Find_sph_quantities()
         float dRhodHsml = 0;
         float rho = 0;
 
-        int it = 0;
-
         for ( ;; ) {
 
-            float hsml2 = hsml;
             int ngblist[NGBMAX] = { 0 };
 
             // int ngbcnt = Find_ngb_simple(ipart, hsml, ngblist);

@@ -32,7 +32,6 @@ void Regularise_sph_particles()
                                 Problem.Boxsize[2]
                               };
     const double boxhalf[3] = { boxsize[0] / 2, boxsize[1] / 2, boxsize[2] / 2, };
-    const double boxinv[3] = { 1 / boxsize[0], 1 / boxsize[1], 1 / boxsize[2] };
 
     const double median_boxsize = fmax ( boxsize[1], boxsize[2] ); // boxsize[0] is largest
 
@@ -62,8 +61,8 @@ void Regularise_sph_particles()
                         Problem.Boxsize[2] / npart_1D / mps_frac
                      } ;
 
-    double errLast = DBL_MAX, errLastTree = DBL_MAX;
-    double errDiff = DBL_MAX, errDiffLast = DBL_MAX;
+    double errLast = DBL_MAX;
+    double errDiff = DBL_MAX;
 
     const double volume = Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2];
     const double rho_mean = nPart * Problem.Mpart / volume;
@@ -108,7 +107,6 @@ void Regularise_sph_particles()
                  step[0], step[1], step[2] );
 
         errLast = errMean;
-        errDiffLast = errDiff;
 
         double vSphSum = 0; // total volume defined by hsml
         double max_hsml = 0;
@@ -142,10 +140,6 @@ void Regularise_sph_particles()
             int ngblist[NGBMAX] = { 0 };
             int ngbcnt = Find_ngb_tree ( ipart, hsml[ipart], ngblist );
             //int ngbcnt = Find_ngb_simple(ipart, hsml[ipart], ngblist);
-
-            const float rho = SphP[ipart].Rho_Model;
-
-            const float mean_dist = pow ( Problem.Mpart / rho / DESNNGB, 1.0 / 3.0 );
 
             for ( int i = 0; i < ngbcnt; i++ ) { // neighbour loop
 

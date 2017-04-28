@@ -166,8 +166,6 @@ void Build_Tree()
     Tree[0].Pos[1] = boxhalf[1];
     Tree[0].Pos[2] = boxhalf[2];
 
-    int last_parent = 0;        // last parent of last particle
-
     float px = P[0].Pos[0] / boxsize[0];
     float py = P[0].Pos[1] / boxsize[1];
     float pz = P[0].Pos[2] / boxsize[2];
@@ -236,7 +234,6 @@ void Build_Tree()
         create_node_from_particle ( ipart, parent, key, lvl, &NNodes ); // sibling
 
         last_key = key >> 3;
-        last_parent = parent;
 
     } // for ipart
 
