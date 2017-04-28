@@ -2,10 +2,10 @@
 
 #define DENSITY_STEP 0.5
 
-float Sawtooth_Density(const int ipart)
+float Sawtooth_Density ( const int ipart )
 {
     float x = P[ipart].Pos[0] / Problem.Boxsize[0];
-    if (x > 0.5) {
+    if ( x > 0.5 ) {
         x -= 0.5;
     }
 
@@ -15,5 +15,5 @@ float Sawtooth_Density(const int ipart)
     const double rho_max = rho0 + halfstep;
     const double rho_min = rho0 - halfstep;
 
-    return rho_min + (rho_max - rho_min) * x / 0.5;
+    return rho_min + ( rho_max - rho_min ) * x / 0.5;
 }

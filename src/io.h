@@ -1,4 +1,4 @@
-extern struct GADGET_Header{
+extern struct GADGET_Header {
     int npart[6];
     double mass[6];
     double time;
@@ -18,7 +18,7 @@ extern struct GADGET_Header{
     char fill[64];      // fill to 256 Bytes
 } Header;
 
-struct Block_Info{
+struct Block_Info {
     char Name[CHARBUFSIZE];
     char Label[4];
     long long Npart[6];
@@ -30,7 +30,7 @@ struct Block_Info{
 
 // Gadget-2 expects specific block order
 #ifdef SPH_CUBIC_SPLINE
-enum iofields{
+enum iofields {
     IO_POS,
     IO_VEL,
     IO_ID,
@@ -42,7 +42,7 @@ enum iofields{
     IO_LASTENTRY
 };
 #else
-enum iofields{
+enum iofields {
     IO_POS,
     IO_VEL,
     IO_ID,
@@ -55,11 +55,11 @@ enum iofields{
 };
 #endif  // SPH_CUBIC_SPLINE
 
-size_t my_fread(void *, size_t, size_t, FILE *, int);
-int find_block(FILE *, char *);
+size_t my_fread ( void *, size_t, size_t, FILE *, int );
+int find_block ( FILE *, char * );
 
-void write_header(FILE *, bool);
-void add_block(FILE *, enum iofields, bool);
-void set_block_info(enum iofields);
-void fill_write_buffer(enum iofields, void *, size_t, size_t);
-size_t  my_fwrite(void *, size_t, size_t, FILE *);
+void write_header ( FILE *, bool );
+void add_block ( FILE *, enum iofields, bool );
+void set_block_info ( enum iofields );
+void fill_write_buffer ( enum iofields, void *, size_t, size_t );
+size_t  my_fwrite ( void *, size_t, size_t, FILE * );

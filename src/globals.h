@@ -33,8 +33,8 @@
 
 /* To eat PNG density files */
 #ifdef EAT_PNG
-    #include "png.h"
-    #include "zlib.h"
+#include "png.h"
+#include "zlib.h"
 #endif
 
 
@@ -74,7 +74,7 @@
 
 extern const double ULength, UMass, UVel; // Standard Gadget units (setup.c)
 
-extern struct OpenMP_infos{
+extern struct OpenMP_infos {
     int NThreads;          // Number of openMP threads
     int ThreadID;          // Thread ID of this thread
     unsigned short Seed[3]; // random number seed: erand48(Omp.Seed)
@@ -83,16 +83,16 @@ extern struct OpenMP_infos{
 
 extern struct Parameters {
     int Npart;
-	int Problem_Flag;
-	int Problem_Subflag;
+    int Problem_Flag;
+    int Problem_Subflag;
 } Param;
 
 extern struct ProblemParameters {
     char Name[CHARBUFSIZE];
-	double Mpart;
+    double Mpart;
     double Boxsize[3]; // [0] is ALWAYS the largest one !
-	double Rho_Max;
-	bool Periodic;
+    double Rho_Max;
+    bool Periodic;
 } Problem;
 
 #ifdef EAT_PNG
@@ -106,7 +106,7 @@ extern struct ImageProperties {
 #endif
 
 
-extern struct ParticleData{
+extern struct ParticleData {
     float Pos[3];
     float Vel[3];
     int32_t ID;
@@ -125,10 +125,10 @@ extern struct GasParticleData {
     float Bfld[3];
 } *SphP;
 
-extern float (*Density_Func_Ptr) (const int);
-extern float (*U_Func_Ptr) (const int);
-extern void (*Velocity_Func_Ptr) (const int, float *);
-extern void (*Magnetic_Field_Func_Ptr) (const int, float *);
+extern float ( *Density_Func_Ptr ) ( const int );
+extern float ( *U_Func_Ptr ) ( const int );
+extern void ( *Velocity_Func_Ptr ) ( const int, float * );
+extern void ( *Magnetic_Field_Func_Ptr ) ( const int, float * );
 
 double G; // gravitational constant in code units
 
