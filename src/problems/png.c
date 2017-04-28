@@ -3,6 +3,25 @@
 #include "../globals.h"
 #include "../readpng.h"
 
+void setup_Png_Density()
+{
+#ifndef EAT_PNG
+    printf ( "Error: must use OPT += -DEAT_PNG in Makefile\n" );
+    exit ( 1 );
+#else
+
+    sprintf ( Problem.Name, "IC_PNG" );
+
+    Setup_Density_From_Image();
+
+    Density_Func_Ptr = &Png_Density;
+
+    Problem.Boxsize[0] = Image.Xpix;
+    Problem.Boxsize[1] = Image.Ypix;
+    Problem.Boxsize[2] = Image.Zpix;
+#endif // EAT_PNG
+}
+
 /*
  * Read x,y density from 2D grayscale png image
  */

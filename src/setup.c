@@ -57,69 +57,23 @@ void setup_problem ( const int Flag, const int Subflag )
         switch ( Subflag ) {
 
         case 0:
-
-            Problem.Boxsize[0] = 1;
-            Problem.Boxsize[1] = 1;
-            Problem.Boxsize[2] = 0.5;
-
-            sprintf ( Problem.Name, "IC_Constant_Density" );
-
-            Density_Func_Ptr = &Constant_Density;
-
+            setup_Constant_Density();
             break;
 
         case 1:
-
-            Problem.Boxsize[0] = 1;
-            Problem.Boxsize[1] = 0.5;
-            Problem.Boxsize[2] = 0.1;
-
-            sprintf ( Problem.Name, "IC_TopHat" );
-
-            Problem.Rho_Max = 1.5;
-            rho_mean = 1.0;
-            Problem.Mpart = rho_mean * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
-
-            Density_Func_Ptr = &TopHat_Density;
-
+            setup_TopHat_Density();
             break;
 
         case 2:
-
-            Problem.Boxsize[0] = 1;
-            Problem.Boxsize[1] = 0.1;
-            Problem.Boxsize[2] = 0.1;
-
-            sprintf ( Problem.Name, "IC_Sawtooth" );
-
-            Problem.Rho_Max = 1.5;
-            rho_mean = 1.0;
-            Problem.Mpart = rho_mean * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
-
-            Density_Func_Ptr = &Sawtooth_Density;
-
+            setup_Sawtooth_Density();
             break;
 
         case 3:
-
-            sprintf ( Problem.Name, "IC_SineWave" );
-
-            Problem.Boxsize[0] = 1;
-            Problem.Boxsize[1] = 0.75;
-            Problem.Boxsize[2] = 0.75;
-
-            Problem.Rho_Max = 1.5;
-            rho_mean = 1.0;
-            Problem.Mpart = rho_mean * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
-
-            Density_Func_Ptr = &SineWave_Density;
-
+            setup_SineWave_Density();
             break;
 
         default:
-
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
-
             break;
         }
 
@@ -132,17 +86,11 @@ void setup_problem ( const int Flag, const int Subflag )
         switch ( Subflag ) {
 
         case 0:
-
-            sprintf ( Problem.Name, "IC_GradientDensity" );
-
-            Density_Func_Ptr = &Gradient_Density;
-
+            setup_Gradient_Density();
             break;
 
         default:
-
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
-
             break;
         }
 
@@ -153,72 +101,27 @@ void setup_problem ( const int Flag, const int Subflag )
         switch ( Subflag ) {
 
         case 0:
-
-
-            sprintf ( Problem.Name, "IC_Magneticum" );
-
-            Problem.Boxsize[0] = 1;
-            Problem.Boxsize[1] = 1;
-            Problem.Boxsize[2] = 0.8;
-
-            Density_Func_Ptr = &Magneticum_Density;
-
+            setup_Magneticum_Density();
             break;
 
 
         case 1:
-#ifndef EAT_PNG
-            printf ( "Error: must use OPT += -DEAT_PNG in Makefile\n" );
-
-            exit ( 1 );
-#else
-
-            sprintf ( Problem.Name, "IC_PNG" );
-
-            Setup_Density_From_Image();
-
-            Density_Func_Ptr = &Png_Density;
-
-            // Problem.Periodic = false;
-            Problem.Boxsize[0] = Image.Xpix;
-            Problem.Boxsize[1] = Image.Ypix;
-            Problem.Boxsize[2] = Image.Zpix;
-#endif // EAT_PNG
-
+            setup_Png_Density();
             break;
 
         default:
-
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
-
             break;
         }
 
         break;
 
     case 3:
-
-        sprintf ( Problem.Name, "IC_DoubleShock" );
-
-        Problem.Boxsize[0] = 2000; // [kpc]
-        Problem.Boxsize[1] = 200;
-        Problem.Boxsize[2] = 100;
-
-        Problem.Rho_Max = 10 * Param.Npart * Problem.Mpart
-                          / ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) ;
-
-        Density_Func_Ptr = &Double_Shock_Density;
-        U_Func_Ptr = &Double_Shock_U;
-        Velocity_Func_Ptr = &Double_Shock_Velocity;
-
-        Setup_Double_Shock ( Subflag );
-
+        setup_Double_Shock ( Subflag );
         break;
 
     default:
-
         Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
-
         break;
     }
 

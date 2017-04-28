@@ -37,18 +37,4 @@ void Print_Int_Bits128r ( const peanoKey val );
 double erand48 ( unsigned short * );
 
 /* Problem Functions */
-
-float Constant_Density ( const int ipart );
-float Magneticum_Density ( const int ipart );
-#ifdef EAT_PNG
-float Png_Density ( const int ipart );
-#endif
-float Sawtooth_Density ( const int ipart );
-float TopHat_Density ( const int ipart );
-float SineWave_Density ( const int ipart );
-float Gradient_Density ( const int ipart );
-
-void Setup_Double_Shock ( const int subflag );
-float Double_Shock_Density ( const int ipart );
-float Double_Shock_U ( const int ipart );
-void Double_Shock_Velocity ( const int ipart, float vel[3] );
+#include "problems/problems.h"

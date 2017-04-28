@@ -77,8 +77,21 @@ void set_shock_tube ( const float gamma, float cs[3], float Mach[3] )
     return;
 }
 
-void Setup_Double_Shock ( const int subflag )
+void setup_Double_Shock ( const int subflag )
 {
+    sprintf ( Problem.Name, "IC_DoubleShock" );
+
+    Problem.Boxsize[0] = 2000; // [kpc]
+    Problem.Boxsize[1] = 200;
+    Problem.Boxsize[2] = 100;
+
+    Problem.Rho_Max = 10 * Param.Npart * Problem.Mpart
+                      / ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) ;
+
+    Density_Func_Ptr = &Double_Shock_Density;
+    U_Func_Ptr = &Double_Shock_U;
+    Velocity_Func_Ptr = &Double_Shock_Velocity;
+
 
     const float gamma = 5.0 / 3.0; // adiabatic index
 

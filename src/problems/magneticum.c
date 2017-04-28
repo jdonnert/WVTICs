@@ -4,6 +4,17 @@
 #define ACTUALREGION (1.0-2.0*BOUNDARY)
 #define DENSITY_CONTRAST 16
 
+void setup_Magneticum_Density()
+{
+    sprintf ( Problem.Name, "IC_Magneticum" );
+
+    Problem.Boxsize[0] = 1.0;
+    Problem.Boxsize[1] = 1.0;
+    Problem.Boxsize[2] = 0.5;
+
+    Density_Func_Ptr = &Magneticum_Density;
+}
+
 float Magneticum_Density ( const int ipart )
 {
     const float x = ( P[ipart].Pos[0] - BOUNDARY * Problem.Boxsize[0] )

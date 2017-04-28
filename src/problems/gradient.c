@@ -1,19 +1,23 @@
 #include "../globals.h"
 
 #define DENSITY_STEP 0.5
+#define RHO_MEAN 1.0
+
+void setup_Gradient_Density()
+{
+    sprintf ( Problem.Name, "IC_GradientDensity" );
+
+    Density_Func_Ptr = &Gradient_Density;
+}
 
 float Gradient_Density ( const int ipart )
 {
     float x = P[ipart].Pos[0] / Problem.Boxsize[0];
 
-    double volume = Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2];
-    double mass = Param.Npart * Problem.Mpart;
+    const double halfstep = DENSITY_STEP * RHO_MEAN;
 
-    const double rho0 = mass / volume;
-    const double halfstep = DENSITY_STEP * rho0;
-
-    const double rho_max = rho0 + halfstep;
-    const double rho_min = rho0 - halfstep;
+    const double rho_max = RHO_MEAN + halfstep;
+    const double rho_min = RHO_MEAN - halfstep;
 
     if ( x <= 0.25 ) {
         return rho_min;
