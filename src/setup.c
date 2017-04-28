@@ -85,13 +85,18 @@ void setup_problem(const int Flag, const int Subflag)
 					break;
 
 				case 2:
+                    
+					Problem.Boxsize[0] = 1;
+					Problem.Boxsize[1] = 0.1;
+					Problem.Boxsize[2] = 0.1;
 
 					sprintf(Problem.Name, "IC_Sawtooth");
 
-					Density_Func_Ptr = &Sawtooth_Density;
+					Problem.Rho_Max = 1.5;
+					rho_mean = 1.0;
+					Problem.Mpart = rho_mean * (Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]) / Param.Npart;
 
-					Problem.Rho_Max = 10* Param.Npart * Problem.Mpart 
-						/ (Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2]) ;
+					Density_Func_Ptr = &Sawtooth_Density;
 
 					break;
 

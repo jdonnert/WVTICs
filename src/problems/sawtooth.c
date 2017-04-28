@@ -9,10 +9,7 @@ float Sawtooth_Density(const int ipart)
         x -= 0.5;
     }
 
-    double volume = Problem.Boxsize[0]*Problem.Boxsize[1]*Problem.Boxsize[2];
-    double mass = Param.Npart * Problem.Mpart;
-
-    const double rho0 = mass/volume;
+    const double rho0 = 1.0;
     const double halfstep = DENSITY_STEP * rho0;
 
     const double rho_max = rho0 + halfstep;
