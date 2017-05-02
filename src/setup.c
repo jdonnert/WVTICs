@@ -120,6 +120,10 @@ void setup_problem ( const int Flag, const int Subflag )
         setup_Double_Shock ( Subflag );
         break;
 
+    case 4:
+        setup_User_Density ( Subflag );
+        break;
+
     default:
         Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
         break;

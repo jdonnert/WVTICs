@@ -59,7 +59,8 @@ set(SOURCE_FILES
     src/problems/sinewave.c
     src/problems/gradient.c
     src/problems/doubleshock.c
-    src/problems/png.c)
+    src/problems/png.c
+    src/problems/user.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 

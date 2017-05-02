@@ -29,4 +29,7 @@ float Double_Shock_Density ( const int ipart );
 float Double_Shock_U ( const int ipart );
 void Double_Shock_Velocity ( const int ipart, float vel[3] );
 
+void setup_User_Density ( const int subflag );
+float User_Density ( const int ipart );
+
 #endif //WVTICS_PROBLEMS_H_H

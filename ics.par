@@ -23,3 +23,5 @@ PNG_Filename logos/DarthVader.png
 %	0 - Mach 2
 %	1 - Mach 3
 %	2 - Mach 4
+% 4 - Custom user defined ics
+%   X - All which you define in user.c
