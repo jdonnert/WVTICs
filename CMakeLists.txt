@@ -54,6 +54,8 @@ set(SOURCE_FILES
     src/tree.h
     src/wvt_relax.c
     src/readpng.c
+    src/external/morton_utils.c
+    src/peanowalk.c
     src/problems/sawtooth.c
     src/problems/tophat.c
     src/problems/sinewave.c

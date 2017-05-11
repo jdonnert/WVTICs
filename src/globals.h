@@ -37,6 +37,8 @@
 #include "zlib.h"
 #endif
 
+#include "peanowalk.h"
+
 
 /* Code parameters */
 
