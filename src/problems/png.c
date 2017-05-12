@@ -1,18 +1,18 @@
-#ifdef EAT_PNG
 
 #include "../globals.h"
 #include "../readpng.h"
 
+static void setup_density_from_image();
+
 void setup_Png_Density()
 {
 #ifndef EAT_PNG
-    printf ( "Error: must use OPT += -DEAT_PNG in Makefile\n" );
-    exit ( 1 );
+    Assert(false, "Error: must use OPT += -DEAT_PNG in Makefile\n" );
 #else
 
     sprintf ( Problem.Name, "IC_PNG" );
 
-    Setup_Density_From_Image();
+    setup_density_from_image();
 
     Density_Func_Ptr = &Png_Density;
 
@@ -22,14 +22,12 @@ void setup_Png_Density()
 #endif // EAT_PNG
 }
 
-/*
- * Read x,y density from 2D grayscale png image
- */
+/* Read x,y density from 2D grayscale png image */
 
-void Setup_Density_From_Image()
+static void setup_density_from_image()
 {
-    /* http://www.libpng.org/pub/png/book/chapter13.html */
-    readpng_version_info();
+#ifdef EAT_PNG
+    readpng_version_info(); // http://www.libpng.org/pub/png/book/chapter13.html
 
     static FILE *infile;
     static unsigned long xpix, ypix, image_rowbytes;
@@ -130,11 +128,13 @@ void Setup_Density_From_Image()
 
     printf ( "Success building Image.Density\n" );
 
+#endif  // EAT_PNG
     return;
 }
 
 float Png_Density ( const int ipart )
 {
+#ifdef EAT_PNG
     const float x = P[ipart].Pos[0] * Image.Xpix / Problem.Boxsize[0];
     const float y = P[ipart].Pos[1] * Image.Ypix / Problem.Boxsize[1];
 
@@ -142,6 +142,8 @@ float Png_Density ( const int ipart )
 
     // printf("x, y, z, index, density = %g %g %g, %d, %g\n", x, y, z, index,  Image.Density[index]);
     return Image.Density[index];
+#else 
+	return 0;
+#endif
 }
 
-#endif  // EAT_PNG

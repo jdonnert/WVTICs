@@ -48,8 +48,6 @@ void setup_problem ( const int Flag, const int Subflag )
     Problem.Rho_Max = 1.0;
     Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
 
-    double rho_mean;
-
     switch ( Flag ) {
 
     case 0:
@@ -103,7 +101,6 @@ void setup_problem ( const int Flag, const int Subflag )
         case 0:
             setup_Magneticum_Density();
             break;
-
 
         case 1:
             setup_Png_Density();

@@ -19,10 +19,8 @@ float Gradient_Density ( const int ipart );
 void setup_Magneticum_Density();
 float Magneticum_Density ( const int ipart );
 
-#ifdef EAT_PNG
 void setup_Png_Density();
 float Png_Density ( const int ipart );
-#endif
 
 void setup_Double_Shock ( const int subflag );
 float Double_Shock_Density ( const int ipart );

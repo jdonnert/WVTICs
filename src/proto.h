@@ -12,9 +12,6 @@ void Find_sph_quantities();
 void Wvt_relax();
 void Write_output ( bool );
 void Regularise_sph_particles();
-#ifdef EAT_PNG
-void Setup_Density_From_Image();
-#endif
 
 /* Helper Monkeys */
 
