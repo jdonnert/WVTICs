@@ -2,12 +2,47 @@
 
 void Make_Positions()
 {
-    printf ( "Sampling positions ..." );
+    printf ( "Sampling positions ...\n" );
     fflush ( stdout );
 
+#ifdef PEANO_SAMPLING
+    double *peanoCoords = peanoWalk();
+    const uint64_t countCoords = peanoCurveLength();
+    double *cellSides = peanoCellSidelengths ( peanoCoords );
+    const double cellVolume = cellSides[0] * cellSides[1] * cellSides[2];
+
+    printf ( " Have %lu peano cells of volume (%g, %g, %g) for %d particles\n", countCoords, cellSides[0], cellSides[1], cellSides[2], Param.Npart );
+    Assert ( countCoords > Param.Npart, "Need more peano cells than particles\n" );
+
+    int ipart = 0;
+    for ( uint64_t i = 0; i < countCoords; ++i ) {
+        P[ipart].Pos[0] = peanoCoords[i * 3];
+        P[ipart].Pos[1] = peanoCoords[i * 3 + 1];
+        P[ipart].Pos[2] = peanoCoords[i * 3 + 2];
+        const double density = Density_Func_Ptr ( ipart );
+        const double probability = cellVolume / ( Problem.Mpart / density );
+        if ( probability > erand48 ( Omp.Seed ) ) {
+            //Accept particle
+            //! @todo randomize position inside peano cell
+            ++ipart;
+            //! @todo check for overflow of ipart; this is just very crude
+            if ( ipart == Param.Npart ) {
+                printf ( " Aborting at %lu of %lu peano nodes (%g%%)\n", i, countCoords, i * 100. / countCoords );
+                break;
+            }
+        }
+    }
+    if ( ipart != Param.Npart ) {
+        Problem.Mpart = Problem.Mpart * ipart / Param.Npart;
+        Param.Npart = ipart; //If got less particles we can just ignore all memory beyond this point in the structs
+        printf ( " Resetting particle number to %d and particle mass to %g\n", Param.Npart, Problem.Mpart );
+    }
+
+    free ( cellSides );
+    free ( peanoCoords );
+#else
     #pragma omp parallel for
     for ( int ipart = 0; ipart < Param.Npart; ipart++ ) {
-
 #ifdef REJECTION_SAMPLING
         double rho = 0.0, rho_r = 0.0;
 
@@ -28,6 +63,7 @@ void Make_Positions()
 
         P[ipart].Type = 0;
     }
+#endif //PEANO_SAMPLING
 
     printf ( " done\n" );
 

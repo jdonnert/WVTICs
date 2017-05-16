@@ -5,6 +5,12 @@
 
 void peanoToCoords ( uint64_t peano, uint64_t *x, uint64_t *y, uint64_t *z );
 
-void peanoWalk();
+uint64_t peanoCurveLength();
+
+double *peanoWalk();
+
+double *peanoCellSidelengths ( double *dcoords );
+
+void peanoWalkToFile();
 
 #endif //WVTICS_PEANOWALK_H
