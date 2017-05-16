@@ -21,11 +21,16 @@ void Make_Positions()
         P[ipart].Pos[2] = peanoCoords[i * 3 + 2];
         const double density = Density_Func_Ptr ( ipart );
         const double probability = cellVolume / ( Problem.Mpart / density );
+
+        //Accept particle
         if ( probability > erand48 ( Omp.Seed ) ) {
-            //Accept particle
-            //! @todo randomize position inside peano cell
             ++ipart;
-            //! @todo check for overflow of ipart; this is just very crude
+            //randomize position inside peano cell
+            P[ipart].Pos[0] += ( erand48 ( Omp.Seed ) - 0.5 ) * cellSides[0];
+            P[ipart].Pos[1] += ( erand48 ( Omp.Seed ) - 0.5 ) * cellSides[1];
+            P[ipart].Pos[2] += ( erand48 ( Omp.Seed ) - 0.5 ) * cellSides[2];
+
+            //! @todo check for overflow of ipart; this is just very crude and throws away more particles which would be added
             if ( ipart == Param.Npart ) {
                 printf ( " Aborting at %lu of %lu peano nodes (%g%%)\n", i, countCoords, i * 100. / countCoords );
                 break;
