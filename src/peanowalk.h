@@ -11,6 +11,4 @@ double *peanoWalk();
 
 double *peanoCellSidelengths ( double *dcoords );
 
-void peanoWalkToFile();
-
 #endif //WVTICS_PEANOWALK_H

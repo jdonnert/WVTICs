@@ -82,24 +82,4 @@ double *peanoCellSidelengths ( double *dcoords )
     return volume;
 }
 
-// So far only a test to look at the curve
-void peanoWalkToFile()
-{
-    FILE *pFile;
-    pFile = fopen ( "peano.out", "wb" );
-
-    const uint64_t max = peanoCurveLength();
-    printf ( "This is going to be %g GB (%lu points at curve)\n", max * 3.0 * 8 / 1024 / 1024 / 1024, max );
-
-    uint64_t x, y, z;
-    for ( uint64_t peano = 0; peano < max; ++peano ) {
-        peanoToCoords ( peano, &x, &y, &z );
-        fwrite ( &x, sizeof ( uint64_t ), 1, pFile );
-        fwrite ( &y, sizeof ( uint64_t ), 1, pFile );
-        fwrite ( &z, sizeof ( uint64_t ), 1, pFile );
-    }
-
-    fclose ( pFile );
-}
-
 #undef PEANO_ORDER
