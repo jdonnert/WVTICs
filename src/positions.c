@@ -8,7 +8,14 @@ void Make_Positions()
 #ifdef PEANO_SAMPLING
     double *peanoCoords = peanoWalk();
     const uint64_t countCoords = peanoCurveLength();
-    double *cellSides = peanoCellSidelengths ( peanoCoords );
+
+    const uint64_t cellSize = peanoCellSize();
+    const double norm = peanoNormFactor();
+    double cellSides[3];
+    cellSides[0] = cellSize * Problem.Boxsize[0] * norm;
+    cellSides[1] = cellSize * Problem.Boxsize[1] * norm;
+    cellSides[2] = cellSize * Problem.Boxsize[2] * norm;
+
     const double cellVolume = cellSides[0] * cellSides[1] * cellSides[2];
 
     printf ( " Have %lu peano cells of volume (%g, %g, %g) for %d particles\n", countCoords, cellSides[0], cellSides[1], cellSides[2], Param.Npart );
@@ -43,7 +50,6 @@ void Make_Positions()
         printf ( " Resetting particle number to %d and particle mass to %g\n", Param.Npart, Problem.Mpart );
     }
 
-    free ( cellSides );
     free ( peanoCoords );
 #else
     #pragma omp parallel for
