@@ -7,6 +7,7 @@ option(SAVE_WVT_STEPS "Save every relaxation step to file" ON)
 option(SPH_CUBIC_SPLINE "Use cubic spline instead of wendland c6" OFF)
 option(SPH_WC2 "Use wendland c2 instead of wendland c6" OFF)
 option(REJECTION_SAMPLING "Use von Neumann rejection sampling to improve initial random positions" ON)
+option(PEANO_SAMPLING "Use peano curve based sampling to improve initial random positions" OFF)
 option(EAT_PNG "Possibility to use .png files as input for density" ON)
 
 if(SAVE_WVT_STEPS)
@@ -20,6 +21,10 @@ endif(SPH_CUBIC_SPLINE)
 if(SPH_WC2)
     add_definitions(-DSPH_WC2)
 endif(SPH_WC2)
+
+if(PEANO_SAMPLING)
+    add_definitions(-DPEANO_SAMPLING)
+endif(PEANO_SAMPLING)
 
 if(REJECTION_SAMPLING)
     add_definitions(-DREJECTION_SAMPLING)
@@ -54,6 +59,8 @@ set(SOURCE_FILES
     src/tree.h
     src/wvt_relax.c
     src/readpng.c
+    src/external/morton_utils.c
+    src/peanowalk.c
     src/problems/sawtooth.c
     src/problems/tophat.c
     src/problems/sinewave.c
