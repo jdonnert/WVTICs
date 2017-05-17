@@ -33,7 +33,7 @@ void Make_Positions()
         probabilitySum += probability;
 
         //Accept particle
-        if ( probability > erand48 ( Omp.Seed ) ) {
+        if ( ipart < Param.Npart && probability > erand48 ( Omp.Seed ) ) {
             //randomize position inside peano cell
             P[ipart].Pos[0] += ( erand48 ( Omp.Seed ) - 0.5 ) * cellSides[0];
             P[ipart].Pos[1] += ( erand48 ( Omp.Seed ) - 0.5 ) * cellSides[1];
@@ -41,10 +41,9 @@ void Make_Positions()
 
             ++ipart;
 
-            //! @todo check for overflow of ipart; this is just very crude and throws away more particles which would be added
             if ( ipart == Param.Npart ) {
                 printf ( " Aborting at %lu of %lu peano nodes (%g%%)\n", i, countCoords, i * 100. / countCoords );
-                break;
+                //Let it run further to get correct probabilitySum values
             }
         }
     }
