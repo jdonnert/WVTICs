@@ -53,28 +53,22 @@ void setup_problem ( const int Flag, const int Subflag )
     case 0:
 
         switch ( Subflag ) {
-
         case 0:
             setup_Constant_Density();
             break;
-
         case 1:
             setup_TopHat_Density();
             break;
-
         case 2:
             setup_Sawtooth_Density();
             break;
-
         case 3:
             setup_SineWave_Density();
             break;
-
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
             break;
         }
-
         break;
 
     case 1:
@@ -82,35 +76,28 @@ void setup_problem ( const int Flag, const int Subflag )
         Problem.Periodic = false;
 
         switch ( Subflag ) {
-
         case 0:
             setup_Gradient_Density();
             break;
-
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
             break;
         }
-
         break;
 
     case 2:
 
         switch ( Subflag ) {
-
         case 0:
             setup_Magneticum_Density();
             break;
-
         case 1:
             setup_Png_Density();
             break;
-
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
             break;
         }
-
         break;
 
     case 3:
@@ -118,6 +105,14 @@ void setup_problem ( const int Flag, const int Subflag )
         break;
 
     case 4:
+        Assert ( false, "Hydro tests not implemented yet", Flag, Subflag );
+        break;
+
+    case 5:
+        Assert ( false, "MHD tests not implemented yet", Flag, Subflag );
+        break;
+
+    case 6:
         setup_User_Density ( Subflag );
         break;
 
