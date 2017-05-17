@@ -35,7 +35,7 @@ PNG_Filename logos/DarthVader.png
 %	1 - Mach 3
 %	2 - Mach 4
 % 4 - Classical hydrodynamics tests
-%   0 - Sod Shock                       (not implemented yet)
+%   0 - Sod Shock
 %   1 - Sedov Blast                     (not implemented yet)
 %   2 - Keplerian Ring                  (not implemented yet)
 %   3 - Cold Blob                       (not implemented yet)
@@ -43,6 +43,7 @@ PNG_Filename logos/DarthVader.png
 %   5 - Hydrostatic Sphere              (not implemented yet)
 %   6 - Evrard Collapse                 (not implemented yet)
 %   7 - Zel'dovic Pancake               (not implemented yet)
+%   8 - Box                             (not implemented yet)
 % 5 - Classical magnetohydrodynamics tests
 %   1 - Ryu Jones Shocktubes            (not implemented yet)
 %   2 - Fast Rotor                      (not implemented yet)
