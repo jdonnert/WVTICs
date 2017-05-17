@@ -21,13 +21,16 @@ void Make_Positions()
     printf ( " Have %lu peano cells of volume (%g, %g, %g) for %d particles\n", countCoords, cellSides[0], cellSides[1], cellSides[2], Param.Npart );
     Assert ( countCoords > Param.Npart, "Need more peano cells than particles\n" );
 
+    const double probabilityFactor = cellVolume / ( Problem.Mpart );
+    double probabilitySum = 0.0;
+
     int ipart = 0;
     for ( uint64_t i = 0; i < countCoords; ++i ) {
         P[ipart].Pos[0] = peanoCoords[i * 3];
         P[ipart].Pos[1] = peanoCoords[i * 3 + 1];
         P[ipart].Pos[2] = peanoCoords[i * 3 + 2];
-        const double density = Density_Func_Ptr ( ipart );
-        const double probability = cellVolume / ( Problem.Mpart / density );
+        const double probability = probabilityFactor * Density_Func_Ptr ( ipart );
+        probabilitySum += probability;
 
         //Accept particle
         if ( probability > erand48 ( Omp.Seed ) ) {
@@ -50,6 +53,9 @@ void Make_Positions()
         Param.Npart = ipart; //If got less particles we can just ignore all memory beyond this point in the structs
         printf ( " Resetting particle number to %d and particle mass to %g\n", Param.Npart, Problem.Mpart );
     }
+
+    // Normalization: Sum_cells p = 1 * Npart
+    printf ( " Sum of probabilities %g (%g%%)\n", probabilitySum, probabilitySum * 100.0 / Param.Npart );
 
     free ( peanoCoords );
 #else
@@ -77,7 +83,7 @@ void Make_Positions()
     }
 #endif //PEANO_SAMPLING
 
-    printf ( " done\n" );
+    printf ( "done\n" );
 
     return;
 }
