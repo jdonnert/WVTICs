@@ -105,7 +105,14 @@ void setup_problem ( const int Flag, const int Subflag )
         break;
 
     case 4:
-        Assert ( false, "Hydro tests not implemented yet", Flag, Subflag );
+        switch ( Subflag ) {
+        case 0:
+            setup_Sod_Shock();
+            break;
+        default:
+            Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
+            break;
+        }
         break;
 
     case 5:
