@@ -13,6 +13,7 @@ float ( *Density_Func_Ptr ) ( const int ) = NULL;
 float ( *U_Func_Ptr ) ( const int ) = NULL;
 void ( *Magnetic_Field_Func_Ptr ) ( const int, float * ) = NULL;
 void ( *Velocity_Func_Ptr ) ( const int, float * ) = NULL;
+void ( *PostProcessing_Func_Ptr ) () = NULL;
 
 #pragma omp threadprivate(Omp)
 struct OpenMP_infos Omp = { 0 };
@@ -64,6 +65,8 @@ int main ( int argc, char *argv[] )
     Make_Temperatures();
 
     Make_Magnetic_Fields();
+
+    Make_PostProcessing();
 
     Write_output ( 1 ); // verbose
 
