@@ -33,5 +33,8 @@ float Sod_Shock_U ( const int ipart );
 
 void setup_User_Density ( const int subflag );
 float User_Density ( const int ipart );
+float User_U ( const int ipart );
+void User_Bfld ( const int ipart, float out[3] );
+void User_PostProcessing();
 
 #endif //WVTICS_PROBLEMS_H_H
