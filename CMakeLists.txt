@@ -68,7 +68,8 @@ set(SOURCE_FILES
         src/problems/doubleshock.c
         src/problems/png.c
         src/problems/user.c
-        src/problems/sodshock.c)
+        src/problems/sodshock.c
+        src/problems/sedov.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 

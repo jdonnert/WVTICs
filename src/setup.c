@@ -111,6 +111,9 @@ void setup_problem ( const int Flag, const int Subflag )
         case 0:
             setup_Sod_Shock();
             break;
+        case 1:
+            setup_Sedov_Blast();
+            break;
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
             break;
