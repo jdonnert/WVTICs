@@ -36,6 +36,11 @@ float Sedov_Blast_Density ( const int ipart );
 float Sedov_Blast_U ( const int ipart );
 void Sedov_Blast_PostProcessing();
 
+void setup_Kelvin_Helmholtz_Instability();
+float Kelvin_Helmholtz_Instability_Density ( const int ipart );
+float Kelvin_Helmholtz_Instability_U ( const int ipart );
+void Kelvin_Helmholtz_Instability_Velocity ( const int ipart, float out[3] );
+
 void setup_User_Density ( const int subflag );
 float User_Density ( const int ipart );
 float User_U ( const int ipart );
