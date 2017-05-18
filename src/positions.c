@@ -139,3 +139,16 @@ void Make_Magnetic_Fields()
     return ;
 }
 
+void Make_PostProcessing()
+{
+
+    printf ( "Post Processing ..." );
+    fflush ( stdout );
+
+    ( *PostProcessing_Func_Ptr ) ();
+
+    printf ( " done\n" );
+
+    return ;
+}
+

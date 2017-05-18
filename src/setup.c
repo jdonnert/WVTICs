@@ -5,6 +5,7 @@ const double ULength = 3.08568025e21; 	// kpc in cgs
 const double UMass = 1.989e43;			// 10^10 Msol in cgs
 const double UVel = 1e5;					// km/s in cgs
 
+void zero_function_empty ();
 float zero_function ( const int ipart );
 void zero_function_vec ( const int ipart, float out[3] );
 
@@ -41,6 +42,7 @@ void setup_problem ( const int Flag, const int Subflag )
     U_Func_Ptr = &zero_function;
     Velocity_Func_Ptr = &zero_function_vec;
     Magnetic_Field_Func_Ptr = &zero_function_vec;
+    PostProcessing_Func_Ptr = &zero_function_empty;
 
     Problem.Mpart = 1; // required to renormalize later
 
@@ -133,6 +135,11 @@ void setup_problem ( const int Flag, const int Subflag )
              "Boxsize[0] has to be largest for ngb finding to work." );
 
     return ;
+}
+
+void zero_function_empty ()
+{
+    return;
 }
 
 float zero_function ( const int ipart )
