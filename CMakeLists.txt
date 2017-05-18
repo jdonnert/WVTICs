@@ -92,8 +92,8 @@ set(SOURCE_FILES
     	src/diagnostics.c
     	src/redistribution.c
         src/problems/user.c
-        src/problems/sodshock.c)
-    src/redistribution.c)
+        src/problems/sodshock.c
+        src/problems/sedov.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
