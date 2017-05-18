@@ -44,9 +44,9 @@ PNG_Filename logos/DarthVader.png
 % 4 - Classical hydrodynamics tests
 %   0 - Sod Shock                       (not tested yet)
 %   1 - Sedov Blast                     (not fully implemented yet)
-%   2 - Keplerian Ring                  (not implemented yet)
-%   3 - Cold Blob                       (not implemented yet)
-%   4 - Kelving-Helmholtz Instability   (not implemented yet)
+%   2 - Kelving-Helmholtz Instability   (not tested yet)
+%   3 - Keplerian Ring                  (not implemented yet)
+%   4 - Cold Blob                       (not implemented yet)
 %   5 - Hydrostatic Sphere              (not implemented yet)
 %   6 - Evrard Collapse                 (not implemented yet)
 %   7 - Zel'dovic Pancake               (not implemented yet)
