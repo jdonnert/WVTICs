@@ -42,8 +42,8 @@ PNG_Filename logos/DarthVader.png
 %	1 - Mach 3
 %	2 - Mach 4
 % 4 - Classical hydrodynamics tests
-%   0 - Sod Shock
-%   1 - Sedov Blast                     (not implemented yet)
+%   0 - Sod Shock                       (not tested yet)
+%   1 - Sedov Blast                     (not fully implemented yet)
 %   2 - Keplerian Ring                  (not implemented yet)
 %   3 - Cold Blob                       (not implemented yet)
 %   4 - Kelving-Helmholtz Instability   (not implemented yet)
