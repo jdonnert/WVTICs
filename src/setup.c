@@ -114,6 +114,9 @@ void setup_problem ( const int Flag, const int Subflag )
         case 1:
             setup_Sedov_Blast();
             break;
+        case 2:
+            setup_Kelvin_Helmholtz_Instability();
+            break;
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
             break;
