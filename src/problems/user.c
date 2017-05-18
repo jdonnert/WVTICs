@@ -14,6 +14,9 @@ void setup_User_Density ( const int subflag )
     Problem.Mpart = rho_mean * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
 
     Density_Func_Ptr = &User_Density;
+    U_Func_Ptr = &User_U;
+    Magnetic_Field_Func_Ptr = &User_Bfld;
+    PostProcessing_Func_Ptr = &User_PostProcessing;
 }
 
 float User_Density ( const int ipart )
@@ -25,4 +28,18 @@ float User_Density ( const int ipart )
     float rho = 1.0f;
 
     return rho;
+}
+
+float User_U ( const int ipart )
+{
+    return 1.0f;
+}
+
+void User_Bfld ( const int ipart, float out[3] )
+{
+    out[0] = out[1] = out[2] = 0;
+}
+
+void User_PostProcessing()
+{
 }
