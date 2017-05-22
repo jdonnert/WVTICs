@@ -42,6 +42,20 @@ double *peanoWalk()
     const uint64_t max = peanoCurveLength();
     double *coords = ( double * ) malloc ( 3 * max * sizeof ( double ) );
 
+    assignPeanoCoordinates ( coords, max );
+
+    const uint64_t cellSize = peanoCellSize();
+    const double halfCellSize = 0.5 * cellSize;
+    const double norm = peanoNormFactor();
+
+    // Translate to center of cell and renormalize box
+    translateAndRenormalizePeanoCoords ( coords, max, halfCellSize, norm );
+
+    return coords;
+}
+
+void assignPeanoCoordinates ( double *coords, const uint64_t max )
+{
     uint64_t x, y, z;
     for ( uint64_t peano = 0, i = 0; peano < max; ++peano, i += 3 ) {
         peanoToCoords ( peano, &x, &y, &z );
@@ -50,20 +64,15 @@ double *peanoWalk()
         coords[i + 1] = y;
         coords[i + 2] = z;
     }
+}
 
-    const uint64_t cellSize = peanoCellSize();
-    const double halfCellSize = 0.5 * cellSize;
-
-    const double norm = peanoNormFactor();
-
-    // Translate to center of cell and renormalize box
+void translateAndRenormalizePeanoCoords ( double *coords, const uint64_t max, const double halfCellSize, const double norm )
+{
     for ( uint64_t i = 0; i < 3 * max; i += 3 ) {
         coords[i] = ( coords[i] + halfCellSize ) * Problem.Boxsize[0] * norm;
         coords[i + 1] = ( coords[i + 1] + halfCellSize ) * Problem.Boxsize[1] * norm;
         coords[i + 2] = ( coords[i + 2] + halfCellSize ) * Problem.Boxsize[2] * norm;
     }
-
-    return coords;
 }
 
 #undef PEANO_ORDER

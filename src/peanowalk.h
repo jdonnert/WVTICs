@@ -11,5 +11,7 @@ uint64_t peanoCellSize();
 double peanoNormFactor();
 
 double *peanoWalk();
+void assignPeanoCoordinates ( double *coords, const uint64_t max );
+void translateAndRenormalizePeanoCoords ( double *coords, const uint64_t max, const double halfCellSize, const double norm );
 
 #endif //WVTICS_PEANOWALK_H
