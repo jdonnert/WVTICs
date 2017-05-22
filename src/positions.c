@@ -6,11 +6,11 @@ void Make_Positions()
     fflush ( stdout );
 
 #ifdef PEANO_SAMPLING
-    double *peanoCoords = peanoWalk();
     const uint64_t countCoords = peanoCurveLength();
-
     const uint64_t cellSize = peanoCellSize();
+    const double halfCellSize = 0.5 * cellSize;
     const double norm = peanoNormFactor();
+
     double cellSides[3];
     cellSides[0] = cellSize * Problem.Boxsize[0] * norm;
     cellSides[1] = cellSize * Problem.Boxsize[1] * norm;
@@ -18,17 +18,17 @@ void Make_Positions()
 
     const double cellVolume = cellSides[0] * cellSides[1] * cellSides[2];
 
-    printf ( " Have %lu peano cells of volume (%g, %g, %g) for %d particles\n", countCoords, cellSides[0], cellSides[1], cellSides[2], Param.Npart );
-    Assert ( countCoords > Param.Npart, "Need more peano cells than particles\n" );
-
     const double probabilityFactor = cellVolume / ( Problem.Mpart );
     double probabilitySum = 0.0;
 
+    printf ( " Have %lu peano cells of volume (%g, %g, %g) for %d particles\n", countCoords, cellSides[0], cellSides[1], cellSides[2], Param.Npart );
+    Assert ( countCoords > Param.Npart, "Need more peano cells than particles\n" );
+
     int ipart = 0;
-    for ( uint64_t i = 0; i < countCoords; ++i ) {
-        P[ipart].Pos[0] = peanoCoords[i * 3];
-        P[ipart].Pos[1] = peanoCoords[i * 3 + 1];
-        P[ipart].Pos[2] = peanoCoords[i * 3 + 2];
+    for ( uint64_t peano = 0; peano < countCoords; ++peano ) {
+        assignPeanoCoordinates ( P[ipart].Pos, peano );
+        translateAndRenormalizePeanoCoords ( P[ipart].Pos, halfCellSize, norm );
+
         const double probability = probabilityFactor * Density_Func_Ptr ( ipart );
         probabilitySum += probability;
 
@@ -42,7 +42,7 @@ void Make_Positions()
             ++ipart;
 
             if ( ipart == Param.Npart ) {
-                printf ( " Aborting at %lu of %lu peano nodes (%g%%)\n", i, countCoords, i * 100. / countCoords );
+                printf ( " Aborting at %lu of %lu peano nodes (%g%%)\n", peano, countCoords, peano * 100. / countCoords );
                 //Let it run further to get correct probabilitySum values
             }
         }
@@ -55,8 +55,6 @@ void Make_Positions()
 
     // Normalization: Sum_cells p = 1 * Npart
     printf ( " Sum of probabilities %g (%g%%)\n", probabilitySum, probabilitySum * 100.0 / Param.Npart );
-
-    free ( peanoCoords );
 #else
     #pragma omp parallel for
     for ( int ipart = 0; ipart < Param.Npart; ipart++ ) {
