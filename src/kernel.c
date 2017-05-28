@@ -1,6 +1,7 @@
 #include "kernel.h"
 #include "globals.h"
 
+//We omit checking for r < h here and do this in the respective code using the functions
 float sph_kernel ( const float r, const float h )
 {
 #ifdef SPH_CUBIC_SPLINE
