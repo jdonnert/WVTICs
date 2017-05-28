@@ -1,15 +1,8 @@
 #include "globals.h"
 #include "tree.h"
+#include "kernel.h"
 
-#define WVTNNGB DESNNGB // 145 for WC2 that equals WC6
-
-int Find_ngb_simple ( const int ipart,  const float hsml, int *ngblist );
-int ngblist[NGBMAX] = { 0 }, Ngbcnt ;
-
-static inline float sph_kernel_M4 ( const float r, const float h );
-static inline double sph_kernel_WC2 ( const float r, const float h );
-static inline double sph_kernel_WC6 ( const float r, const float h );
-static inline float gravity_kernel ( const float r, const float h );
+#define WVTNNGB DESNNGB
 
 void writeStepFile ( int it );
 
@@ -301,43 +294,4 @@ void writeStepFile ( int it )
     printf ( "Writing file %s\n", Problem.Name );
     Write_output ( 0 ); // not verbose
     sprintf ( Problem.Name, problem_name );
-}
-
-static inline double sph_kernel_WC2 ( const float r, const float h )
-{
-    const float u = r / h;
-    const float t = 1 - u;
-
-    return 21 / ( 2 * pi ) * t * t * t * t * ( 1 + 4 * u );
-}
-
-static inline float gravity_kernel ( const float r, const float h )
-{
-    const float epsilon = 0.1;
-    const float offset = h / ( h + epsilon );
-    const float val = h / ( r + epsilon ) - offset;
-
-    return val * val;
-}
-
-static inline double sph_kernel_WC6 ( const float r, const float h )
-{
-    const double u = r / h;
-    const double t = 1 - u;
-
-    return 1365.0 / ( 64 * pi ) * t * t * t * t * t * t * t * t * ( 1 + 8 * u + 25 * u * u + 32 * u * u * u );
-}
-
-static inline float sph_kernel_M4 ( const float r, const float h ) // cubic spline
-{
-    double wk = 0;
-    double u = r / h;
-
-    if ( u < 0.5 ) {
-        wk = ( 2.546479089470 + 15.278874536822 * ( u - 1 ) * u * u );
-    } else {
-        wk = 5.092958178941 * ( 1.0 - u ) * ( 1.0 - u ) * ( 1.0 - u );
-    }
-
-    return wk / p3 ( h );
 }
