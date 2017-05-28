@@ -9,6 +9,7 @@ option(SPH_WC2 "Use wendland c2 instead of wendland c6" OFF)
 option(REJECTION_SAMPLING "Use von Neumann rejection sampling to improve initial random positions" ON)
 option(PEANO_SAMPLING "Use peano curve based sampling to improve initial random positions" OFF)
 option(EAT_PNG "Possibility to use .png files as input for density" ON)
+option(TWO_DIM "Set the code to do 2D initial conditions instead of 3D -> z component is set to 0" ON)
 
 if(SAVE_WVT_STEPS)
     add_definitions(-DSAVE_WVT_STEPS)
@@ -37,6 +38,10 @@ if(EAT_PNG)
     add_definitions(${PNG_DEFINITIONS})
 endif(EAT_PNG)
 
+if(TWO_DIM)
+    add_definitions(-DTWO_DIM)
+endif(TWO_DIM)
+
 
 set(SOURCE_FILES
     src/problems/constant_density.c
@@ -61,6 +66,7 @@ set(SOURCE_FILES
     src/readpng.c
     src/external/morton_utils.c
     src/peanowalk.c
+    src/kernel.c
     src/problems/sawtooth.c
     src/problems/tophat.c
     src/problems/sinewave.c

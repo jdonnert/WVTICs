@@ -40,12 +40,20 @@ double bias_correction ( const float h )
 #endif  // SPH_CUBIC_SPLINE
 }
 
+// See [Dehnen & Ali 12]
+
 float sph_kernel_WC6 ( const float r, const float h )
 {
     const double u = r / h;
     const double t = 1 - u;
 
-    return 1365.0 / ( 64 * pi ) / p3 ( h ) * t * t * t * t * t * t * t * t * ( 1 + 8 * u + 25 * u * u + 32 * u * u * u );
+#ifdef TWO_DIM
+    double norm = 78.0 / ( 7 * pi ) / p2 ( h );
+#else
+    double norm = 1365.0 / ( 64 * pi ) / p3 ( h );
+#endif //TWO_DIM
+
+    return norm * t * t * t * t * t * t * t * t * ( 1 + 8 * u + 25 * u * u + 32 * u * u * u );
 }
 
 float sph_kernel_derivative_WC6 ( const float r, const float h )
@@ -53,7 +61,13 @@ float sph_kernel_derivative_WC6 ( const float r, const float h )
     const float u = r / h;
     const double t = 1 - u;
 
-    return 1365.0 / ( 64 * pi ) / ( h * h * h * h ) * -22.0 * t * t * t * t * t * t * t * u * ( 16 * u * u + 7 * u + 1 );
+#ifdef TWO_DIM
+    double norm = 78.0 / ( 7 * pi ) / p2 ( h );
+#else
+    double norm = 1365.0 / ( 64 * pi ) / p3 ( h );
+#endif //TWO_DIM
+
+    return norm / h * -22.0 * t * t * t * t * t * t * t * u * ( 16 * u * u + 7 * u + 1 );
 }
 
 double bias_correction_WC6 ( const float h )
@@ -66,7 +80,13 @@ float sph_kernel_WC2 ( const float r, const float h )
     const double u = r / h;
     const double t = 1 - u;
 
-    return 21.0 / ( 2 * pi ) / p3 ( h ) * t * t * t * t * ( 1 + 4 * u );
+#ifdef TWO_DIM
+    double norm = 7.0 / pi / p2 ( h );
+#else
+    double norm = 21.0 / ( 2 * pi ) / p3 ( h );
+#endif //TWO_DIM
+
+    return norm * t * t * t * t * ( 1 + 4 * u );
 }
 
 float sph_kernel_derivative_WC2 ( const float r, const float h )
@@ -74,38 +94,46 @@ float sph_kernel_derivative_WC2 ( const float r, const float h )
     const float u = r / h;
     const double t = 1 - u;
 
-    return 21.0 / ( 2 * pi ) / ( h * h * h * h ) * -20.0 * t * t * t * u;
+#ifdef TWO_DIM
+    double norm = 7.0 / pi / p2 ( h );
+#else
+    double norm = 21.0 / ( 2 * pi ) / p3 ( h );
+#endif //TWO_DIM
+
+    return norm / h * -20.0 * t * t * t * u;
 }
 
 double bias_correction_WC2 ( const float h )
 {
-    return -0.0294 * pow ( DESNNGB * 0.01, -0.977 ) * Problem.Mpart * sph_kernel_WC2 ( 0, h ); // WC2 (Dehnen+ 12)
+    return -0.0294 * pow ( DESNNGB * 0.01, -0.977 ) * Problem.Mpart * sph_kernel_WC2 ( 0, h );
 }
 
 float sph_kernel_M4 ( const float r, const float h ) // cubic spline
 {
-    double wk = 0;
-    double u = r / h;
+    const double u = r / h;
+    const double t = 1 - u;
+    const double v = ( u > 0.5 ? 0.0 : 0.5 - u );
 
-    if ( u < 0.5 ) {
-        wk = ( 2.546479089470 + 15.278874536822 * ( u - 1 ) * u * u );
-    } else {
-        wk = 5.092958178941 * ( 1.0 - u ) * ( 1.0 - u ) * ( 1.0 - u );
-    }
+#ifdef TWO_DIM
+    double norm = 80.0 / ( 7.0 * pi ) / p2 ( h );
+#else
+    double norm = 16.0 / pi / p3 ( h );
+#endif //TWO_DIM
 
-    return wk / p3 ( h );
+    return norm * ( p3 ( t ) - 4.0 * p3 ( v ) );
 }
 
 float sph_kernel_derivative_M4 ( const float r, const float h )
 {
-    double dwk = 0;
-    double u = r / h;
+    const double u = r / h;
+    const double t = 1 - u;
+    const double v = ( u > 0.5 ? 0.0 : 0.5 - u );
 
-    if ( u < 0.5 ) {
-        dwk = u * ( 45.836623610466 * u - 30.557749073644 );
-    } else {
-        dwk = ( -15.278874536822 ) * ( 1.0 - u ) * ( 1.0 - u );
-    }
+#ifdef TWO_DIM
+    double norm = 80.0 / ( 7.0 * pi ) / p2 ( h );
+#else
+    double norm = 16.0 / pi / p3 ( h );
+#endif //TWO_DIM
 
-    return dwk / ( h * h * h * h );
+    return norm / h * ( -3.0 * p2 ( t ) + 12.0 * p2 ( v ) );
 }

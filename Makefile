@@ -7,6 +7,7 @@ OPT     += -DREJECTION_SAMPLING      # use von Neumann rejection sampling to imp
 #OPT     += -DPEANO_SAMPLING      # use peano curve based sampling to improve initial random positions
 #OPT     += -DSPH_WC2               #wendland c2 kernel
 OPT     += -DEAT_PNG                 # Eat density profile from a png file
+#OPT     += -DTWO_DIM               #2D instead of 3D -> set z component to 0
 
 
 
