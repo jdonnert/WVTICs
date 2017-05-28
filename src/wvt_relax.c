@@ -285,13 +285,13 @@ void writeStepFile ( int it )
     char problem_name[CHARBUFSIZE] = "";
     char wvt_stepnumber[CHARBUFSIZE] = "";
     char wvt_stepname[CHARBUFSIZE] = "";
-    sprintf ( problem_name, Problem.Name );
+    sprintf ( problem_name, "%s", Problem.Name );
 
     strcpy ( wvt_stepname, problem_name );
     sprintf ( wvt_stepnumber, "_%03d", it );
     strcat ( wvt_stepname, wvt_stepnumber );
-    sprintf ( Problem.Name, wvt_stepname );
+    sprintf ( Problem.Name, "%s", wvt_stepname );
     printf ( "Writing file %s\n", Problem.Name );
     Write_output ( 0 ); // not verbose
-    sprintf ( Problem.Name, problem_name );
+    sprintf ( Problem.Name, "%s", problem_name );
 }
