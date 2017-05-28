@@ -5,6 +5,7 @@ void Make_Positions()
     printf ( "Sampling positions ...\n" );
     fflush ( stdout );
 
+    //! @todo do 2D properly in here and peanowalk, too
 #ifdef PEANO_SAMPLING
     const uint64_t countCoords = peanoCurveLength();
     const uint64_t cellSize = peanoCellSize();
@@ -65,7 +66,11 @@ void Make_Positions()
 
             P[ipart].Pos[0] = erand48 ( Omp.Seed ) * Problem.Boxsize[0];
             P[ipart].Pos[1] = erand48 ( Omp.Seed ) * Problem.Boxsize[1];
+#ifdef TWO_DIM
+            P[ipart].Pos[2] = 0.0;
+#else
             P[ipart].Pos[2] = erand48 ( Omp.Seed ) * Problem.Boxsize[2];
+#endif //TWO_DIM
 
             rho = Problem.Rho_Max * erand48 ( Omp.Seed );
             rho_r = Density_Func_Ptr ( ipart );
@@ -73,7 +78,11 @@ void Make_Positions()
 #else
         P[ipart].Pos[0] = erand48 ( Omp.Seed ) * Problem.Boxsize[0];
         P[ipart].Pos[1] = erand48 ( Omp.Seed ) * Problem.Boxsize[1];
+#ifdef TWO_DIM
+        P[ipart].Pos[2] = 0.0;
+#else
         P[ipart].Pos[2] = erand48 ( Omp.Seed ) * Problem.Boxsize[2];
+#endif //TWO_DIM
 #endif //REJECTION_SAMPLING
 
         P[ipart].Type = 0;
@@ -95,6 +104,10 @@ void Make_Velocities()
     for ( int ipart = 0; ipart < Param.Npart; ipart++ ) {
 
         ( *Velocity_Func_Ptr ) ( ipart, P[ipart].Vel );
+
+#ifdef TWO_DIM
+        P[ipart].Vel[2] = 0.0;
+#endif //TWO_DIM
     }
 
     printf ( " done\n" );
@@ -130,6 +143,9 @@ void Make_Magnetic_Fields()
 
         ( *Magnetic_Field_Func_Ptr ) ( ipart, SphP[ipart].Bfld );
 
+#ifdef TWO_DIM
+        SphP[ipart].Bfld[2] = 0.0;
+#endif //TWO_DIM
     }
 
     printf ( " done\n" );

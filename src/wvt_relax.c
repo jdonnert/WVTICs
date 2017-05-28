@@ -54,6 +54,10 @@ void Regularise_sph_particles()
                         Problem.Boxsize[2] / npart_1D / mps_frac
                      } ;
 
+#ifdef TWO_DIM
+    step[2] = 0.0;
+#endif //TWO_DIM
+
     double errLast = DBL_MAX;
     double errDiff = DBL_MAX;
 
