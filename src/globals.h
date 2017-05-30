@@ -45,6 +45,30 @@
 #define CHARBUFSIZE 512        // For any char buffer !
 #define MAXTAGS 300            // In parameter file
 
+#ifdef TWO_DIM
+#ifdef SPH_CUBIC_SPLINE
+
+#define DESNNGB 14         // SPH kernel weighted number of neighbours
+#define NNGBDEV 0.01       // error tolerance in SPH kernel weighted neighb.
+#define NGBMAX (DESNNGB*16)  // size of neighbour list
+
+#else
+
+#ifdef SPH_WC2
+
+#define DESNNGB 16         // SPH kernel weighted number of neighbours
+#define NNGBDEV 0.01       // error tolerance in SPH kernel weighted neighb.
+#define NGBMAX (DESNNGB*8)  // size of neighbour list
+
+#else
+
+#define DESNNGB 44        // SPH kernel weighted number of neighbours
+#define NNGBDEV 0.01       // error tolerance in SPH kernel weighted neighb.
+#define NGBMAX (DESNNGB*8)  // size of neighbour list
+
+#endif // SPH_WC2
+#endif // SPH_CUBIC_SPLINE
+#else
 #ifdef SPH_CUBIC_SPLINE
 
 #define DESNNGB 50         // SPH kernel weighted number of neighbours
@@ -67,6 +91,7 @@
 
 #endif // SPH_WC2
 #endif // SPH_CUBIC_SPLINE
+#endif // TWO_DIM
 
 /* mathematical constants */
 #define pi             M_PI
