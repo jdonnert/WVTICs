@@ -3,6 +3,12 @@
 #include "tree.h"
 #include "kernel.h"
 
+#ifdef TWO_DIM
+#define HSML_FACTOR 1.15
+#else
+#define HSML_FACTOR 1.24
+#endif
+
 extern void Find_sph_quantities()
 {
     Sort_Particles_By_Peano_Key();
@@ -34,14 +40,14 @@ extern void Find_sph_quantities()
 
             if ( ngbcnt == NGBMAX ) { // prevent overflow of ngblist
 
-                hsml /= 1.24;
+                hsml /= HSML_FACTOR;
 
                 continue;
             }
 
             if ( ngbcnt < DESNNGB ) {
 
-                hsml *= 1.23;
+                hsml *= HSML_FACTOR;
 
                 continue;
             }
@@ -50,7 +56,7 @@ extern void Find_sph_quantities()
                                          &hsml, &rho );
 
             if ( ngbcnt < DESNNGB && ( !part_done ) ) {
-                hsml *= 1.24;
+                hsml *= HSML_FACTOR;
             }
 
             if ( part_done ) {
@@ -183,8 +189,8 @@ extern bool Find_hsml ( const int ipart, const int *ngblist, const int ngbcnt,
 
             double fac = 1 - ( wkNgb - DESNNGB ) / ( 3 * wkNgb * omega );
 
-            fac = fmin ( 1.24, fac ); // handle overshoot
-            fac = fmax ( 1 / 1.24, fac );
+            fac = fmin ( HSML_FACTOR, fac ); // handle overshoot
+            fac = fmax ( 1 / HSML_FACTOR, fac );
 
             hsml *= fac;
 
