@@ -47,7 +47,11 @@ void Regularise_sph_particles()
 
     int it = 0;
 
+#ifdef TWO_DIM
+    double npart_1D = pow ( nPart, 1.0 / 2.0 );
+#else
     double npart_1D = pow ( nPart, 1.0 / 3.0 );
+#endif
 
     double step[3] = {  Problem.Boxsize[0] / npart_1D / mps_frac,
                         Problem.Boxsize[1] / npart_1D / mps_frac,
