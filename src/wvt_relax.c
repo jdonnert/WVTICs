@@ -115,14 +115,22 @@ void Regularise_sph_particles()
 
             SphP[ipart].Rho_Model = rho;
 
+#ifdef TWO_DIM
+            hsml[ipart] = pow ( WVTNNGB * Problem.Mpart / rho / pi, 1. / 2. );
+            vSphSum += p2 ( hsml[ipart] );
+#else
             hsml[ipart] = pow ( WVTNNGB * Problem.Mpart / rho / fourpithird, 1. / 3. );
-
             vSphSum += p3 ( hsml[ipart] );
+#endif
 
             max_hsml = max ( max_hsml, hsml[ipart] );
         }
 
+#ifdef TWO_DIM
+        float norm_hsml = pow ( WVTNNGB / vSphSum / pi , 1.0 / 2.0 ) * median_boxsize;
+#else
         float norm_hsml = pow ( WVTNNGB / vSphSum / fourpithird , 1.0 / 3.0 ) * median_boxsize;
+#endif
 
         #pragma omp parallel for
         for ( int ipart = 0; ipart < nPart; ipart++ ) {
@@ -212,7 +220,11 @@ void Regularise_sph_particles()
             float d = sqrt ( p2 ( delta[0][ipart] )
                              + p2 ( delta[1][ipart] ) + p2 ( delta[2][ipart] ) );
 
+#ifdef TWO_DIM
+            float d_mps = pow ( Problem.Mpart / rho / DESNNGB, 1.0 / 2.0 );
+#else
             float d_mps = pow ( Problem.Mpart / rho / DESNNGB, 1.0 / 3.0 );
+#endif
 
             if ( d > 1 * d_mps ) {
                 cnt++;
