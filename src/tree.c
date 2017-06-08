@@ -146,7 +146,11 @@ extern float Guess_hsml ( const size_t ipart, const int DesNumNgb )
     float nodeVol = Tree[node].Size[0] * Tree[node].Size[1] * Tree[node].Size[2];
     float numDens = Tree[node].Npart / nodeVol;
 
+#ifdef TWO_DIM
+    return pow ( pi / numDens, 1. / 2. );
+#else
     return pow ( fourpithird / numDens, 1. / 3. );
+#endif
 }
 
 /* We use the Peano Key, whose triplets represents the tree on every level. */
