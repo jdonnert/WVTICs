@@ -53,14 +53,7 @@ void Regularise_sph_particles()
     double npart_1D = pow ( nPart, 1.0 / 3.0 );
 #endif
 
-    double step[3] = {  Problem.Boxsize[0] / npart_1D / mps_frac,
-                        Problem.Boxsize[1] / npart_1D / mps_frac,
-                        Problem.Boxsize[2] / npart_1D / mps_frac
-                     } ;
-
-#ifdef TWO_DIM
-    step[2] = 0.0;
-#endif //TWO_DIM
+    double step = 1.0 / ( npart_1D * mps_frac );
 
     double errLast = DBL_MAX;
     double errDiff = DBL_MAX;
@@ -103,9 +96,7 @@ void Regularise_sph_particles()
 
         errDiff = ( errLast - errMean ) / errMean;
 
-        printf ( "   #%02d: Err max=%3g mean=%03g diff=%03g"
-                 " step=%g %g %g \n", it, errMax, errMean, errDiff,
-                 step[0], step[1], step[2] );
+        printf ( "   #%02d: Err max=%3g mean=%03g diff=%03g step=%g\n", it, errMax, errMean, errDiff, step );
 
         errLast = errMean;
 
@@ -205,11 +196,14 @@ void Regularise_sph_particles()
                 float r = sqrt ( r2 );
                 float wk = sph_kernel ( r, h );
 
+                // Also 1/3 for 2D since density contrast is not affected by dimensionality
                 const double dens_contrast = pow ( SphP[ipart].Rho_Model / rho_mean, 1 / 3 );
 
-                delta[0][ipart] += step[0] / dens_contrast * hsml[ipart] / boxsize[0] * wk * dx / r ;
-                delta[1][ipart] += step[1] / dens_contrast * hsml[ipart] / boxsize[1] * wk * dy / r ;
-                delta[2][ipart] += step[2] / dens_contrast * hsml[ipart] / boxsize[2] * wk * dz / r ;
+                delta[0][ipart] += step / dens_contrast * hsml[ipart] * wk * dx / r;
+                delta[1][ipart] += step / dens_contrast * hsml[ipart] * wk * dy / r;
+#ifndef TWO_DIM
+                delta[2][ipart] += step / dens_contrast * hsml[ipart] * wk * dz / r;
+#endif
             }
 
         }
@@ -280,9 +274,7 @@ void Regularise_sph_particles()
 
         if ( cnt1 > last_cnt ) { // force convergence if distribution doesnt tighten
 
-            step[0] *= step_red;
-            step[1] *= step_red;
-            step[2] *= step_red;
+            step *= step_red;
         }
 
         last_cnt = cnt1;
