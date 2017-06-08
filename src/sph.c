@@ -146,7 +146,11 @@ extern bool Find_hsml ( const int ipart, const int *ngblist, const int ngbcnt,
             double wk = sph_kernel ( r, hsml );
             double dwk = sph_kernel_derivative ( r, hsml );
 
+#ifdef TWO_DIM
+            wkNgb += pi * wk * p2 ( hsml );
+#else
             wkNgb += fourpithird * wk * p3 ( hsml );
+#endif
 
             rho += Problem.Mpart * wk;
 
