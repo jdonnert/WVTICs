@@ -221,9 +221,9 @@ void Regularise_sph_particles()
                              + p2 ( delta[1][ipart] ) + p2 ( delta[2][ipart] ) );
 
 #ifdef TWO_DIM
-            float d_mps = pow ( Problem.Mpart / rho / DESNNGB, 1.0 / 2.0 );
+            float d_mps = 2.0 * pow ( Problem.Mpart / rho / pi, 1.0 / 2.0 );
 #else
-            float d_mps = pow ( Problem.Mpart / rho / DESNNGB, 1.0 / 3.0 );
+            float d_mps = 2.0 * pow ( Problem.Mpart / rho / fourpithird, 1.0 / 3.0 );
 #endif
 
             if ( d > 1 * d_mps ) {
