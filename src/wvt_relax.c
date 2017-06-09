@@ -213,15 +213,14 @@ void Regularise_sph_particles()
         #pragma omp parallel for shared(delta,P) reduction(+:cnt,cnt1,cnt2)
         for ( int ipart = 0; ipart < nPart; ipart++ ) { // move particles
 
-            float rho = ( *Density_Func_Ptr ) ( ipart );
+            const float d = sqrt ( p2 ( delta[0][ipart] ) + p2 ( delta[1][ipart] ) + p2 ( delta[2][ipart] ) );
 
-            float d = sqrt ( p2 ( delta[0][ipart] )
-                             + p2 ( delta[1][ipart] ) + p2 ( delta[2][ipart] ) );
+            const float h = SphP[ipart].Hsml;
 
 #ifdef TWO_DIM
-            float d_mps = 2.0 * pow ( Problem.Mpart / rho / pi, 1.0 / 2.0 );
+            float d_mps = pow ( pi * p2 ( h ) / DESNNGB, 1.0 / 3.0 );
 #else
-            float d_mps = 2.0 * pow ( Problem.Mpart / rho / fourpithird, 1.0 / 3.0 );
+            float d_mps = pow ( fourpithird * p3 ( h ) / DESNNGB, 1.0 / 3.0 );
 #endif
 
             if ( d > 1 * d_mps ) {
@@ -273,7 +272,6 @@ void Regularise_sph_particles()
         }
 
         if ( cnt1 > last_cnt ) { // force convergence if distribution doesnt tighten
-
             step *= step_red;
         }
 
