@@ -22,7 +22,7 @@ float Sod_Shock_Density ( const int ipart )
 {
     const double rhoLeft = 1.0, rhoRight = 0.125;
 
-    if ( P[ipart].Pos[0] <= Problem.Boxsize[0] ) {
+    if ( P[ipart].Pos[0] <= 0.5*Problem.Boxsize[0] ) {
         return rhoLeft;
     } else {
         return rhoRight;
@@ -35,7 +35,7 @@ float Sod_Shock_U ( const int ipart )
     const double rhoLeft = 1.0, rhoRight = 0.125;
     const double pLeft = 1.0, pRight = 0.1;
 
-    if ( P[ipart].Pos[0] <= Problem.Boxsize[0] ) {
+    if ( P[ipart].Pos[0] <= 0.5*Problem.Boxsize[0] ) {
         return pLeft / ( gamma - 1.0 ) / rhoLeft;
     } else {
         return pRight / ( gamma - 1.0 ) / rhoRight;
