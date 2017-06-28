@@ -2,8 +2,8 @@ Npart      250000
 
 % Problem
 
-Problem_Flag 2
-Problem_Subflag 0
+Problem_Flag 4
+Problem_Subflag 9
 
 PNG_Filename logos/DarthVader.png
 
@@ -24,15 +24,16 @@ PNG_Filename logos/DarthVader.png
 %	1 - Mach 3
 %	2 - Mach 4
 % 4 - Classical hydrodynamics tests
-%   0 - Sod Shock                       (not tested yet)
+%   0 - Sod Shock                       (tested, density for the high density region is very noisy)
 %   1 - Sedov Blast                     (not fully implemented yet)
-%   2 - Kelving-Helmholtz Instability   (not tested yet)
+%   2 - Kelvin-Helmholtz Instability    (tested, looks good)
 %   3 - Keplerian Ring                  (not implemented yet)
 %   4 - Cold Blob                       (not implemented yet)
 %   5 - Hydrostatic Sphere              (not implemented yet)
 %   6 - Evrard Collapse                 (not implemented yet)
 %   7 - Zel'dovic Pancake               (not implemented yet)
 %   8 - Box                             (not implemented yet)
+%   9 - Gresho-Vortex  			(tested, looks good)
 % 5 - Classical magnetohydrodynamics tests
 %   1 - Ryu Jones Shocktubes            (not implemented yet)
 %   2 - Fast Rotor                      (not implemented yet)

@@ -117,10 +117,13 @@ void setup_problem ( const int Flag, const int Subflag )
         case 2:
             setup_Kelvin_Helmholtz_Instability();
             break;
+	case 9:
+            setup_Gresho_Vortex();
+            break;
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
             break;
-        }
+	}
         break;
 
     case 5:
@@ -134,6 +137,7 @@ void setup_problem ( const int Flag, const int Subflag )
     default:
         Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
         break;
+
     }
 
     Assert ( Problem.Boxsize[0] >= Problem.Boxsize[1] &&
