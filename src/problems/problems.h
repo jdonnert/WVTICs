@@ -43,7 +43,7 @@ void Kelvin_Helmholtz_Instability_Velocity ( const int ipart, float out[3] );
 
 void setup_Gresho_Vortex();
 float Gresho_Vortex_Density ( const int ipart );
-float Gresho_Vortex_Velocity ( const int ipart, float out[3] ); 
+void Gresho_Vortex_Velocity ( const int ipart, float out[3] ); 
 float Gresho_Vortex_U ( const int ipar );
 
 void setup_User_Density ( const int subflag );
