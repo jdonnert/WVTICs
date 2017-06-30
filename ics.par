@@ -1,4 +1,4 @@
-Npart      100000
+Npart      25000
 
 % Convergence of relaxation
 
@@ -21,7 +21,7 @@ LastMoveStep 256
 % Problem
 
 Problem_Flag 4
-Problem_Subflag 9
+Problem_Subflag 8
 
 PNG_Filename logos/DarthVader.png
 
@@ -50,7 +50,7 @@ PNG_Filename logos/DarthVader.png
 %   5 - Hydrostatic Sphere              (not implemented yet)
 %   6 - Evrard Collapse                 (not implemented yet)
 %   7 - Zel'dovic Pancake               (not implemented yet)
-%   8 - Box                             (not implemented yet)
+%   8 - Box                             (tested, some issues because it is a 2d test set up for three dimensions...)
 %   9 - Gresho-Vortex  			(tested, looks good)
 % 5 - Classical magnetohydrodynamics tests
 %   1 - Ryu Jones Shocktubes            (not implemented yet)
