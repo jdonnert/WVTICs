@@ -64,9 +64,9 @@ float Box_U ( const int ipart )
     const double pressure = 2.5;
 
     if ( isInnerBox ( ipart ) ) {
-        return pressure / ( gamma - 1 ) * rho1;
+        return pressure / ( gamma - 1 ) / rho1;
     } else {
-        return pressure / ( gamma - 1 ) * rho2;
+        return pressure / ( gamma - 1 ) / rho2;
     }
 }
 
