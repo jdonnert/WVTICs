@@ -130,8 +130,16 @@ void setup_problem ( const int Flag, const int Subflag )
         break;
 
     case 5:
-        Assert ( false, "MHD tests not implemented yet", Flag, Subflag );
+        switch ( Subflag ) {
+        case 4:
+            setup_Orszag_Tang_Vortex();
+            break;
+        default:
+            Assert ( false, "MHD tests not implemented yet", Flag, Subflag );
+            break;
+        }
         break;
+
 
     case 6:
         setup_User_Density ( Subflag );
