@@ -44,13 +44,20 @@ void Kelvin_Helmholtz_Instability_Velocity ( const int ipart, float out[3] );
 void setup_Gresho_Vortex();
 float Gresho_Vortex_Density ( const int ipart );
 void Gresho_Vortex_Velocity ( const int ipart, float out[3] );
-float Gresho_Vortex_U ( const int ipar );
+float Gresho_Vortex_U ( const int ipart );
 
 void setup_Box();
 bool isInnerBox ( const int ipart );
 float Box_Density ( const int ipart );
 void Box_Velocity ( const int ipart, float out[3] );
 float Box_U ( const int ipar );
+
+void setup_Orszag_Tang_Vortex();
+float Orszag_Tang_Vortex_Density ( const int ipart );
+void Orszag_Tang_Vortex_Velocity ( const int ipart, float out[3] );
+void Orszag_Tang_Vortex_Magnetic_Field ( const int ipart, float out[3] );
+float Orszag_Tang_Vortex_U ( const int ipart );
+
 
 void setup_User_Density ( const int subflag );
 float User_Density ( const int ipart );
