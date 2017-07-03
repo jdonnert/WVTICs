@@ -131,6 +131,9 @@ void setup_problem ( const int Flag, const int Subflag )
 
     case 5:
         switch ( Subflag ) {
+        case 2:
+            setup_Rotor();
+            break;
         case 4:
             setup_Orszag_Tang_Vortex();
             break;

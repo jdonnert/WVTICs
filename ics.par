@@ -2,8 +2,8 @@ Npart      25000
 
 % Problem
 
-Problem_Flag 4
-Problem_Subflag 8
+Problem_Flag 5
+Problem_Subflag 2
 
 PNG_Filename logos/DarthVader.png
 
@@ -36,10 +36,11 @@ PNG_Filename logos/DarthVader.png
 %   9 - Gresho-Vortex  			(tested, looks good)
 % 5 - Classical magnetohydrodynamics tests
 %   1 - Ryu Jones Shocktubes            (not implemented yet)
-%   2 - Fast Rotor                      (not implemented yet)
+%   2 - Fast Rotor                      (tested, seems to work)
 %   3 - Strong Blast                    (not implemented yet)
-%   4 - Orszang-Tang Vortex             (not implemented yet)
+%   4 - Orszang-Tang Vortex             (tested, looks good)
 %   5 - Linear Alfvén Wave              (not implemented yet)
 %   6 - Rayleigh-Taylor Instability     (not implemented yet)
+%   7 - Brio Wu Schocktubes		(not implemented yet)
 % 6 - Custom user defined ics
 %   X - All which you define in user.c
