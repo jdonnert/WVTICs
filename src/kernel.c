@@ -73,7 +73,11 @@ float sph_kernel_derivative_WC6 ( const float r, const float h )
 
 double bias_correction_WC6 ( const float h )
 {
+#ifdef TWO_DIM
+    return 0.0;
+#else
     return -0.0116 * pow ( DESNNGB * 0.01, -2.236 ) * Problem.Mpart * sph_kernel_WC6 ( 0, h );
+#endif //TWO_DIM
 }
 
 float sph_kernel_WC2 ( const float r, const float h )
@@ -106,7 +110,11 @@ float sph_kernel_derivative_WC2 ( const float r, const float h )
 
 double bias_correction_WC2 ( const float h )
 {
+#ifdef TWO_DIM
+    return 0.0;
+#else
     return -0.0294 * pow ( DESNNGB * 0.01, -0.977 ) * Problem.Mpart * sph_kernel_WC2 ( 0, h );
+#endif //TWO_DIM
 }
 
 float sph_kernel_M4 ( const float r, const float h ) // cubic spline
