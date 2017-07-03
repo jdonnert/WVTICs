@@ -70,7 +70,10 @@ set(SOURCE_FILES
         src/problems/user.c
         src/problems/sodshock.c
         src/problems/sedov.c
-        src/problems/kelvin_helmholtz.c)
+        src/problems/kelvin_helmholtz.c
+        src/problems/box.c
+        src/problems/gresho.c
+        src/problems/orszag_tang.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
