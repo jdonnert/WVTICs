@@ -60,10 +60,6 @@ void Gresho_Vortex_Velocity ( const int ipart, float out[3] )
         out[1] = 0.;
         out[2] = 0.;
     }
-
-
-
-
 }
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
