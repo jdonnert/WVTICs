@@ -62,5 +62,3 @@ float Orszag_Tang_Vortex_U ( const int ipart )
     return pressure / ( gamma - 1 ) / rho;
 }
 
-/* Just a note at the end, the Orszag-Tang-Vortex is in general a twodimensional testcase.
-
