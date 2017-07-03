@@ -52,12 +52,18 @@ float Box_Density ( const int ipart );
 void Box_Velocity ( const int ipart, float out[3] );
 float Box_U ( const int ipar );
 
+void setup_Rotor();
+float Rotor_Density ( const int ipart );
+void Rotor_Velocity ( const int ipart, float out[3] );
+void Rotor_Magnetic_Field ( const int ipart, float out[3] );
+float Rotor_U ( const int ipart );
+
+
 void setup_Orszag_Tang_Vortex();
 float Orszag_Tang_Vortex_Density ( const int ipart );
 void Orszag_Tang_Vortex_Velocity ( const int ipart, float out[3] );
 void Orszag_Tang_Vortex_Magnetic_Field ( const int ipart, float out[3] );
 float Orszag_Tang_Vortex_U ( const int ipart );
-
 
 void setup_User_Density ( const int subflag );
 float User_Density ( const int ipart );
