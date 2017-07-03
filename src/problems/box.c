@@ -6,7 +6,7 @@ void setup_Box()
     Problem.Boxsize[1] = 1.0;
     Problem.Boxsize[2] = 0.1;
 
-    sprintf ( Problem.Name, "Box" );
+    sprintf ( Problem.Name, "IC_Box" );
 
     const double rho1 = 4.0;
     const double rho2 = 1.0;
