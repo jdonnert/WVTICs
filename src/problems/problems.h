@@ -58,6 +58,10 @@ void Rotor_Velocity ( const int ipart, float out[3] );
 void Rotor_Magnetic_Field ( const int ipart, float out[3] );
 float Rotor_U ( const int ipart );
 
+void setup_Evrard_Collapse();
+float Evrard_Collapse_Density ( const int ipart );
+void Evrard_Collapse_Velocity ( const int ipart, float out[3] );
+float Evrard_Collapse_U ( const int ipart );
 
 void setup_Orszag_Tang_Vortex();
 float Orszag_Tang_Vortex_Density ( const int ipart );
