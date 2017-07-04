@@ -14,7 +14,7 @@ LimitMps1000 1
 % Problem
 
 Problem_Flag 4
-Problem_Subflag 6
+Problem_Subflag 4
 
 PNG_Filename logos/DarthVader.png
 
@@ -39,7 +39,7 @@ PNG_Filename logos/DarthVader.png
 %   1 - Sedov Blast                     (not fully implemented yet)
 %   2 - Kelvin-Helmholtz Instability    (tested, looks good)
 %   3 - Keplerian Ring                  (not implemented yet)
-%   4 - Cold Blob                       (not implemented yet)
+%   4 - Cold Blob                       (nearly finished)
 %   5 - Hydrostatic Sphere              (not implemented yet)
 %   6 - Evrard Collapse                 (tested, but rejection sampling fails because of inf density)
 %   7 - Zel'dovic Pancake               (not implemented yet)

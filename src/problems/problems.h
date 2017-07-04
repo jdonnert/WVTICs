@@ -46,6 +46,12 @@ float Gresho_Vortex_Density ( const int ipart );
 void Gresho_Vortex_Velocity ( const int ipart, float out[3] );
 float Gresho_Vortex_U ( const int ipart );
 
+void setup_Blob();
+float Blob_Density ( const int ipart );
+void Blob_Velocity ( const int ipart, float out[3] );
+float Blob_U ( const int ipart );
+
+
 void setup_Box();
 bool isInnerBox ( const int ipart );
 float Box_Density ( const int ipart );
