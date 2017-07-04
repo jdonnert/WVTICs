@@ -117,6 +117,9 @@ void setup_problem ( const int Flag, const int Subflag )
         case 2:
             setup_Kelvin_Helmholtz_Instability();
             break;
+        case 6:
+            setup_Evrard_Collapse();
+            break;
         case 8:
             setup_Box();
             break;
