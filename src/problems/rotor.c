@@ -36,10 +36,10 @@ float Rotor_Density ( const int ipart )
 void Rotor_Velocity ( const int ipart, float out[3] )
 {
 
-    double const x = P[ipart].Pos[0];
-    double const y = P[ipart].Pos[1];
+    double const x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
+    double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
 
-    double Radius = sqrt ( P[ipart].Pos[0] * P[ipart].Pos[0] + P[ipart].Pos[1] * P[ipart].Pos[1] );
+    double Radius = sqrt ( x * x + y * y );
 
     if ( Radius > 0 && Radius <= 0.1 ) {
         out[0] = -2 * y / 0.1;
