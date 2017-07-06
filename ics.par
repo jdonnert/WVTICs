@@ -21,7 +21,7 @@ LastMoveStep 256
 % Problem
 
 Problem_Flag 4
-Problem_Subflag 4
+Problem_Subflag 7
 
 PNG_Filename logos/DarthVader.png
 
@@ -49,7 +49,7 @@ PNG_Filename logos/DarthVader.png
 %   4 - Cold Blob                       (nearly finished)
 %   5 - Hydrostatic Sphere              (not implemented yet)
 %   6 - Evrard Collapse                 (tested, but rejection sampling fails because of inf density)
-%   7 - Zel'dovic Pancake               (not implemented yet)
+%   7 - Zel'dovic Pancake               (in principle implemented)
 %   8 - Box                             (tested, some issues because it is a 2d test set up for three dimensions...)
 %   9 - Gresho-Vortex  			(tested, looks good)
 % 5 - Classical magnetohydrodynamics tests
