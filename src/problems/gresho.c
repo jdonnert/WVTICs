@@ -71,11 +71,11 @@ float Gresho_Vortex_U ( const int ipart )
     double Radius = sqrt ( P[ipart].Pos[0] * P[ipart].Pos[0] + P[ipart].Pos[1] * P[ipart].Pos[1] );
 
     if ( Radius < 0.2 ) {
-        return ( 5 + 12 * Radius * Radius ) / ( gamma - 1 ) * rho;
+        return ( 5 + 12 * Radius * Radius ) / ( gamma - 1 ) / rho;
     } else if (  Radius < 0.4 ) {
-        return ( 9 + 12 * Radius * Radius ) / ( gamma - 1 ) * rho;
+        return ( 9 + 12 * Radius * Radius ) / ( gamma - 1 ) / rho;
     } else {
-        return ( 3 + 4 * log ( 2 ) ) / ( gamma - 1 ) * rho;
+        return ( 3 + 4 * log ( 2 ) ) / ( gamma - 1 ) / rho;
     }
 }
 
