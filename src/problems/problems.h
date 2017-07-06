@@ -51,6 +51,10 @@ float Blob_Density ( const int ipart );
 void Blob_Velocity ( const int ipart, float out[3] );
 float Blob_U ( const int ipart );
 
+void setup_Zeldovich_Pancake();
+float Zeldovich_Pancake_Density ( const int ipart );
+void Zeldovich_Pancake_Velocity ( const int ipart, float out[3] );
+float Zeldovich_Pancake_U ( const int ipart );
 
 void setup_Box();
 bool isInnerBox ( const int ipart );

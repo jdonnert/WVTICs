@@ -124,6 +124,9 @@ void setup_problem ( const int Flag, const int Subflag )
         case 6:
             setup_Evrard_Collapse();
             break;
+        case 7:
+            setup_Zeldovich_Pancake();
+            break;
         case 8:
             setup_Box();
             break;
