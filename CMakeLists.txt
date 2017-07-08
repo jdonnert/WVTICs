@@ -42,6 +42,8 @@ if(TWO_DIM)
     add_definitions(-DTWO_DIM)
 endif(TWO_DIM)
 
+message(STATUS "Compiling with ${CMAKE_CXX_FLAGS}")
+
 
 set(SOURCE_FILES
     src/problems/constant_density.c
