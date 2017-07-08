@@ -134,6 +134,7 @@ void Regularise_sph_particles()
         }
 
         float norm_hsml = pow ( WVTNNGB / vSphSum / fourpithird , 1.0 / 3.0 ) * median_boxsize;
+        printf ( "Norm hsml: %g\n", norm_hsml );
 
         #pragma omp parallel for
         for ( int ipart = 0; ipart < nPart; ipart++ ) {
@@ -216,7 +217,7 @@ void Regularise_sph_particles()
 #endif
 #endif
 #endif
-                printf ( "Particle %d ngb %d distance: %g; kernel: %g \n", ipart, i, r, wk );
+                printf ( "Particle %d ngb %d distance: %g; hsml: %g; kernel: %g \n", ipart, i, r, h, wk );
                 exit ( 1 );
 
                 const double dens_contrast = pow ( SphP[ipart].Rho_Model / rho_mean, 1 / 3 );
