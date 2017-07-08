@@ -33,6 +33,11 @@ int main ( int argc, char *argv[] )
 
         if ( Omp.ThreadID == 0 ) {
             printf ( "Running with %d Threads\n", Omp.NThreads );
+#ifdef TWO_DIM
+            printf ( "Running in two dimensions\n" );
+#else
+            printf ( "Running in three dimensions\n" );
+#endif
         }
 
     } // omp parallel
