@@ -3,7 +3,8 @@ Npart      250000
 % Convergence
 
 Maxiter 256
-MpsFraction 5.0
+% Recommended 5.0 for 3D and 0.1 for 2D
+MpsFraction 0.1
 StepReduction 0.95
 LimitMps -1
 LimitMps10 -1
