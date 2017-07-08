@@ -14,11 +14,6 @@ void writeStepFile ( int it );
 
 void Regularise_sph_particles()
 {
-    const int maxiter = 256;
-    const double mps_frac = 5; 		// move this fraction of the mean particle sep
-    const double step_red = 0.95; 	// force convergence at this rate
-    const double bin_limits[4] = { -1, -1, -1, 1};
-
     const int nPart = Param.Npart;
 
     const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
@@ -29,8 +24,8 @@ void Regularise_sph_particles()
     const double median_boxsize = fmax ( boxsize[1], boxsize[2] ); // boxsize[0] is largest
 
     printf ( "Starting iterative SPH regularisation \n"
-             "   Maxiter=%d, mps_frac=%g step_red=%g bin_limits=(%g,%g,%g,%g)\n\n",
-             maxiter, mps_frac, step_red, bin_limits[0], bin_limits[1], bin_limits[2], bin_limits[3] );
+             "   Maxiter=%d, MpsFraction=%g StepReduction=%g LimitMps=(%g,%g,%g,%g)\n\n",
+             Param.Maxiter, Param.MpsFraction, Param.StepReduction, Param.LimitMps[0], Param.LimitMps[1], Param.LimitMps[2], Param.LimitMps[3] );
     fflush ( stdout );
 
     float *hsml = NULL;
@@ -53,7 +48,7 @@ void Regularise_sph_particles()
     double npart_1D = pow ( nPart, 1.0 / 3.0 );
 #endif
 
-    double step = 1.0 / ( npart_1D * mps_frac );
+    double step = 1.0 / ( npart_1D * Param.MpsFraction );
 
     double errLast = DBL_MAX;
     double errDiff = DBL_MAX;
@@ -67,7 +62,7 @@ void Regularise_sph_particles()
 
         Find_sph_quantities();
 
-        if ( it++ > maxiter ) {
+        if ( it++ > Param.Maxiter ) {
             break;
         }
 
@@ -278,15 +273,15 @@ void Regularise_sph_particles()
                  cnt2 * 100. / Param.Npart,
                  cnt3 * 100. / Param.Npart );
 
-        if (   ( cnt * 100. / Param.Npart < bin_limits[0] )
-                || ( cnt1 * 100. / Param.Npart < bin_limits[1] )
-                || ( cnt2 * 100. / Param.Npart < bin_limits[2] )
-                || ( cnt3 * 100. / Param.Npart < bin_limits[3] ) ) {
+        if (   ( cnt * 100. / Param.Npart < Param.LimitMps[0] )
+                || ( cnt1 * 100. / Param.Npart < Param.LimitMps[1] )
+                || ( cnt2 * 100. / Param.Npart < Param.LimitMps[2] )
+                || ( cnt3 * 100. / Param.Npart < Param.LimitMps[3] ) ) {
             break;
         }
 
         if ( cnt1 > last_cnt ) { // force convergence if distribution doesnt tighten
-            step *= step_red;
+            step *= Param.StepReduction;
         }
 
         last_cnt = cnt1;

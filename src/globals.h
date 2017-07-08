@@ -110,6 +110,10 @@ extern struct OpenMP_infos {
 
 extern struct Parameters {
     int Npart;
+    int Maxiter;
+    double MpsFraction; // move this fraction of the mean particle sep
+    double StepReduction; // force convergence at this rate
+    double LimitMps[4];
     int Problem_Flag;
     int Problem_Subflag;
 } Param;

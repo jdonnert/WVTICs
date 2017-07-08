@@ -1,5 +1,15 @@
 Npart      250000
 
+% Convergence
+
+Maxiter 256
+MpsFraction 5.0
+StepReduction 0.95
+LimitMps -1
+LimitMps10 -1
+LimitMps100 -1
+LimitMps1000 1
+
 % Problem
 
 Problem_Flag 2
