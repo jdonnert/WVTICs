@@ -10,6 +10,7 @@ option(REJECTION_SAMPLING "Use von Neumann rejection sampling to improve initial
 option(PEANO_SAMPLING "Use peano curve based sampling to improve initial random positions" OFF)
 option(EAT_PNG "Possibility to use .png files as input for density" ON)
 option(TWO_DIM "Set the code to do 2D initial conditions instead of 3D -> z component is set to 0" ON)
+option(BRUTE_FORCE_NGB "Use a brute force neighbour finder instead of the tree based one" OFF)
 
 if(SAVE_WVT_STEPS)
     add_definitions(-DSAVE_WVT_STEPS)
@@ -41,6 +42,10 @@ endif(EAT_PNG)
 if(TWO_DIM)
     add_definitions(-DTWO_DIM)
 endif(TWO_DIM)
+
+if(BRUTE_FORCE_NGB)
+    add_definitions(-DBRUTE_FORCE_NGB)
+endif(BRUTE_FORCE_NGB)
 
 message(STATUS "Compiling with ${CMAKE_CXX_FLAGS}")
 

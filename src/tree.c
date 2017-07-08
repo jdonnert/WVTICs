@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "tree.h"
 
 #define NODES_PER_PARTICLE 2
 
@@ -22,7 +23,15 @@ static void create_node_from_particle ( const int ipart, const int parent,
 void gravity_tree_init();
 int Level ( const int node );
 
-int Find_ngb_simple ( const int ipart,  const float hsml, int *ngblist );
+int Find_ngb ( const int ipart, const float hsml, int ngblist[NGBMAX] )
+{
+#ifdef BRUTE_FORCE_NGB
+    return Find_ngb_simple ( ipart, hsml, ngblist );
+#else
+    return Find_ngb_tree ( ipart, hsml, ngblist );
+#endif
+}
+
 int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] )
 {
     const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
@@ -369,7 +378,7 @@ void gravity_tree_init()
     return ;
 }
 
-int Find_ngb_simple ( const int ipart, const float hsml, int *ngblist )
+int Find_ngb_simple ( const int ipart, const float hsml, int ngblist[NGBMAX] )
 {
     const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
                                 Problem.Boxsize[2]

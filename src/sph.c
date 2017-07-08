@@ -34,9 +34,7 @@ extern void Find_sph_quantities()
         for ( ;; ) {
 
             int ngblist[NGBMAX] = { 0 };
-
-            // int ngbcnt = Find_ngb_simple(ipart, hsml, ngblist);
-            int ngbcnt = Find_ngb_tree ( ipart, hsml, ngblist );
+            int ngbcnt = Find_ngb ( ipart, hsml, ngblist );
 
             if ( ngbcnt == NGBMAX ) { // prevent overflow of ngblist
 
