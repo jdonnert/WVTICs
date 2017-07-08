@@ -83,21 +83,22 @@ set(SOURCE_FILES
         src/external/morton_utils.c
         src/peanowalk.c
     	src/kernel.c
+        src/problems/png.c
+    	src/diagnostics.c
+    	src/redistribution.c
         src/problems/sawtooth.c
         src/problems/tophat.c
         src/problems/sinewave.c
         src/problems/gradient.c
         src/problems/doubleshock.c
-        src/problems/png.c
-    	src/diagnostics.c
-    	src/redistribution.c
         src/problems/user.c
         src/problems/sodshock.c
         src/problems/sedov.c
         src/problems/kelvin_helmholtz.c
         src/problems/box.c
         src/problems/gresho.c
-        src/problems/orszag_tang.c)
+        src/problems/orszag_tang.c
+        src/problems/rotor.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
