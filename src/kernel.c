@@ -47,6 +47,22 @@ float sph_kernel_WC6 ( const float r, const float h )
 
     return 1365.0 / ( 64 * pi ) / p3 ( h ) * t * t * t * t * t * t * t * t * ( 1 + 8 * u + 25 * u * u + 32 * u * u * u );
 }
+/*
+ * //WVTICS kernel:
+const double u = r / h;
+const double t = 1 - u;
+
+return 1365.0 / ( 64 * pi ) * t * t * t * t * t * t * t * t * ( 1 + 8 * u + 25 * u * u + 32 * u * u * u );
+
+ //SPH kernel:
+const double u = r / h;
+const double t = 1 - u;
+
+return 1365.0 / ( 64 * pi ) / p3 ( h ) * t * t * t * t * t * t * t * t * ( 1 + 8 * u + 25 * u * u + 32 * u * u * u );
+
+
+DIFFERENCE IN p3(h)!!!!!
+ */
 
 float sph_kernel_derivative_WC6 ( const float r, const float h )
 {

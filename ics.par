@@ -1,9 +1,9 @@
-Npart      250000
+Npart      1000
 
 % Problem
 
-Problem_Flag 2
-Problem_Subflag 0
+Problem_Flag 0
+Problem_Subflag 1
 
 PNG_Filename logos/DarthVader.png
 

@@ -23,6 +23,7 @@ int main ( int argc, char *argv[] )
 {
     printf ( "--- This is %s, Version %s ---\n", PROG_NAME, VERSION );
 
+    omp_set_num_threads ( 1 );
     #pragma omp parallel
     {
 

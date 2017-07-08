@@ -1,15 +1,23 @@
 #include "globals.h"
 #include "tree.h"
 
+//#define USEKERNELC
+
+#ifdef USEKERNELC
+#include "kernel.h"
+#endif
+
 #define WVTNNGB DESNNGB // 145 for WC2 that equals WC6
 
 int Find_ngb_simple ( const int ipart,  const float hsml, int *ngblist );
 int ngblist[NGBMAX] = { 0 }, Ngbcnt ;
 
+#ifndef USEKERNELC
 static inline float sph_kernel_M4 ( const float r, const float h );
 static inline double sph_kernel_WC2 ( const float r, const float h );
 static inline double sph_kernel_WC6 ( const float r, const float h );
 static inline float gravity_kernel ( const float r, const float h );
+#endif
 
 void writeStepFile ( int it );
 
@@ -195,6 +203,9 @@ void Regularise_sph_particles()
 
                 float r = sqrt ( r2 );
 
+#ifdef USEKERNELC
+                float wk = sph_kernel ( r, h );
+#else
 #ifdef SPH_CUBIC_SPLINE
                 float wk = sph_kernel_M4 ( r, h );
 #else
@@ -204,6 +215,9 @@ void Regularise_sph_particles()
                 float wk = sph_kernel_WC6 ( r, h );
 #endif
 #endif
+#endif
+                printf ( "Particle %d ngb %d distance: %g; kernel: %g \n", ipart, i, r, wk );
+                exit ( 1 );
 
                 const double dens_contrast = pow ( SphP[ipart].Rho_Model / rho_mean, 1 / 3 );
 
@@ -312,6 +326,7 @@ void writeStepFile ( int it )
     sprintf ( Problem.Name, problem_name );
 }
 
+#ifndef USEKERNELC
 static inline double sph_kernel_WC2 ( const float r, const float h )
 {
     const float u = r / h;
@@ -337,7 +352,7 @@ static inline double sph_kernel_WC6 ( const float r, const float h )
     return 1365.0 / ( 64 * pi ) * t * t * t * t * t * t * t * t * ( 1 + 8 * u + 25 * u * u + 32 * u * u * u );
 }
 
-static inline float sph_kernel_M4 ( const float r, const float h ) // cubic spline
+static inline float _M4 ( const float r, const float h ) // cubic spline
 {
     double wk = 0;
     double u = r / h;
@@ -350,3 +365,4 @@ static inline float sph_kernel_M4 ( const float r, const float h ) // cubic spli
 
     return wk / p3 ( h );
 }
+#endif

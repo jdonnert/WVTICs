@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(WVTICs)
 
-set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -std=c99 -O2 -Wall -fopenmp")
+set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -std=c99 -O0 -g -Wall -fopenmp")
 
 option(SAVE_WVT_STEPS "Save every relaxation step to file" ON)
 option(SPH_CUBIC_SPLINE "Use cubic spline instead of wendland c6" OFF)
@@ -61,6 +61,7 @@ set(SOURCE_FILES
     src/readpng.c
     src/external/morton_utils.c
     src/peanowalk.c
+    src/kernel.c
     src/problems/sawtooth.c
     src/problems/tophat.c
     src/problems/sinewave.c
