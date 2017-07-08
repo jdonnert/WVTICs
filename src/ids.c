@@ -14,33 +14,36 @@ void Make_IDs()
 
     size_t delta = 127;
 
-    for ( ;; )
-        if ( ( Param.Npart % ++delta ) == 0 ) {
+    for ( ;; ) {
+        if ( ( Param.Npart % ++delta ) == 0 || delta > Param.Npart ) {
             break;
         }
+    }
 
+    if ( delta > Param.Npart ) {
+        delta = 1;
+    }
 
     printf ( " ID spacing is %zu ...", delta );
     fflush ( stdout );
 
-    int id = 1 - delta, start = 1;
+    if ( delta > 1 ) {
+        int id = 1 - delta, start = 1;
 
-    for ( int ipart = 0; ipart < Param.Npart; ipart++ ) {
+        for ( int ipart = 0; ipart < Param.Npart; ipart++ ) {
 
-        id += delta;
+            id += delta;
+            if ( id > Param.Npart ) {
+                start++;
+                id = start;
+            }
 
-        if ( id > Param.Npart ) {
-
-            start++;
-
-            id = start;
+            P[ipart].ID = id;
         }
-
-        P[ipart].ID = id;
     }
 
     printf ( " done\n\n" );
     fflush ( stdout );
 
-    return ;
+    return;
 }

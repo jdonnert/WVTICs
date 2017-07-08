@@ -1,4 +1,15 @@
-Npart      250000
+Npart      100000
+
+% Convergence
+
+Maxiter 512
+% Recommended like 5.0 for 3D and 0.1 for 2D
+MpsFraction 5.0
+StepReduction 0.95
+LimitMps -1
+LimitMps10 -1
+LimitMps100 -1
+LimitMps1000 1
 
 % Problem
 

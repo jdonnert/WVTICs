@@ -148,9 +148,11 @@ void zero_function_vec ( const int ipart, float out[3] )
 void mpart_from_integral()
 {
     const int N = 1ULL << 9;
-    const double dx = Problem.Boxsize[0] / N,
-                 dy = Problem.Boxsize[1] / N,
-                 dz = Problem.Boxsize[2] / N;
+    const double dx = Problem.Boxsize[0] / N;
+    const double dy = Problem.Boxsize[1] / N;
+#ifndef TWO_DIM
+    const double dz = Problem.Boxsize[2] / N;
+#endif
 
     double tot_mass = 0.0;
 
@@ -160,11 +162,15 @@ void mpart_from_integral()
         for ( int j = 0; j < N; j++ ) {
             P[0].Pos[1] = ( j + 0.5 ) * dy;
 
+#ifdef TWO_DIM
+            P[0].Pos[2] = 0.0;
+            tot_mass += Density_Func_Ptr ( 0 ) * dx * dy;
+#else
             for ( int k = 0; k < N; k++ ) {
                 P[0].Pos[2] = ( k + 0.5 ) * dz;
-
                 tot_mass += Density_Func_Ptr ( 0 ) * dx * dy * dz;
             }
+#endif
         }
     }
 

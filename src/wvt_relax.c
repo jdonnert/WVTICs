@@ -1,15 +1,8 @@
 #include "globals.h"
 #include "tree.h"
+#include "kernel.h"
 
-#define WVTNNGB DESNNGB // 145 for WC2 that equals WC6
-
-int Find_ngb_simple ( const int ipart,  const float hsml, int *ngblist );
-int ngblist[NGBMAX] = { 0 }, Ngbcnt ;
-
-static inline float sph_kernel_M4 ( const float r, const float h );
-static inline double sph_kernel_WC2 ( const float r, const float h );
-static inline double sph_kernel_WC6 ( const float r, const float h );
-static inline float gravity_kernel ( const float r, const float h );
+#define WVTNNGB DESNNGB
 
 void writeStepFile ( int it );
 
@@ -21,11 +14,6 @@ void writeStepFile ( int it );
 
 void Regularise_sph_particles()
 {
-    const int maxiter = 256;
-    const double mps_frac = 5; 		// move this fraction of the mean particle sep
-    const double step_red = 0.95; 	// force convergence at this rate
-    const double bin_limits[3] = { -1, -1, 1};
-
     const int nPart = Param.Npart;
 
     const double boxsize[3] = { Problem.Boxsize[0], Problem.Boxsize[1],
@@ -36,8 +24,8 @@ void Regularise_sph_particles()
     const double median_boxsize = fmax ( boxsize[1], boxsize[2] ); // boxsize[0] is largest
 
     printf ( "Starting iterative SPH regularisation \n"
-             "   Maxiter=%d, mps_frac=%g step_red=%g bin_limits=(%g,%g,%g)\n\n",
-             maxiter, mps_frac, step_red, bin_limits[0], bin_limits[1], bin_limits[2] );
+             "   Maxiter=%d, MpsFraction=%g StepReduction=%g LimitMps=(%g,%g,%g,%g)\n\n",
+             Param.Maxiter, Param.MpsFraction, Param.StepReduction, Param.LimitMps[0], Param.LimitMps[1], Param.LimitMps[2], Param.LimitMps[3] );
     fflush ( stdout );
 
     float *hsml = NULL;
@@ -54,12 +42,13 @@ void Regularise_sph_particles()
 
     int it = 0;
 
+#ifdef TWO_DIM
+    double npart_1D = pow ( nPart, 1.0 / 2.0 );
+#else
     double npart_1D = pow ( nPart, 1.0 / 3.0 );
+#endif
 
-    double step[3] = {  Problem.Boxsize[0] / npart_1D / mps_frac,
-                        Problem.Boxsize[1] / npart_1D / mps_frac,
-                        Problem.Boxsize[2] / npart_1D / mps_frac
-                     } ;
+    double step = 1.0 / ( npart_1D * Param.MpsFraction );
 
     double errLast = DBL_MAX;
     double errDiff = DBL_MAX;
@@ -73,7 +62,7 @@ void Regularise_sph_particles()
 
         Find_sph_quantities();
 
-        if ( it++ > maxiter ) {
+        if ( it++ > Param.Maxiter ) {
             break;
         }
 
@@ -102,9 +91,7 @@ void Regularise_sph_particles()
 
         errDiff = ( errLast - errMean ) / errMean;
 
-        printf ( "   #%02d: Err max=%3g mean=%03g diff=%03g"
-                 " step=%g %g %g \n", it, errMax, errMean, errDiff,
-                 step[0], step[1], step[2] );
+        printf ( "   #%02d: Err max=%3g mean=%03g diff=%03g step=%g\n", it, errMax, errMean, errDiff, step );
 
         errLast = errMean;
 
@@ -118,14 +105,22 @@ void Regularise_sph_particles()
 
             SphP[ipart].Rho_Model = rho;
 
+#ifdef TWO_DIM
+            hsml[ipart] = pow ( WVTNNGB * Problem.Mpart / rho / pi, 1. / 2. );
+            vSphSum += p2 ( hsml[ipart] );
+#else
             hsml[ipart] = pow ( WVTNNGB * Problem.Mpart / rho / fourpithird, 1. / 3. );
-
             vSphSum += p3 ( hsml[ipart] );
+#endif
 
             max_hsml = max ( max_hsml, hsml[ipart] );
         }
 
+#ifdef TWO_DIM
+        float norm_hsml = pow ( WVTNNGB / vSphSum / pi , 1.0 / 2.0 ) * median_boxsize;
+#else
         float norm_hsml = pow ( WVTNNGB / vSphSum / fourpithird , 1.0 / 3.0 ) * median_boxsize;
+#endif
 
         #pragma omp parallel for
         for ( int ipart = 0; ipart < nPart; ipart++ ) {
@@ -138,8 +133,7 @@ void Regularise_sph_particles()
             delta[0][ipart] = delta[1][ipart] = delta[2][ipart] = 0;
 
             int ngblist[NGBMAX] = { 0 };
-            int ngbcnt = Find_ngb_tree ( ipart, hsml[ipart], ngblist );
-            //int ngbcnt = Find_ngb_simple(ipart, hsml[ipart], ngblist);
+            int ngbcnt = Find_ngb ( ipart, hsml[ipart], ngblist );
 
             for ( int i = 0; i < ngbcnt; i++ ) { // neighbour loop
 
@@ -194,46 +188,53 @@ void Regularise_sph_particles()
                 }
 
                 float r = sqrt ( r2 );
-
-#ifdef SPH_CUBIC_SPLINE
-                float wk = sph_kernel_M4 ( r, h );
+                // * p3(h) is a for legacy reasons - at some point retune the code to work without it
+                // norm_hsml also plays a minor role with that
+#ifdef TWO_DIM
+                double kernel_fac = p2 ( h );
 #else
-#ifdef SPH_WC2
-                float wk = sph_kernel_WC2 ( r, h );
-#else
-                float wk = sph_kernel_WC6 ( r, h );
+                double kernel_fac = p3 ( h );
 #endif
-#endif
+                float wk = sph_kernel ( r, h ) * kernel_fac;
 
+                // Also 1/3 for 2D since density contrast is not affected by dimensionality
                 const double dens_contrast = pow ( SphP[ipart].Rho_Model / rho_mean, 1 / 3 );
 
-                delta[0][ipart] += step[0] / dens_contrast * hsml[ipart] / boxsize[0] * wk * dx / r ;
-                delta[1][ipart] += step[1] / dens_contrast * hsml[ipart] / boxsize[1] * wk * dy / r ;
-                delta[2][ipart] += step[2] / dens_contrast * hsml[ipart] / boxsize[2] * wk * dz / r ;
+                delta[0][ipart] += step / dens_contrast * hsml[ipart] * wk * dx / r;
+                delta[1][ipart] += step / dens_contrast * hsml[ipart] * wk * dy / r;
+#ifndef TWO_DIM
+                delta[2][ipart] += step / dens_contrast * hsml[ipart] * wk * dz / r;
+#endif
             }
 
         }
 
-        int cnt = 0, cnt1 = 0, cnt2 = 0;
+        int cnt = 0, cnt1 = 0, cnt2 = 0, cnt3 = 0;
 
-        #pragma omp parallel for shared(delta,P) reduction(+:cnt,cnt1,cnt2)
+        #pragma omp parallel for shared(delta,P) reduction(+:cnt,cnt1,cnt2,cnt3)
         for ( int ipart = 0; ipart < nPart; ipart++ ) { // move particles
 
-            float rho = ( *Density_Func_Ptr ) ( ipart );
+            const float d = sqrt ( p2 ( delta[0][ipart] ) + p2 ( delta[1][ipart] ) + p2 ( delta[2][ipart] ) );
 
-            float d = sqrt ( p2 ( delta[0][ipart] )
-                             + p2 ( delta[1][ipart] ) + p2 ( delta[2][ipart] ) );
+            const float h = SphP[ipart].Hsml;
 
-            float d_mps = pow ( Problem.Mpart / rho / DESNNGB, 1.0 / 3.0 );
+#ifdef TWO_DIM
+            float d_mps = pow ( pi * p2 ( h ) / DESNNGB, 1.0 / 3.0 );
+#else
+            float d_mps = pow ( fourpithird * p3 ( h ) / DESNNGB, 1.0 / 3.0 );
+#endif
 
             if ( d > 1 * d_mps ) {
-                cnt++;
+                ++cnt;
             }
             if ( d > 0.1 * d_mps ) {
-                cnt1++;
+                ++cnt1;
             }
             if ( d > 0.01 * d_mps ) {
-                cnt2++;
+                ++cnt2;
+            }
+            if ( d > 0.001 * d_mps ) {
+                ++cnt3;
             }
 
             P[ipart].Pos[0] += delta[0][ipart]; // push !
@@ -265,20 +266,21 @@ void Regularise_sph_particles()
             }
         }
 
-        printf ( "        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100\n",
-                 cnt * 100. / Param.Npart, cnt1 * 100. / Param.Npart, cnt2 * 100. / Param.Npart );
+        printf ( "        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100; %g%% > Dmps/1000\n",
+                 cnt * 100. / Param.Npart,
+                 cnt1 * 100. / Param.Npart,
+                 cnt2 * 100. / Param.Npart,
+                 cnt3 * 100. / Param.Npart );
 
-        if (   ( cnt * 100. / Param.Npart < bin_limits[0] )
-                || ( cnt1 * 100. / Param.Npart < bin_limits[1] )
-                || ( cnt2 * 100. / Param.Npart < bin_limits[2] ) ) {
+        if (   ( cnt * 100. / Param.Npart < Param.LimitMps[0] )
+                || ( cnt1 * 100. / Param.Npart < Param.LimitMps[1] )
+                || ( cnt2 * 100. / Param.Npart < Param.LimitMps[2] )
+                || ( cnt3 * 100. / Param.Npart < Param.LimitMps[3] ) ) {
             break;
         }
 
         if ( cnt1 > last_cnt ) { // force convergence if distribution doesnt tighten
-
-            step[0] *= step_red;
-            step[1] *= step_red;
-            step[2] *= step_red;
+            step *= Param.StepReduction;
         }
 
         last_cnt = cnt1;
@@ -301,52 +303,13 @@ void writeStepFile ( int it )
     char problem_name[CHARBUFSIZE] = "";
     char wvt_stepnumber[CHARBUFSIZE] = "";
     char wvt_stepname[CHARBUFSIZE] = "";
-    sprintf ( problem_name, Problem.Name );
+    sprintf ( problem_name, "%s", Problem.Name );
 
     strcpy ( wvt_stepname, problem_name );
     sprintf ( wvt_stepnumber, "_%03d", it );
     strcat ( wvt_stepname, wvt_stepnumber );
-    sprintf ( Problem.Name, wvt_stepname );
+    sprintf ( Problem.Name, "%s", wvt_stepname );
     printf ( "Writing file %s\n", Problem.Name );
     Write_output ( 0 ); // not verbose
-    sprintf ( Problem.Name, problem_name );
-}
-
-static inline double sph_kernel_WC2 ( const float r, const float h )
-{
-    const float u = r / h;
-    const float t = 1 - u;
-
-    return 21 / ( 2 * pi ) * t * t * t * t * ( 1 + 4 * u );
-}
-
-static inline float gravity_kernel ( const float r, const float h )
-{
-    const float epsilon = 0.1;
-    const float offset = h / ( h + epsilon );
-    const float val = h / ( r + epsilon ) - offset;
-
-    return val * val;
-}
-
-static inline double sph_kernel_WC6 ( const float r, const float h )
-{
-    const double u = r / h;
-    const double t = 1 - u;
-
-    return 1365.0 / ( 64 * pi ) * t * t * t * t * t * t * t * t * ( 1 + 8 * u + 25 * u * u + 32 * u * u * u );
-}
-
-static inline float sph_kernel_M4 ( const float r, const float h ) // cubic spline
-{
-    double wk = 0;
-    double u = r / h;
-
-    if ( u < 0.5 ) {
-        wk = ( 2.546479089470 + 15.278874536822 * ( u - 1 ) * u * u );
-    } else {
-        wk = 5.092958178941 * ( 1.0 - u ) * ( 1.0 - u ) * ( 1.0 - u );
-    }
-
-    return wk / p3 ( h );
+    sprintf ( Problem.Name, "%s", problem_name );
 }

@@ -340,6 +340,34 @@ void Read_param_file ( char *filename )
     addr[nt] = &Param.Npart;
     id[nt++] = INT;
 
+    strcpy ( tag[nt], "Maxiter" );
+    addr[nt] = &Param.Maxiter;
+    id[nt++] = INT;
+
+    strcpy ( tag[nt], "MpsFraction" );
+    addr[nt] = &Param.MpsFraction;
+    id[nt++] = REAL;
+
+    strcpy ( tag[nt], "StepReduction" );
+    addr[nt] = &Param.StepReduction;
+    id[nt++] = REAL;
+
+    strcpy ( tag[nt], "LimitMps" );
+    addr[nt] = &Param.LimitMps[0];
+    id[nt++] = REAL;
+
+    strcpy ( tag[nt], "LimitMps10" );
+    addr[nt] = &Param.LimitMps[1];
+    id[nt++] = REAL;
+
+    strcpy ( tag[nt], "LimitMps100" );
+    addr[nt] = &Param.LimitMps[2];
+    id[nt++] = REAL;
+
+    strcpy ( tag[nt], "LimitMps1000" );
+    addr[nt] = &Param.LimitMps[3];
+    id[nt++] = REAL;
+
     strcpy ( tag[nt], "Problem_Flag" );
     addr[nt] = &Param.Problem_Flag;
     id[nt++] = INT;
