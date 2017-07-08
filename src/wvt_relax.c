@@ -17,7 +17,7 @@ void Regularise_sph_particles()
     const int maxiter = 256;
     const double mps_frac = 5; 		// move this fraction of the mean particle sep
     const double step_red = 0.95; 	// force convergence at this rate
-    const double bin_limits[3] = { -1, -1, 1};
+    const double bin_limits[4] = { -1, -1, -1, 1};
 
     const int nPart = Param.Npart;
 
@@ -29,8 +29,8 @@ void Regularise_sph_particles()
     const double median_boxsize = fmax ( boxsize[1], boxsize[2] ); // boxsize[0] is largest
 
     printf ( "Starting iterative SPH regularisation \n"
-             "   Maxiter=%d, mps_frac=%g step_red=%g bin_limits=(%g,%g,%g)\n\n",
-             maxiter, mps_frac, step_red, bin_limits[0], bin_limits[1], bin_limits[2] );
+             "   Maxiter=%d, mps_frac=%g step_red=%g bin_limits=(%g,%g,%g,%g)\n\n",
+             maxiter, mps_frac, step_red, bin_limits[0], bin_limits[1], bin_limits[2], bin_limits[3] );
     fflush ( stdout );
 
     float *hsml = NULL;
@@ -215,9 +215,9 @@ void Regularise_sph_particles()
 
         }
 
-        int cnt = 0, cnt1 = 0, cnt2 = 0;
+        int cnt = 0, cnt1 = 0, cnt2 = 0, cnt3 = 0;
 
-        #pragma omp parallel for shared(delta,P) reduction(+:cnt,cnt1,cnt2)
+        #pragma omp parallel for shared(delta,P) reduction(+:cnt,cnt1,cnt2,cnt3)
         for ( int ipart = 0; ipart < nPart; ipart++ ) { // move particles
 
             const float d = sqrt ( p2 ( delta[0][ipart] ) + p2 ( delta[1][ipart] ) + p2 ( delta[2][ipart] ) );
@@ -231,13 +231,16 @@ void Regularise_sph_particles()
 #endif
 
             if ( d > 1 * d_mps ) {
-                cnt++;
+                ++cnt;
             }
             if ( d > 0.1 * d_mps ) {
-                cnt1++;
+                ++cnt1;
             }
             if ( d > 0.01 * d_mps ) {
-                cnt2++;
+                ++cnt2;
+            }
+            if ( d > 0.001 * d_mps ) {
+                ++cnt3;
             }
 
             P[ipart].Pos[0] += delta[0][ipart]; // push !
@@ -269,12 +272,16 @@ void Regularise_sph_particles()
             }
         }
 
-        printf ( "        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100\n",
-                 cnt * 100. / Param.Npart, cnt1 * 100. / Param.Npart, cnt2 * 100. / Param.Npart );
+        printf ( "        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100; %g%% > Dmps/1000\n",
+                 cnt * 100. / Param.Npart,
+                 cnt1 * 100. / Param.Npart,
+                 cnt2 * 100. / Param.Npart,
+                 cnt3 * 100. / Param.Npart );
 
         if (   ( cnt * 100. / Param.Npart < bin_limits[0] )
                 || ( cnt1 * 100. / Param.Npart < bin_limits[1] )
-                || ( cnt2 * 100. / Param.Npart < bin_limits[2] ) ) {
+                || ( cnt2 * 100. / Param.Npart < bin_limits[2] )
+                || ( cnt3 * 100. / Param.Npart < bin_limits[3] ) ) {
             break;
         }
 
