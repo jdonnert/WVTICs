@@ -73,7 +73,7 @@ set(SOURCE_FILES
         src/readpng.c
         src/external/morton_utils.c
         src/peanowalk.c
-    src/kernel.c
+        src/kernel.c
         src/problems/sawtooth.c
         src/problems/tophat.c
         src/problems/sinewave.c
@@ -86,7 +86,8 @@ set(SOURCE_FILES
         src/problems/kelvin_helmholtz.c
         src/problems/box.c
         src/problems/gresho.c
-        src/problems/orszag_tang.c)
+        src/problems/orszag_tang.c
+        src/problems/rotor.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
