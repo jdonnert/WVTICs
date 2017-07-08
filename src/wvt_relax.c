@@ -194,7 +194,9 @@ void Regularise_sph_particles()
                 }
 
                 float r = sqrt ( r2 );
-                float wk = sph_kernel ( r, h );
+                // * p3(h) is a for legacy reasons - at some point retune the code to work without it
+                // norm_hsml also plays a minor role with that
+                float wk = sph_kernel ( r, h ) * p3 ( h );
 
                 // Also 1/3 for 2D since density contrast is not affected by dimensionality
                 const double dens_contrast = pow ( SphP[ipart].Rho_Model / rho_mean, 1 / 3 );
