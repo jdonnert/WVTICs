@@ -38,9 +38,9 @@ PNG_Filename logos/DarthVader.png
 %   0 - Magneticum
 %   1 - PNG
 % 3 - Double Shock test
-%	0 - Mach 2
-%	1 - Mach 3
-%	2 - Mach 4
+%    0 - Mach 2
+%    1 - Mach 3
+%    2 - Mach 4
 % 4 - Classical hydrodynamics tests
 %   0 - Sod Shock                       (tested, density for the high density region is very noisy)
 %   1 - Sedov Blast                     (not fully implemented yet)
@@ -51,14 +51,24 @@ PNG_Filename logos/DarthVader.png
 %   6 - Evrard Collapse                 (tested, but rejection sampling fails because of inf density)
 %   7 - Zel'dovic Pancake               (in principle implemented)
 %   8 - Box                             (tested, some issues because it is a 2d test set up for three dimensions...)
-%   9 - Gresho-Vortex  			(tested, looks good)
+%   9 - Gresho-Vortex                   (tested, looks good)
 % 5 - Classical magnetohydrodynamics tests
-%   1 - Ryu Jones Shocktubes            (not implemented yet)
-%   2 - Fast Rotor                      (tested, seems to work)
-%   3 - Strong Blast                    (not implemented yet)
-%   4 - Orszang-Tang Vortex             (tested, looks good)
-%   5 - Linear Alfvén Wave              (not implemented yet)
-%   6 - Rayleigh-Taylor Instability     (not implemented yet)
-%   7 - Brio Wu Schocktubes		(not implemented yet)
+%   0 - Fast Rotor                      (tested, seems to work)
+%   1 - Strong Blast                    (not implemented yet)
+%   2 - Orszang-Tang Vortex             (tested, looks good)
+%   3 - Linear Alfvén Wave              (not implemented yet)
+%   4 - Rayleigh-Taylor Instability     (not implemented yet)
+%   5 - Ryu Jones Shocktube 1A          (not implemented yet)
+%   6 - Ryu Jones Shocktube 1B          (not implemented yet)
+%   7 - Ryu Jones Shocktube 2A          (not implemented yet)
+%   8 - Ryu Jones Shocktube 2B          (not implemented yet)
+%   9 - Ryu Jones Shocktube 3A          (not implemented yet)
+%   10 - Ryu Jones Shocktube 3B         (not implemented yet)
+%   11 - Ryu Jones Shocktube 4A         (not implemented yet)
+%   12 - Ryu Jones Shocktube 4B         (not implemented yet)
+%   13 - Ryu Jones Shocktube 4C         (not implemented yet)
+%   14 - Ryu Jones Shocktube 4D         (not implemented yet)
+%   15 - Ryu Jones Shocktube 5A         (not implemented yet)
+%   16 - Ryu Jones Shocktube 5B         (not implemented yet)
 % 6 - Custom user defined ics
 %   X - All which you define in user.c
