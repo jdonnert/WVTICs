@@ -41,15 +41,15 @@ float Kelvin_Helmholtz_Instability_Density ( const int ipart );
 float Kelvin_Helmholtz_Instability_U ( const int ipart );
 void Kelvin_Helmholtz_Instability_Velocity ( const int ipart, float out[3] );
 
-void setup_Gresho_Vortex();
-float Gresho_Vortex_Density ( const int ipart );
-void Gresho_Vortex_Velocity ( const int ipart, float out[3] );
-float Gresho_Vortex_U ( const int ipart );
-
 void setup_Blob();
 float Blob_Density ( const int ipart );
 void Blob_Velocity ( const int ipart, float out[3] );
 float Blob_U ( const int ipart );
+
+void setup_Evrard_Collapse();
+float Evrard_Collapse_Density ( const int ipart );
+void Evrard_Collapse_Velocity ( const int ipart, float out[3] );
+float Evrard_Collapse_U ( const int ipart );
 
 void setup_Zeldovich_Pancake();
 float Zeldovich_Pancake_Density ( const int ipart );
@@ -62,22 +62,41 @@ float Box_Density ( const int ipart );
 void Box_Velocity ( const int ipart, float out[3] );
 float Box_U ( const int ipar );
 
+void setup_Gresho_Vortex();
+float Gresho_Vortex_Density ( const int ipart );
+void Gresho_Vortex_Velocity ( const int ipart, float out[3] );
+float Gresho_Vortex_U ( const int ipart );
+
 void setup_Rotor();
 float Rotor_Density ( const int ipart );
 void Rotor_Velocity ( const int ipart, float out[3] );
 void Rotor_Magnetic_Field ( const int ipart, float out[3] );
 float Rotor_U ( const int ipart );
 
-void setup_Evrard_Collapse();
-float Evrard_Collapse_Density ( const int ipart );
-void Evrard_Collapse_Velocity ( const int ipart, float out[3] );
-float Evrard_Collapse_U ( const int ipart );
+void setup_Strong_Blast();
 
 void setup_Orszag_Tang_Vortex();
 float Orszag_Tang_Vortex_Density ( const int ipart );
 void Orszag_Tang_Vortex_Velocity ( const int ipart, float out[3] );
 void Orszag_Tang_Vortex_Magnetic_Field ( const int ipart, float out[3] );
 float Orszag_Tang_Vortex_U ( const int ipart );
+
+void setup_Linear_Alfven_Wave();
+
+void setup_Rayleigh_Taylor_Instability();
+
+void setup_Ryu_Jones_Shocktube_1A();
+void setup_Ryu_Jones_Shocktube_1B();
+void setup_Ryu_Jones_Shocktube_2A();
+void setup_Ryu_Jones_Shocktube_2B();
+void setup_Ryu_Jones_Shocktube_3A();
+void setup_Ryu_Jones_Shocktube_3B();
+void setup_Ryu_Jones_Shocktube_4A();
+void setup_Ryu_Jones_Shocktube_4B();
+void setup_Ryu_Jones_Shocktube_4C();
+void setup_Ryu_Jones_Shocktube_4D();
+void setup_Ryu_Jones_Shocktube_5A();
+void setup_Ryu_Jones_Shocktube_5B();
 
 void setup_User_Density ( const int subflag );
 float User_Density ( const int ipart );
