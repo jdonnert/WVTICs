@@ -1,13 +1,13 @@
 
 #include "../globals.h"
-#include "../readpng.h"
+#include "../external/readpng.h"
 
 static void setup_density_from_image();
 
 void setup_Png_Density()
 {
 #ifndef EAT_PNG
-    Assert(false, "Error: must use OPT += -DEAT_PNG in Makefile\n" );
+    Assert ( false, "Error: must use OPT += -DEAT_PNG in Makefile\n" );
 #else
 
     sprintf ( Problem.Name, "IC_PNG" );
@@ -142,8 +142,8 @@ float Png_Density ( const int ipart )
 
     // printf("x, y, z, index, density = %g %g %g, %d, %g\n", x, y, z, index,  Image.Density[index]);
     return Image.Density[index];
-#else 
-	return 0;
+#else
+    return 0;
 #endif
 }
 
