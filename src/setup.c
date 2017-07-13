@@ -141,11 +141,56 @@ void setup_problem ( const int Flag, const int Subflag )
 
     case 5:
         switch ( Subflag ) {
-        case 2:
+        case 0:
             setup_Rotor();
             break;
-        case 4:
+        case 1:
+            setup_Strong_Blast();
+            break;
+        case 2:
             setup_Orszag_Tang_Vortex();
+            break;
+        case 3:
+            setup_Linear_Alfven_Wave();
+            break;
+        case 4:
+            setup_Rayleigh_Taylor_Instability();
+            break;
+        case 5:
+            setup_Ryu_Jones_Shocktube_1A();
+            break;
+        case 6:
+            setup_Ryu_Jones_Shocktube_1B();
+            break;
+        case 7:
+            setup_Ryu_Jones_Shocktube_2A();
+            break;
+        case 8:
+            setup_Ryu_Jones_Shocktube_2B();
+            break;
+        case 9:
+            setup_Ryu_Jones_Shocktube_3A();
+            break;
+        case 10:
+            setup_Ryu_Jones_Shocktube_3B();
+            break;
+        case 11:
+            setup_Ryu_Jones_Shocktube_4A();
+            break;
+        case 12:
+            setup_Ryu_Jones_Shocktube_4B();
+            break;
+        case 13:
+            setup_Ryu_Jones_Shocktube_4C();
+            break;
+        case 14:
+            setup_Ryu_Jones_Shocktube_4D();
+            break;
+        case 15:
+            setup_Ryu_Jones_Shocktube_5A();
+            break;
+        case 16:
+            setup_Ryu_Jones_Shocktube_5B();
             break;
         default:
             Assert ( false, "MHD tests not implemented yet", Flag, Subflag );
