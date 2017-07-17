@@ -127,7 +127,7 @@ void set_Ryu_Jones_Parameters_1B()
     RJ95.left_energy = 1;
 
     RJ95.right_rho = 0.1;
-    RJ95.right_vx = -10;
+    RJ95.right_vx = 0;  // WOMBAT -10
     RJ95.right_vy = 0;
     RJ95.right_vz = 0;
     RJ95.right_bx = 3 / sqrt ( 4 * pi );
@@ -156,8 +156,8 @@ void set_Ryu_Jones_Parameters_2A()
     RJ95.right_vz = 0;
     RJ95.right_bx = 2 / sqrt ( 4 * pi );
     RJ95.right_by = 4 / sqrt ( 4 * pi );
-    RJ95.right_bz = 5 / sqrt ( 4 * pi )
-                    RJ95.right_energy = 1;
+    RJ95.right_bz = 2 / sqrt ( 4 * pi );  // WOMBAT 5 / sqrt ( 4 * pi );
+    RJ95.right_energy = 1;
 }
 
 void set_Ryu_Jones_Parameters_2B()
@@ -176,8 +176,8 @@ void set_Ryu_Jones_Parameters_2B()
 
     RJ95.right_rho = 0.1;
     RJ95.right_vx = 0;
-    RJ95.right_vy = 0;
-    RJ95.right_vz = 0;
+    RJ95.right_vy = 2;  // WOMBAT 0;
+    RJ95.right_vz = 1;  // WOMBAT 0;
     RJ95.right_bx = 3 / sqrt ( 4 * pi );
     RJ95.right_by = 1 / sqrt ( 4 * pi );
     RJ95.right_bz = 0;
@@ -286,8 +286,8 @@ void set_Ryu_Jones_Parameters_4C()
 
     // e.g. https://www.astro.umn.edu/groups/compastro/?q=node/1601
     RJ95.left_rho = 0.65;
-    RJ95.left_vx = -0.667;
-    RJ95.left_vy =  -0.257;
+    RJ95.left_vx = 0.667; // WOMBAT -0.667;
+    RJ95.left_vy = -0.257;
     RJ95.left_vz = 0;
     RJ95.left_bx = 0.75;
     RJ95.left_by = 0.55;
