@@ -85,18 +85,24 @@ void setup_Linear_Alfven_Wave();
 
 void setup_Rayleigh_Taylor_Instability();
 
-void setup_Ryu_Jones_Shocktube_1A();
-void setup_Ryu_Jones_Shocktube_1B();
-void setup_Ryu_Jones_Shocktube_2A();
-void setup_Ryu_Jones_Shocktube_2B();
-void setup_Ryu_Jones_Shocktube_3A();
-void setup_Ryu_Jones_Shocktube_3B();
-void setup_Ryu_Jones_Shocktube_4A();
-void setup_Ryu_Jones_Shocktube_4B();
-void setup_Ryu_Jones_Shocktube_4C();
-void setup_Ryu_Jones_Shocktube_4D();
-void setup_Ryu_Jones_Shocktube_5A();
-void setup_Ryu_Jones_Shocktube_5B();
+void set_Ryu_Jones_Parameters_1A();
+void set_Ryu_Jones_Parameters_1B();
+void set_Ryu_Jones_Parameters_2A();
+void set_Ryu_Jones_Parameters_2B();
+void set_Ryu_Jones_Parameters_3A();
+void set_Ryu_Jones_Parameters_3B();
+void set_Ryu_Jones_Parameters_4A();
+void set_Ryu_Jones_Parameters_4B();
+void set_Ryu_Jones_Parameters_4C();
+void set_Ryu_Jones_Parameters_4D();
+void set_Ryu_Jones_Parameters_5A();
+void set_Ryu_Jones_Parameters_5B();
+void setup_Ryu_Jones_Shocktube();
+bool isOnLeft ( const int ipart );
+float Ryu_Jones_Density ( const int ipart );
+void Ryu_Jones_Velocity ( const int ipart, float out[3] );
+void Ryu_Jones_Magnetic_Field ( const int ipart, float out[3] );
+float Ryu_Jones_U ( const int ipart );
 
 void setup_User_Density ( const int subflag );
 float User_Density ( const int ipart );
