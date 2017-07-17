@@ -157,40 +157,52 @@ void setup_problem ( const int Flag, const int Subflag )
             setup_Rayleigh_Taylor_Instability();
             break;
         case 5:
-            setup_Ryu_Jones_Shocktube_1A();
+            set_Ryu_Jones_Parameters_1A();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 6:
-            setup_Ryu_Jones_Shocktube_1B();
+            set_Ryu_Jones_Parameters_1B();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 7:
-            setup_Ryu_Jones_Shocktube_2A();
+            set_Ryu_Jones_Parameters_2A();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 8:
-            setup_Ryu_Jones_Shocktube_2B();
+            set_Ryu_Jones_Parameters_2B();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 9:
-            setup_Ryu_Jones_Shocktube_3A();
+            set_Ryu_Jones_Parameters_3A();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 10:
-            setup_Ryu_Jones_Shocktube_3B();
+            set_Ryu_Jones_Parameters_3B();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 11:
-            setup_Ryu_Jones_Shocktube_4A();
+            set_Ryu_Jones_Parameters_4A();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 12:
-            setup_Ryu_Jones_Shocktube_4B();
+            set_Ryu_Jones_Parameters_4B();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 13:
-            setup_Ryu_Jones_Shocktube_4C();
+            set_Ryu_Jones_Parameters_4C();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 14:
-            setup_Ryu_Jones_Shocktube_4D();
+            set_Ryu_Jones_Parameters_4D();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 15:
-            setup_Ryu_Jones_Shocktube_5A();
+            set_Ryu_Jones_Parameters_5A();
+            setup_Ryu_Jones_Shocktube();
             break;
         case 16:
-            setup_Ryu_Jones_Shocktube_5B();
+            set_Ryu_Jones_Parameters_5B();
+            setup_Ryu_Jones_Shocktube();
             break;
         default:
             Assert ( false, "MHD tests not implemented yet", Flag, Subflag );
