@@ -11,6 +11,7 @@ option(PEANO_SAMPLING "Use peano curve based sampling to improve initial random 
 option(EAT_PNG "Possibility to use .png files as input for density" ON)
 option(TWO_DIM "Set the code to do 2D initial conditions instead of 3D -> z component is set to 0" OFF)
 option(BRUTE_FORCE_NGB "Use a brute force neighbour finder instead of the tree based one" OFF)
+option(OUTPUT_DIAGNOSTICS "Output extra diagnostics to file" ON)
 
 if(SAVE_WVT_STEPS)
     add_definitions(-DSAVE_WVT_STEPS)
@@ -47,6 +48,10 @@ if(BRUTE_FORCE_NGB)
     add_definitions(-DBRUTE_FORCE_NGB)
 endif(BRUTE_FORCE_NGB)
 
+if(OUTPUT_DIAGNOSTICS)
+    add_definitions(-DOUTPUT_DIAGNOSTICS)
+endif(OUTPUT_DIAGNOSTICS)
+
 message(STATUS "Compiling with ${CMAKE_CXX_FLAGS}")
 
 
@@ -80,7 +85,7 @@ set(SOURCE_FILES
     src/problems/gradient.c
     src/problems/doubleshock.c
     src/problems/png.c
-    src/problems/user.c)
+    src/problems/user.c src/diagnostics.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
