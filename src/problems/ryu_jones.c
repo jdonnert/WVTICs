@@ -1,7 +1,9 @@
 #include "../globals.h"
+#include "ryu_jones.h"
+
+
 void setup_Ryu_Jones_Shocktube()
 {
-
     printf ( "Ryu Jones Shocktube\n"
              "   parameter\tleft \t\tright \n"
              "   density \t%f \t%f \n"
@@ -37,7 +39,7 @@ bool isOnLeft ( const int ipart )
 {
     const double x = P[ipart].Pos[0];
 
-    if ( x <= Problem.Boxsize[0] / 2.0 ) {
+    if ( x <= 0.5 * Problem.Boxsize[0] ) {
         return true;
     } else {
         return false;
