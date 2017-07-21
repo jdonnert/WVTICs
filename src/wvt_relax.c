@@ -2,6 +2,10 @@
 #include "tree.h"
 #include "kernel.h"
 
+#ifdef OUTPUT_DIAGNOSTICS
+#include "diagnostics.h"
+#endif
+
 #define WVTNNGB DESNNGB
 
 void writeStepFile ( int it );
@@ -58,6 +62,10 @@ void Regularise_sph_particles()
 
     double last_cnt = DBL_MAX;
 
+#ifdef OUTPUT_DIAGNOSTICS
+    initIterationDiagnostics();
+#endif
+
     for ( ;; ) {
 
         Find_sph_quantities();
@@ -70,28 +78,28 @@ void Regularise_sph_particles()
         writeStepFile ( it );
 #endif
 
-        int nIn = 0;
-        double  errMax = 0, errMean = 0;
+        double errMin = DBL_MAX, errMax = 0, errMean = 0, errSigma = 0.;
 
-        #pragma omp parallel for reduction(+:errMean,nIn) reduction(max:errMax)
+        #pragma omp parallel for reduction(+:errMean,errSigma) reduction(max:errMax) reduction(min:errMin)
         for ( int  ipart = 0; ipart < nPart; ipart++ ) { // get error
 
             float rho = ( *Density_Func_Ptr ) ( ipart );
 
             float err = fabs ( SphP[ipart].Rho - rho ) / rho;
 
+            errMin = fmin ( err, errMin );
             errMax = fmax ( err, errMax );
 
             errMean += err;
-
-            nIn++;
+            errSigma += err * err;
         }
 
-        errMean /= nIn;
+        errMean /= nPart;
+        errSigma = sqrt ( errSigma / nPart - p2 ( errMean ) );
 
         errDiff = ( errLast - errMean ) / errMean;
 
-        printf ( "   #%02d: Err max=%3g mean=%03g diff=%03g step=%g\n", it, errMax, errMean, errDiff, step );
+        printf ( "   #%02d: Err min=%3g max=%3g mean=%03g sigma=%03g diff=%03g step=%g\n", it, errMin, errMax, errMean, errSigma, errDiff, step );
 
         errLast = errMean;
 
@@ -266,11 +274,26 @@ void Regularise_sph_particles()
             }
         }
 
+        double moveMps[4];
+        moveMps[0] = cnt * 100. / Param.Npart;
+        moveMps[1] = cnt * 100. / Param.Npart;
+        moveMps[2] = cnt * 100. / Param.Npart;
+        moveMps[3] = cnt * 100. / Param.Npart;
+
         printf ( "        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100; %g%% > Dmps/1000\n",
-                 cnt * 100. / Param.Npart,
-                 cnt1 * 100. / Param.Npart,
-                 cnt2 * 100. / Param.Npart,
-                 cnt3 * 100. / Param.Npart );
+                 moveMps[0], moveMps[1], moveMps[2], moveMps[3] );
+
+#ifdef OUTPUT_DIAGNOSTICS
+        struct Quadruplet errorQuad;
+        errorQuad.min = errMin;
+        errorQuad.max = errMax;
+        errorQuad.mean = errMean;
+        errorQuad.sigma = errSigma;
+
+        const struct Quadruplet deltaQuad = calculateStatsOn ( delta, Param.Npart );
+
+        writeIterationDiagnostics ( it, &errorQuad, errDiff, moveMps, &deltaQuad );
+#endif
 
         if (   ( cnt * 100. / Param.Npart < Param.LimitMps[0] )
                 || ( cnt1 * 100. / Param.Npart < Param.LimitMps[1] )
