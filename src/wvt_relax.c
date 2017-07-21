@@ -276,9 +276,9 @@ void Regularise_sph_particles()
 
         double moveMps[4];
         moveMps[0] = cnt * 100. / Param.Npart;
-        moveMps[1] = cnt * 100. / Param.Npart;
-        moveMps[2] = cnt * 100. / Param.Npart;
-        moveMps[3] = cnt * 100. / Param.Npart;
+        moveMps[1] = cnt1 * 100. / Param.Npart;
+        moveMps[2] = cnt2 * 100. / Param.Npart;
+        moveMps[3] = cnt3 * 100. / Param.Npart;
 
         printf ( "        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100; %g%% > Dmps/1000\n",
                  moveMps[0], moveMps[1], moveMps[2], moveMps[3] );
