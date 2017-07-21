@@ -290,7 +290,7 @@ void set_block_info ( enum iofields blocknr )
     return;
 }
 
-/* Basic routine to read data from a file */
+/* Basic routine to write data to a file */
 
 size_t my_fwrite ( void *data, size_t size, size_t nItems, FILE *fp )
 {
