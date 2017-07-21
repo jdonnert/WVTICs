@@ -143,8 +143,6 @@ void Regularise_sph_particles()
             int ngblist[NGBMAX] = { 0 };
             int ngbcnt = Find_ngb ( ipart, hsml[ipart], ngblist );
 
-#ifdef OUTPUT_DIAGNOSTICS
-#endif
             for ( int i = 0; i < ngbcnt; i++ ) { // neighbour loop
 
                 int jpart = ngblist[i];
