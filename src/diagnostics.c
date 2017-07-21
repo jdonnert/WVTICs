@@ -19,7 +19,7 @@ struct Quadruplet calculateStatsOn ( float *values[3], int n )
         sigma += v2;
     }
     mean /= n;
-    sigma = sqrt ( sigma - p2 ( mean ) );
+    sigma = sqrt ( sigma / n - p2 ( mean ) );
 
     q.min = min;
     q.max = max;

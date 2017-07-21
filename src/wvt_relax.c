@@ -95,7 +95,7 @@ void Regularise_sph_particles()
         }
 
         errMean /= nPart;
-        errSigma = sqrt ( errSigma - p2 ( errMean ) );
+        errSigma = sqrt ( errSigma / nPart - p2 ( errMean ) );
 
         errDiff = ( errLast - errMean ) / errMean;
 
