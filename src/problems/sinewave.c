@@ -1,6 +1,6 @@
 #include "../globals.h"
 
-#define ORDER 4
+#define ORDER 1
 #define RHO_MEAN 1.0
 
 void setup_SineWave_Density()
