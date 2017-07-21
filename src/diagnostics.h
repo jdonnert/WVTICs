@@ -7,6 +7,8 @@ struct Quadruplet {
 
 struct Quadruplet calculateStatsOn ( float *values[3], int n );
 
+void initIterationDiagnostics();
+
 void writeIterationDiagnostics ( const int iteration,
                                  const struct Quadruplet *error,
                                  const double diffError,

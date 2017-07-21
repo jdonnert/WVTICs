@@ -30,6 +30,18 @@ struct Quadruplet calculateStatsOn ( float *values[3], int n )
 }
 
 
+void initIterationDiagnostics()
+{
+    FILE *fp;
+
+    if ( ! ( fp = fopen ( "diagnostics.log", "w" ) ) ) {
+        fprintf ( stderr, "Can't open file diagnostics.log\n" );
+    }
+
+    fclose ( fp );
+}
+
+
 void writeIterationDiagnostics ( const int iteration,
                                  const struct Quadruplet *error,
                                  const double diffError,
@@ -38,7 +50,7 @@ void writeIterationDiagnostics ( const int iteration,
 {
     FILE *fp;
 
-    if ( ! ( fp = fopen ( "diagnostics.log", "w" ) ) ) {
+    if ( ! ( fp = fopen ( "diagnostics.log", "a" ) ) ) {
         fprintf ( stderr, "Can't open file diagnostics.log\n" );
     }
 

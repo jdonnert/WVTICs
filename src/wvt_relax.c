@@ -62,6 +62,10 @@ void Regularise_sph_particles()
 
     double last_cnt = DBL_MAX;
 
+#ifdef OUTPUT_DIAGNOSTICS
+    initIterationDiagnostics();
+#endif
+
     for ( ;; ) {
 
         Find_sph_quantities();
