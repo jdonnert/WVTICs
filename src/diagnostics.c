@@ -38,6 +38,9 @@ void initIterationDiagnostics()
         fprintf ( stderr, "Can't open file diagnostics.log\n" );
     }
 
+    fprintf ( fp, "Iter\tError min\tError max\tError mean\tError sigma\tError diff\tMove dmps\tdmps/10\t\
+            dmps/100\tdmps/1000\tDelta min\tDelta max\tDelta mean\tDelta sigma\n" );
+
     fclose ( fp );
 }
 
@@ -54,7 +57,7 @@ void writeIterationDiagnostics ( const int iteration,
         fprintf ( stderr, "Can't open file diagnostics.log\n" );
     }
 
-    fprintf ( fp, "%d\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\t%g\n",
+    fprintf ( fp, "%03d\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\t%+7.5e\n",
               iteration,
               error->min,
               error->max,
