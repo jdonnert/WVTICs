@@ -17,5 +17,3 @@ extern struct Ryu_Jones_Parameters {
     float right_bz;
     float right_energy;
 } RJ95;
-
-struct Ryu_Jones_Parameters RJ95 = { 0 };
