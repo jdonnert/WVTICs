@@ -72,3 +72,6 @@ PNG_Filename logos/DarthVader.png
 %   16 - Ryu Jones Shocktube 5B         (not tested yet)
 % 6 - Custom user defined ics
 %   X - All which you define in user.c
+% 7 - WVTICs Paper: Applications
+%   0 - Isolated Galaxy
+%   1 - Isolated Cluster of Galaxies: betamodel+NFW in Hydrostatic Equilibrium
