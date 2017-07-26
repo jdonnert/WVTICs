@@ -215,6 +215,21 @@ void setup_problem ( const int Flag, const int Subflag )
         setup_User_Density ( Subflag );
         break;
 
+    case 7:
+
+        switch ( Subflag ) {
+        case 0:
+            setup_Galaxy();
+            break;
+        case 1:
+            setup_GalaxyCluster();
+            break;
+        default:
+            Assert ( false, "Application not implemented", Flag, Subflag );
+            break;
+        }
+        break;
+
     default:
         Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
         break;
