@@ -1,6 +1,5 @@
 /* profiles */
 
-double Gas_Density_Profile ( const double, const double, const double );
 void Read_param_file ( char * );
 void Setup();
 void Make_Positions();
