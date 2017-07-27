@@ -2,9 +2,9 @@
 
 void setup_Sod_Shock()
 {
-    Problem.Boxsize[0] = 1;
-    Problem.Boxsize[1] = 0.1;
-    Problem.Boxsize[2] = 0.1;
+    Problem.Boxsize[0] = 140;
+    Problem.Boxsize[1] = 1;
+    Problem.Boxsize[2] = 1;
 
     sprintf ( Problem.Name, "IC_SodShock" );
 
