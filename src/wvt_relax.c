@@ -80,9 +80,7 @@ void Regularise_sph_particles()
         writeStepFile ( it );
 #endif
 
-        //! @todo make this a parameter
-        const int redistributionFrequency = 5;
-        if ( it % redistributionFrequency == 0 ) {
+        if ( it % Param.RedistributionFrequency == 0 ) {
             redistributeParticles();
             Find_sph_quantities();
         }
@@ -308,7 +306,7 @@ void Regularise_sph_particles()
             break;
         }
 
-        if ( cnt1 > last_cnt ) { // force convergence if distribution doesnt tighten
+        if ( cnt1 > last_cnt && it % Param.RedistributionFrequency != 0  ) { // force convergence if distribution doesnt tighten
             step *= Param.StepReduction;
         }
 

@@ -1,6 +1,6 @@
 Npart      100000
 
-% Convergence
+% Convergence of relaxation
 
 Maxiter 512
 % Recommended like 5.0 for 3D and 0.1 for 2D
@@ -11,6 +11,10 @@ LimitMps10 -1
 LimitMps100 -1
 LimitMps1000 1
 
+% Parameters for Monte Carlo redistribution
+
+MoveFraction 0.001
+RedistributionFrequency 5
 % Problem
 
 Problem_Flag 2

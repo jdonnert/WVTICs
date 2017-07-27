@@ -368,6 +368,14 @@ void Read_param_file ( char *filename )
     addr[nt] = &Param.LimitMps[3];
     id[nt++] = REAL;
 
+    strcpy ( tag[nt], "MoveFraction" );
+    addr[nt] = &Param.MoveFraction;
+    id[nt++] = REAL;
+
+    strcpy ( tag[nt], "RedistributionFrequency" );
+    addr[nt] = &Param.RedistributionFrequency;
+    id[nt++] = INT;
+
     strcpy ( tag[nt], "Problem_Flag" );
     addr[nt] = &Param.Problem_Flag;
     id[nt++] = INT;

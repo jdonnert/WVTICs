@@ -13,8 +13,7 @@
 
 void redistributeParticles()
 {
-    //! @todo make this a parameter
-    const int maxPart = Param.Npart / 1000;
+    const int maxPart = Param.Npart * Param.MoveFraction;
     printf ( "Redistributing %d particles\n", maxPart );
 
     #pragma omp parallel for
