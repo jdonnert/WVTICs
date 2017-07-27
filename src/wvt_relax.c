@@ -6,6 +6,8 @@
 #include "diagnostics.h"
 #endif
 
+#include "redistribution.h"
+
 #define WVTNNGB DESNNGB
 
 void writeStepFile ( int it );
@@ -78,14 +80,18 @@ void Regularise_sph_particles()
         writeStepFile ( it );
 #endif
 
+        //! @todo make this a parameter
+        const int redistributionFrequency = 5;
+        if ( it % redistributionFrequency == 0 ) {
+            redistributeParticles();
+            Find_sph_quantities();
+        }
+
         double errMin = DBL_MAX, errMax = 0, errMean = 0, errSigma = 0.;
 
         #pragma omp parallel for reduction(+:errMean,errSigma) reduction(max:errMax) reduction(min:errMin)
         for ( int  ipart = 0; ipart < nPart; ipart++ ) { // get error
-
-            float rho = ( *Density_Func_Ptr ) ( ipart );
-
-            float err = fabs ( SphP[ipart].Rho - rho ) / rho;
+            const float err = relativeDensityError ( ipart );
 
             errMin = fmin ( err, errMin );
             errMax = fmax ( err, errMax );

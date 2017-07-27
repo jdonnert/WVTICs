@@ -144,6 +144,7 @@ extern struct ParticleData {
     int Type;
     peanoKey Key;
     int Tree_Parent;
+    bool Redistributed;
 } *P;
 
 extern struct GasParticleData {
