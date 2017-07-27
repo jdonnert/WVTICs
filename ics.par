@@ -51,7 +51,9 @@ PNG_Filename logos/DarthVader.png
 %   6 - Evrard Collapse                 (tested, but rejection sampling fails because of inf density)
 %   7 - Zel'dovic Pancake               (in principle implemented)
 %   8 - Box                             (tested, some issues because it is a 2d test set up for three dimensions...)
-%   9 - Gresho-Vortex                   (tested, looks good)
+%   9 - Gresho-Vortex  			(tested, looks good)
+%   10 - Exponential Disk		(implemented)
+%   11 - Boss-Bodenheimer test          (implemented)
 % 5 - Classical magnetohydrodynamics tests
 %   0 - Fast Rotor                      (tested, seems to work)
 %   1 - Strong Blast                    (not implemented yet)

@@ -75,6 +75,14 @@ float Rotor_U ( const int ipart );
 
 void setup_Strong_Blast();
 
+void setup_Exponential_Disk();
+float Exponential_Disk_Density ( const int ipart );
+
+void setup_Boss();
+float Boss_Phi ( const int ipart );
+float Boss_Density ( const int ipart );
+
+
 void setup_Orszag_Tang_Vortex();
 float Orszag_Tang_Vortex_Density ( const int ipart );
 void Orszag_Tang_Vortex_Velocity ( const int ipart, float out[3] );

@@ -32,9 +32,10 @@ float Evrard_Collapse_Density ( const int ipart )
 
 
     double Radius = sqrt ( x * x + y * y + z * z );
+    double epsilon = 0.01;
 
     if ( Radius < 1 ) {
-        return 1.0 / ( 2 * pi * Radius );
+        return 1.0 / ( 2 * pi * ( Radius + epsilon ) );
     } else {
         return 0.0;
     }

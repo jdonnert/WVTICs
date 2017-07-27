@@ -120,7 +120,6 @@ void setup_problem ( const int Flag, const int Subflag )
         case 4:
             setup_Blob();
             break;
-
         case 6:
             setup_Evrard_Collapse();
             break;
@@ -132,6 +131,12 @@ void setup_problem ( const int Flag, const int Subflag )
             break;
         case 9:
             setup_Gresho_Vortex();
+            break;
+        case 10:
+            setup_Exponential_Disk();
+            break;
+        case 11:
+            setup_Boss();
             break;
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
