@@ -59,7 +59,7 @@ int findParticleAsTargetLocation()
 void moveParticleInNeighborhoodOf ( const int ipart, const int jpart )
 {
     for ( int i = 0; i < 3; ++i ) {
-        P[ipart].Pos[i] = P[jpart].Pos[i] + erand48 ( Omp.Seed ) * SphP[jpart].Hsml * 0.3;
+        P[ipart].Pos[i] = getPositionInProximity ( jpart, i );
     }
 }
 
@@ -82,4 +82,15 @@ float relativeDensityError ( const int ipart )
 {
     const float rho = ( *Density_Func_Ptr ) ( ipart );
     return fabs ( SphP[ipart].Rho - rho ) / rho;
+}
+
+float getPositionInProximity ( const int jpart, const int i )
+{
+    float ret = -1.0;
+
+    while ( ret < 0.0 || ret >= Problem.Boxsize[i] ) {
+        ret = P[jpart].Pos[i] + erand48 ( Omp.Seed ) * SphP[jpart].Hsml * 0.3;
+    }
+
+    return ret;
 }
