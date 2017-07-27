@@ -21,8 +21,8 @@ void setup_Ryu_Jones_Shocktube()
              RJ95.left_bz, RJ95.right_bz, RJ95.left_energy, RJ95.right_energy );
 
     Problem.Boxsize[0] = 140.0;
-    Problem.Boxsize[1] = 10.0;
-    Problem.Boxsize[2] = 10.0;
+    Problem.Boxsize[1] = 1.0;
+    Problem.Boxsize[2] = 1.0;
 
     const double rho_mean = 0.5 * ( RJ95.left_rho + RJ95.right_rho );
 
