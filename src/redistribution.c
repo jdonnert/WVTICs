@@ -32,7 +32,7 @@ int findParticleToRedistribute()
     //! @todo eventually we want to even accept underdense particles with a small probability
     bool run = true;
     while ( run ) {
-        while ( P[ipart].Redistributed || !isOverdense ( ipart ) ) {
+        while ( P[ipart].Redistributed || isUnderdense ( ipart ) ) {
             ipart = randomParticle();
         }
         #pragma omp critical
@@ -70,7 +70,12 @@ int randomParticle()
 
 bool isOverdense ( const int ipart )
 {
-    return relativeDensityError ( ipart ) > 0;
+    return SphP[ipart].Rho > ( *Density_Func_Ptr ) ( ipart );
+}
+
+bool isUnderdense ( const int ipart )
+{
+    return SphP[ipart].Rho < ( *Density_Func_Ptr ) ( ipart );
 }
 
 float relativeDensityError ( const int ipart )

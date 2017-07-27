@@ -11,6 +11,7 @@ void moveParticleInNeighborhoodOf ( const int ipart, const int jpart );
 
 int randomParticle();
 bool isOverdense ( const int ipart );
+bool isUnderdense ( const int ipart );
 float relativeDensityError ( const int ipart );
 
 
