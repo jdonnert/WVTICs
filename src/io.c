@@ -376,6 +376,10 @@ void Read_param_file ( char *filename )
     addr[nt] = &Param.RedistributionFrequency;
     id[nt++] = INT;
 
+    strcpy ( tag[nt], "LastMoveStep" );
+    addr[nt] = &Param.LastMoveStep;
+    id[nt++] = INT;
+
     strcpy ( tag[nt], "Problem_Flag" );
     addr[nt] = &Param.Problem_Flag;
     id[nt++] = INT;

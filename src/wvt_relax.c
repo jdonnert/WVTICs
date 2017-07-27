@@ -80,7 +80,7 @@ void Regularise_sph_particles()
         writeStepFile ( it );
 #endif
 
-        if ( it % Param.RedistributionFrequency == 0 ) {
+        if ( it <= Param.LastMoveStep && it % Param.RedistributionFrequency == 0 ) {
             redistributeParticles();
             Find_sph_quantities();
         }
@@ -306,7 +306,8 @@ void Regularise_sph_particles()
             break;
         }
 
-        if ( cnt1 > last_cnt && it % Param.RedistributionFrequency != 0  ) { // force convergence if distribution doesnt tighten
+        // force convergence if distribution doesnt tighten
+        if ( cnt1 > last_cnt && ( it > Param.LastMoveStep || it % Param.RedistributionFrequency != 0 )  ) {
             step *= Param.StepReduction;
         }
 

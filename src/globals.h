@@ -116,6 +116,7 @@ extern struct Parameters {
     double LimitMps[4]; // Convergence criterium for particle movement
     double MoveFraction; // move this fraction of particles during redistribution steps
     int RedistributionFrequency;
+    int LastMoveStep;
     int Problem_Flag;
     int Problem_Subflag;
 } Param;
