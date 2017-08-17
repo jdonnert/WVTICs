@@ -15,6 +15,8 @@ void redistributeParticles ( const int movePart )
 {
     printf ( "Redistributing %d particles (=%g%%)\n", movePart, movePart * 100. / Param.Npart );
 
+    resetRedistributionFlags();
+
     #pragma omp parallel for
     for ( int i = 0; i < movePart; ++i ) {
         const int ipart = findParticleToRedistribute();
@@ -91,4 +93,12 @@ float getPositionInProximity ( const int jpart, const int i )
     }
 
     return ret;
+}
+
+void resetRedistributionFlags()
+{
+    #pragma omp parallel for
+    for ( int ipart = 0; ipart < Param.Npart; ++ipart ) {
+        P[ipart].Redistributed = false;
+    }
 }

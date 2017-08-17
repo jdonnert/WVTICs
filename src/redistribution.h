@@ -15,5 +15,7 @@ bool isUnderdense ( const int ipart );
 float relativeDensityError ( const int ipart );
 float getPositionInProximity ( const int jpart, const int i );
 
+void resetRedistributionFlags();
+
 
 #endif //WVTICS_REDISTRIBUTION_H
