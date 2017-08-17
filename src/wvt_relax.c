@@ -81,7 +81,12 @@ void Regularise_sph_particles()
 #endif
 
         if ( it <= Param.LastMoveStep && it % Param.RedistributionFrequency == 0 ) {
-            redistributeParticles();
+            const double A = Param.MoveFractionMax;
+            const double B = log ( Param.MoveFractionMax / Param.MoveFractionMin ) / ( Param.LastMoveStep / Param.RedistributionFrequency - 1 );
+            const double moveFraction = A * exp ( -B * ( it / Param.RedistributionFrequency - 1 ) );
+            const int movePart = Param.Npart * moveFraction;
+
+            redistributeParticles ( movePart );
             Find_sph_quantities();
         }
 

@@ -3,7 +3,7 @@
 
 #include "globals.h"
 
-void redistributeParticles();
+void redistributeParticles ( const int movePart );
 
 int findParticleToRedistribute();
 int findParticleAsTargetLocation();

@@ -11,13 +11,12 @@
  * so that we can omit recalculation of density during the process.
  */
 
-void redistributeParticles()
+void redistributeParticles ( const int movePart )
 {
-    const int maxPart = Param.Npart * Param.MoveFraction;
-    printf ( "Redistributing %d particles\n", maxPart );
+    printf ( "Redistributing %d particles (=%g%%)\n", movePart, movePart * 100. / Param.Npart );
 
     #pragma omp parallel for
-    for ( int i = 0; i < maxPart; ++i ) {
+    for ( int i = 0; i < movePart; ++i ) {
         const int ipart = findParticleToRedistribute();
         const int jpart = findParticleAsTargetLocation();
         moveParticleInNeighborhoodOf ( ipart, jpart );
