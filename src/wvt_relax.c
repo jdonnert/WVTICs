@@ -304,10 +304,10 @@ void Regularise_sph_particles()
         writeIterationDiagnostics ( it, &errorQuad, errDiff, moveMps, &deltaQuad );
 #endif
 
-        if (   ( cnt * 100. / Param.Npart < Param.LimitMps[0] )
-                || ( cnt1 * 100. / Param.Npart < Param.LimitMps[1] )
-                || ( cnt2 * 100. / Param.Npart < Param.LimitMps[2] )
-                || ( cnt3 * 100. / Param.Npart < Param.LimitMps[3] ) ) {
+        if ( ( moveMps[0] < Param.LimitMps[0] )
+                || ( moveMps[1] < Param.LimitMps[1] )
+                || ( moveMps[2] < Param.LimitMps[2] )
+                || ( moveMps[3] < Param.LimitMps[3] ) ) {
             break;
         }
 
