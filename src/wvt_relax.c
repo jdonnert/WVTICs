@@ -73,6 +73,7 @@ void Regularise_sph_particles()
         Find_sph_quantities();
 
         if ( it++ > Param.Maxiter ) {
+            printf ( "Max iterations reached, result might not be converged properly.\n" );
             break;
         }
 
@@ -291,6 +292,16 @@ void Regularise_sph_particles()
 
         printf ( "        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100; %g%% > Dmps/1000\n",
                  moveMps[0], moveMps[1], moveMps[2], moveMps[3] );
+
+        if ( it == 1 ) {
+            if ( moveMps[0] < 10. ) {
+                fprintf ( stderr, "WARNING: Hardly any initial movement detected. Consider decreasing MpsFraction in the parameter file!\n" );
+                fflush ( stderr );
+            } else if ( moveMps[0] > 80. ) {
+                fprintf ( stderr, "WARNING: A lot of initial movement detected. Consider increasing MpsFraction in the parameter file!\n" );
+                fflush ( stderr );
+            }
+        }
 
 #ifdef OUTPUT_DIAGNOSTICS
         struct Quadruplet errorQuad;
