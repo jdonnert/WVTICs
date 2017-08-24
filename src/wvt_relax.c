@@ -329,6 +329,7 @@ void Regularise_sph_particles()
         }
 
         last_cnt = cnt1;
+        fflush ( stdout );
     }
 
     Free ( hsml );
