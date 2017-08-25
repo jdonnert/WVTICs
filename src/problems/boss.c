@@ -2,16 +2,18 @@
 
 void setup_Boss()
 {
-    Problem.Boxsize[0] = 5;
-    Problem.Boxsize[1] = 5;
-    Problem.Boxsize[2] = 5;
+    Problem.Periodic = 0;
+
+    Problem.Boxsize[0] = 0.016; //5e16 cm in parsec
+    Problem.Boxsize[1] = 0.016;
+    Problem.Boxsize[2] = 0.016;
 
     sprintf ( Problem.Name, "IC_Boss" );
 
-    const double rho = 3.82 * 10e-18; // This value is empiric
-    const double Radius = 5 * 10e16 ;
+    const double rho = 5624.3; // 3.82 *10e-18 in g/cm^3 in solar masses per cubic parsec
+    const double Radius = 0.008;
 
-    Problem.Rho_Max = rho;
+    Problem.Rho_Max = rho * 1.1;
 
     Problem.Mpart = rho * 4.0 / 3.0 * pi * p3 ( Radius )  / Param.Npart;
 
@@ -45,12 +47,12 @@ float Boss_Density ( const int ipart )
 
 
     double Radius = sqrt ( x * x + y * y + z * z );
-    const double rho = 3.82 * 10e-18;
+    const double rho = 5624.3;
 
-    if ( Radius < 1 ) {
+    if ( Radius < 0.016 * 0.5 ) {
         return rho * ( 1 + 0.1 * cos ( 2 * Boss_Phi ( ipart ) ) );
     } else {
-        return 0.0;
+        return rho * 0.01;
     }
 
 }
