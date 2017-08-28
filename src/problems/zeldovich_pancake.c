@@ -14,8 +14,6 @@ void setup_Zeldovich_Pancake()
 
     Problem.Rho_Max = rho;
 
-    Problem.Mpart = rho * p3 ( Problem.Boxsize[0] )  / Param.Npart;
-
     Density_Func_Ptr = &Zeldovich_Pancake_Density;
     U_Func_Ptr = &Zeldovich_Pancake_U;
     Velocity_Func_Ptr = &Zeldovich_Pancake_Velocity;

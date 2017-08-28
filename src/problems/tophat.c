@@ -12,7 +12,6 @@ void setup_TopHat_Density()
     sprintf ( Problem.Name, "IC_TopHat" );
 
     Problem.Rho_Max = 1.5;
-    Problem.Mpart = RHO_MEAN * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
 
     Density_Func_Ptr = &TopHat_Density;
 }

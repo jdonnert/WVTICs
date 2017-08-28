@@ -11,7 +11,6 @@ void setup_Blob()
     const double rho = 3.13e-7; // This value is empiric
 
     Problem.Rho_Max = rho;
-    Problem.Mpart = rho * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] )   / Param.Npart;
 
     Density_Func_Ptr = &Blob_Density;
     U_Func_Ptr = &Blob_U;

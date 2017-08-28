@@ -11,7 +11,6 @@ void setup_Rotor()
     const double rho = 25.0 / ( 36.0 * pi );
 
     Problem.Rho_Max = rho;
-    Problem.Mpart = rho * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
 
     Density_Func_Ptr = &Rotor_Density;
     U_Func_Ptr = &Rotor_U;

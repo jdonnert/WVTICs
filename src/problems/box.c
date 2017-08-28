@@ -8,12 +8,7 @@ void setup_Box()
 
     sprintf ( Problem.Name, "IC_Box" );
 
-    const double rho1 = 4.0;
-    const double rho2 = 1.0;
-    const double rho_mean = 0.5 * ( rho1 + rho2 );
-
-    Problem.Rho_Max = rho1;
-    Problem.Mpart = rho_mean * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
+    Problem.Rho_Max = 4.0;
 
     Density_Func_Ptr = &Box_Density;
     U_Func_Ptr = &Box_U;
