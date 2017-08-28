@@ -56,8 +56,6 @@ message(STATUS "Compiling with ${CMAKE_CXX_FLAGS}")
 
 
 set(SOURCE_FILES
-        src/problems/constant_density.c
-        src/problems/magneticum.c
         src/aux.c
         src/globals.h
         src/ids.c
@@ -79,9 +77,11 @@ set(SOURCE_FILES
         src/external/morton_utils.c
         src/peanowalk.c
     	src/kernel.c
-        src/problems/png.c
     	src/diagnostics.c
     	src/redistribution.c
+        src/problems/constant_density.c
+        src/problems/magneticum.c
+        src/problems/png.c
         src/problems/sawtooth.c
         src/problems/tophat.c
         src/problems/sinewave.c
@@ -94,7 +94,18 @@ set(SOURCE_FILES
         src/problems/box.c
         src/problems/gresho.c
         src/problems/orszag_tang.c
-        src/problems/rotor.c)
+        src/problems/rotor.c
+        src/problems/alfven.c
+        src/problems/boss.c
+        src/problems/galaxy.c
+        src/problems/galaxy_cluster.c
+        src/problems/rayleigh_taylor.c
+        src/problems/ryu_jones.c
+        src/problems/strong_blast.c
+        src/problems/blob.c
+        src/problems/disk.c
+        src/problems/evrard.c
+        src/problems/zeldovich_pancake.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
