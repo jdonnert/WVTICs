@@ -9,10 +9,8 @@ void setup_Blob()
     sprintf ( Problem.Name, "IC_Blob" );
 
     const double rho = 3.13e-7; // This value is empiric
-    const double Radius = 197;
 
     Problem.Rho_Max = rho;
-
     Problem.Mpart = rho * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] )   / Param.Npart;
 
     Density_Func_Ptr = &Blob_Density;
@@ -28,8 +26,6 @@ float Blob_Density ( const int ipart )
     double const x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
     double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
     double const z = P[ipart].Pos[2] - 3000.0;
-
-
 
     double Radius = sqrt ( x * x + y * y + z * z );
 

@@ -86,7 +86,6 @@ void Setup_Gas_Mass_Profile()
 {
     double m_table[NTABLE] = { 0 };
     double r_table[NTABLE] = { 0 };
-    double dr_table[NTABLE] = { 0 };
 
     double rmin = Zero;
 

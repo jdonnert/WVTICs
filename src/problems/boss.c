@@ -21,12 +21,8 @@ void setup_Boss()
 
 }
 
-float Boss_Phi ( const int ipart )
+float Boss_Phi ( double const x, double const y )
 {
-    double const x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
-    double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
-    double const z = P[ipart].Pos[2] - Problem.Boxsize[2] * 0.5;
-
     if ( x > 0 ) {
         return atan ( y / x );
     } else if ( x == 0 ) {
@@ -45,12 +41,11 @@ float Boss_Density ( const int ipart )
     double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
     double const z = P[ipart].Pos[2] - Problem.Boxsize[2] * 0.5;
 
-
     double Radius = sqrt ( x * x + y * y + z * z );
     const double rho = 5624.3;
 
     if ( Radius < 0.016 * 0.5 ) {
-        return rho * ( 1 + 0.1 * cos ( 2 * Boss_Phi ( ipart ) ) );
+        return rho * ( 1 + 0.1 * cos ( 2 * Boss_Phi ( x, y ) ) );
     } else {
         return rho * 0.01;
     }

@@ -41,7 +41,6 @@ void Zeldovich_Pancake_Velocity ( const int ipart, float out[3] )
     const double redshift_start = 100.0;
     const double redshift_crit = 1.0;
     const double Hubble = 67.74;
-    const double G = 6.67259e-8;
     const double k = 2 * pi / Problem.Boxsize[0];
 
     out[0] = - Hubble * ( 1 + redshift_crit ) / sqrt ( 1 + redshift_start ) * sin ( k * P[ipart].Pos[0] ) / k;
@@ -60,6 +59,7 @@ float Zeldovich_Pancake_U ( const int ipart )
     const double k = 2 * pi / Problem.Boxsize[0];
     const double gamma = 5. / 3.;
 
+    //! @todo set this up correctly
     return 1.0;
 
 }
