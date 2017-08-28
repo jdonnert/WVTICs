@@ -79,7 +79,7 @@ void setup_Exponential_Disk();
 float Exponential_Disk_Density ( const int ipart );
 
 void setup_Boss();
-float Boss_Phi ( const int ipart );
+float Boss_Phi ( double const x, double const y );
 float Boss_Density ( const int ipart );
 
 
