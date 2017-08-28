@@ -53,7 +53,6 @@ void setup_problem ( const int Flag, const int Subflag )
     switch ( Flag ) {
 
     case 0:
-
         switch ( Subflag ) {
         case 0:
             setup_Constant_Density();
@@ -74,9 +73,7 @@ void setup_problem ( const int Flag, const int Subflag )
         break;
 
     case 1:
-
         Problem.Periodic = false;
-
         switch ( Subflag ) {
         case 0:
             setup_Gradient_Density();
@@ -137,6 +134,9 @@ void setup_problem ( const int Flag, const int Subflag )
             break;
         case 11:
             setup_Boss();
+            break;
+        case 12:
+            setup_GalaxyCluster();
             break;
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
@@ -215,24 +215,8 @@ void setup_problem ( const int Flag, const int Subflag )
         }
         break;
 
-
     case 6:
         setup_User_Density ( Subflag );
-        break;
-
-    case 7:
-
-        switch ( Subflag ) {
-        case 0:
-            setup_Galaxy();
-            break;
-        case 1:
-            setup_GalaxyCluster();
-            break;
-        default:
-            Assert ( false, "Application not implemented", Flag, Subflag );
-            break;
-        }
         break;
 
     default:
