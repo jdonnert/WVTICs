@@ -1,3 +1,0 @@
-void setup_Galaxy()
-{
-}

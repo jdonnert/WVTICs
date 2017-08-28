@@ -119,7 +119,6 @@ void User_Velocity ( const int ipart, float out[3] );
 void User_Bfld ( const int ipart, float out[3] );
 void User_PostProcessing();
 
-void setup_Galaxy();
 void setup_GalaxyCluster();
 
 #endif //WVTICS_PROBLEMS_H_H
