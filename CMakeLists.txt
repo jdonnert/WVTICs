@@ -57,21 +57,14 @@ message(STATUS "Compiling with ${CMAKE_CXX_FLAGS}")
 
 set(SOURCE_FILES
         src/aux.c
-        src/globals.h
         src/ids.c
         src/io.c
-        src/io.h
-        src/macro.h
         src/main.c
         src/peano.c
-        src/peano.h
         src/positions.c
-        src/proto.h
         src/setup.c
         src/sph.c
-        src/sph.h
         src/tree.c
-        src/tree.h
         src/wvt_relax.c
         src/external/readpng.c
         src/external/morton_utils.c
@@ -97,7 +90,6 @@ set(SOURCE_FILES
         src/problems/rotor.c
         src/problems/alfven.c
         src/problems/boss.c
-        src/problems/galaxy.c
         src/problems/galaxy_cluster.c
         src/problems/rayleigh_taylor.c
         src/problems/ryu_jones.c
