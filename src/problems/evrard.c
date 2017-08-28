@@ -8,12 +8,7 @@ void setup_Evrard_Collapse()
 
     sprintf ( Problem.Name, "IC_Evrard_Collapse" );
 
-    const double rho = 10; // This value is empiric
-    const double Radius = 1.0;
-
-    Problem.Rho_Max = rho;
-
-    Problem.Mpart = rho * 4.0 / 3.0 * pi * p3 ( Radius )  / Param.Npart;
+    Problem.Rho_Max = 10; // This value is empiric
 
     Density_Func_Ptr = &Evrard_Collapse_Density;
     U_Func_Ptr = &Evrard_Collapse_U;

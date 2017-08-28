@@ -11,7 +11,6 @@ void setup_Gresho_Vortex()
     const double rho = 1.0;
 
     Problem.Rho_Max = rho;
-    Problem.Mpart = rho * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
 
     Density_Func_Ptr = &Gresho_Vortex_Density;
     U_Func_Ptr = &Gresho_Vortex_U;

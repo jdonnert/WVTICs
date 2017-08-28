@@ -24,10 +24,7 @@ void setup_Ryu_Jones_Shocktube()
     Problem.Boxsize[1] = 1.0;
     Problem.Boxsize[2] = 1.0;
 
-    const double rho_mean = 0.5 * ( RJ95.left_rho + RJ95.right_rho );
-
     Problem.Rho_Max = max ( RJ95.left_rho, RJ95.right_rho );
-    Problem.Mpart = rho_mean * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
 
     Density_Func_Ptr = &Ryu_Jones_Density;
     U_Func_Ptr = &Ryu_Jones_U;

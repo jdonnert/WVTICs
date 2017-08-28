@@ -16,8 +16,6 @@ void setup_Exponential_Disk()
 
     Problem.Rho_Max = rho;
 
-    Problem.Mpart = rho * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
-
     Density_Func_Ptr = &Exponential_Disk_Density;
 
 }
