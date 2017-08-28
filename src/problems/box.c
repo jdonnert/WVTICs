@@ -4,7 +4,7 @@ void setup_Box()
 {
     Problem.Boxsize[0] = 1.0;
     Problem.Boxsize[1] = 1.0;
-    Problem.Boxsize[2] = 0.1;
+    Problem.Boxsize[2] = 1.0;
 
     sprintf ( Problem.Name, "IC_Box" );
 
