@@ -12,7 +12,6 @@ void setup_Sawtooth_Density()
     sprintf ( Problem.Name, "IC_Sawtooth" );
 
     Problem.Rho_Max = 1.5;
-    Problem.Mpart = RHO_MEAN * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
 
     Density_Func_Ptr = &Sawtooth_Density;
 }

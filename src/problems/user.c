@@ -10,8 +10,6 @@ void setup_User_Density ( const int subflag )
     sprintf ( Problem.Name, "IC_User" );
 
     Problem.Rho_Max = 1.0;
-    double rho_mean = 1.0;
-    Problem.Mpart = rho_mean * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
 
     Density_Func_Ptr = &User_Density;
     U_Func_Ptr = &User_U;

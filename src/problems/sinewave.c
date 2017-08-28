@@ -12,7 +12,6 @@ void setup_SineWave_Density()
     Problem.Boxsize[2] = 0.75;
 
     Problem.Rho_Max = 1.5;
-    Problem.Mpart = RHO_MEAN * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
 
     Density_Func_Ptr = &SineWave_Density;
 }

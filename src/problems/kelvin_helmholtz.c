@@ -10,9 +10,6 @@ void setup_Kelvin_Helmholtz_Instability()
 
     Problem.Rho_Max = 6.26E-8;
 
-    const double rho_mean = 0.5 * ( 3.13E-8 + 6.26E-8 );
-    Problem.Mpart = rho_mean * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
-
     Density_Func_Ptr = &Kelvin_Helmholtz_Instability_Density;
     U_Func_Ptr = &Kelvin_Helmholtz_Instability_U;
     Velocity_Func_Ptr = &Kelvin_Helmholtz_Instability_Velocity;

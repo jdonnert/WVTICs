@@ -11,7 +11,6 @@ void setup_Sedov_Blast()
     const double rho = 1.24E7;
 
     Problem.Rho_Max = rho;
-    Problem.Mpart = rho * ( Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2] ) / Param.Npart;
 
     Density_Func_Ptr = &Sod_Shock_Density;
     U_Func_Ptr = &Sod_Shock_U;

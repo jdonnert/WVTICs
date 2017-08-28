@@ -11,11 +11,8 @@ void setup_Boss()
     sprintf ( Problem.Name, "IC_Boss" );
 
     const double rho = 5624.3; // 3.82 *10e-18 in g/cm^3 in solar masses per cubic parsec
-    const double Radius = 0.008;
 
     Problem.Rho_Max = rho * 1.1;
-
-    Problem.Mpart = rho * 4.0 / 3.0 * pi * p3 ( Radius )  / Param.Npart;
 
     Density_Func_Ptr = &Boss_Density;
 
