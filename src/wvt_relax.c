@@ -6,6 +6,8 @@
 #include "diagnostics.h"
 #endif
 
+#include "redistribution.h"
+
 #define WVTNNGB DESNNGB
 
 void writeStepFile ( int it );
@@ -71,6 +73,7 @@ void Regularise_sph_particles()
         Find_sph_quantities();
 
         if ( it++ > Param.Maxiter ) {
+            printf ( "Max iterations reached, result might not be converged properly.\n" );
             break;
         }
 
@@ -78,14 +81,22 @@ void Regularise_sph_particles()
         writeStepFile ( it );
 #endif
 
+        if ( it <= Param.LastMoveStep && it % Param.RedistributionFrequency == 0 ) {
+            const int firstIt = 1;
+            const double amplitude = Param.MoveFractionMax;
+            const double decay = log ( Param.MoveFractionMax / Param.MoveFractionMin ) / ( Param.LastMoveStep / Param.RedistributionFrequency - firstIt );
+            const double moveFraction = amplitude * exp ( -decay * ( it / Param.RedistributionFrequency - firstIt ) );
+            const int movePart = Param.Npart * moveFraction;
+
+            redistributeParticles ( movePart );
+            Find_sph_quantities();
+        }
+
         double errMin = DBL_MAX, errMax = 0, errMean = 0, errSigma = 0.;
 
         #pragma omp parallel for reduction(+:errMean,errSigma) reduction(max:errMax) reduction(min:errMin)
         for ( int  ipart = 0; ipart < nPart; ipart++ ) { // get error
-
-            float rho = ( *Density_Func_Ptr ) ( ipart );
-
-            float err = fabs ( SphP[ipart].Rho - rho ) / rho;
+            const float err = relativeDensityError ( ipart );
 
             errMin = fmin ( err, errMin );
             errMax = fmax ( err, errMax );
@@ -283,6 +294,16 @@ void Regularise_sph_particles()
         printf ( "        Del %g%% > Dmps; %g%% > Dmps/10; %g%% > Dmps/100; %g%% > Dmps/1000\n",
                  moveMps[0], moveMps[1], moveMps[2], moveMps[3] );
 
+        if ( it == 1 ) {
+            if ( moveMps[0] < 10. ) {
+                fprintf ( stderr, "WARNING: Hardly any initial movement detected. Consider decreasing MpsFraction in the parameter file!\n" );
+                fflush ( stderr );
+            } else if ( moveMps[0] > 80. ) {
+                fprintf ( stderr, "WARNING: A lot of initial movement detected. Consider increasing MpsFraction in the parameter file!\n" );
+                fflush ( stderr );
+            }
+        }
+
 #ifdef OUTPUT_DIAGNOSTICS
         struct Quadruplet errorQuad;
         errorQuad.min = errMin;
@@ -295,18 +316,20 @@ void Regularise_sph_particles()
         writeIterationDiagnostics ( it, &errorQuad, errDiff, moveMps, &deltaQuad );
 #endif
 
-        if (   ( cnt * 100. / Param.Npart < Param.LimitMps[0] )
-                || ( cnt1 * 100. / Param.Npart < Param.LimitMps[1] )
-                || ( cnt2 * 100. / Param.Npart < Param.LimitMps[2] )
-                || ( cnt3 * 100. / Param.Npart < Param.LimitMps[3] ) ) {
+        if ( ( moveMps[0] < Param.LimitMps[0] )
+                || ( moveMps[1] < Param.LimitMps[1] )
+                || ( moveMps[2] < Param.LimitMps[2] )
+                || ( moveMps[3] < Param.LimitMps[3] ) ) {
             break;
         }
 
-        if ( cnt1 > last_cnt ) { // force convergence if distribution doesnt tighten
+        // force convergence if distribution doesnt tighten
+        if ( cnt1 > last_cnt && ( it > Param.LastMoveStep || it % Param.RedistributionFrequency != 0 )  ) {
             step *= Param.StepReduction;
         }
 
         last_cnt = cnt1;
+        fflush ( stdout );
     }
 
     Free ( hsml );

@@ -113,7 +113,11 @@ extern struct Parameters {
     int Maxiter;
     double MpsFraction; // move this fraction of the mean particle sep
     double StepReduction; // force convergence at this rate
-    double LimitMps[4];
+    double LimitMps[4]; // Convergence criterium for particle movement
+    double MoveFractionMin; // move at least this fraction of particles during redistribution steps
+    double MoveFractionMax; // move at most this fraction of particles during redistribution steps
+    int RedistributionFrequency;
+    int LastMoveStep;
     int Problem_Flag;
     int Problem_Subflag;
 } Param;
@@ -144,6 +148,7 @@ extern struct ParticleData {
     int Type;
     peanoKey Key;
     int Tree_Parent;
+    bool Redistributed;
 } *P;
 
 extern struct GasParticleData {
