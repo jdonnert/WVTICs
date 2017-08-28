@@ -26,7 +26,7 @@ bool isInnerBox ( const int ipart )
     const double y = P[ipart].Pos[1];
     const double z = P[ipart].Pos[2];
 
-    if ( x <= Problem.Boxsize[0] / 2 && y <= Problem.Boxsize[0] / 2 && Problem.Boxsize[2] / 2 ) {
+    if ( x <= Problem.Boxsize[0] / 2 && y <= Problem.Boxsize[0] / 2 && z <= Problem.Boxsize[2] / 2 ) {
         return true;
     } else {
         return false;
