@@ -89,7 +89,14 @@ float getPositionInProximity ( const int jpart, const int i )
     float ret = -1.0;
 
     while ( ret < 0.0 || ret >= Problem.Boxsize[i] ) {
-        ret = P[jpart].Pos[i] + erand48 ( Omp.Seed ) * SphP[jpart].Hsml * 0.3;
+        ret = P[jpart].Pos[i] + ( 2.0 * erand48 ( Omp.Seed ) - 1.0 ) * SphP[jpart].Hsml * 0.3;
+        if ( Problem.Periodic ) {
+            if ( ret >= Problem.Boxsize[i] ) {
+                ret -= Problem.Boxsize[i];
+            } else if ( ret < 0.0 ) {
+                ret += Problem.Boxsize[i];
+            }
+        }
     }
 
     return ret;
