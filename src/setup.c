@@ -251,7 +251,7 @@ void zero_function_vec ( const int ipart, float out[3] )
 
 void mpart_from_integral()
 {
-    const int N = 1ULL << 10;
+    const int N = 1ULL << 9;
     const double dx = Problem.Boxsize[0] / N;
     const double dy = Problem.Boxsize[1] / N;
 #ifndef TWO_DIM

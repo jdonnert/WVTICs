@@ -6,6 +6,8 @@
 
 void setup_Exponential_Disk()
 {
+    Problem.Periodic = 0;
+
     Problem.Boxsize[0] = 50.0;
     Problem.Boxsize[1] = 50.0;
     Problem.Boxsize[2] = 50.0;
@@ -33,7 +35,14 @@ float Exponential_Disk_Density ( const int ipart )
 
     //printf("Mgas: %g\n", Mgas);
 
-    return Mgas / ( 4 * pi * diskscalelength * diskscalelength * diskheigth ) * exp ( -Radius / diskscalelength ) * pow ( 2 / ( exp ( z / diskheigth ) + exp ( -z / diskheigth ) ), 2 );
+    if ( Radius <= 10.0 * diskscalelength && z <= 5.0 * diskheigth ) {
+
+        return Mgas / ( 4 * pi * diskscalelength * diskscalelength * diskheigth ) * exp ( -Radius / diskscalelength ) * pow ( 2 / ( exp ( z / diskheigth ) + exp ( -z / diskheigth ) ), 2 );
+
+    } else {
+
+        return 1000 * Mgas / ( 4 * pi * diskscalelength * diskscalelength * diskheigth ) * exp ( -10.0 ) * pow ( 2 / ( exp ( 5 ) + exp ( -5 ) ), 2 );
+
+    }
 
 }
-
