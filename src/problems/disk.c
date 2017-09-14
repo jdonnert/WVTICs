@@ -10,7 +10,7 @@ void setup_Exponential_Disk()
 
     Problem.Boxsize[0] = 50.0;
     Problem.Boxsize[1] = 50.0;
-    Problem.Boxsize[2] = 50.0;
+    Problem.Boxsize[2] = 20.0;
 
     sprintf ( Problem.Name, "IC_Disk" );
 
@@ -30,19 +30,18 @@ float Exponential_Disk_Density ( const int ipart )
     double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
     double const z = P[ipart].Pos[2] - Problem.Boxsize[2] * 0.5;
 
-
     double Radius = sqrt ( x * x + y * y );
 
     //printf("Mgas: %g\n", Mgas);
 
-    if ( Radius <= 10.0 * diskscalelength && z <= 5.0 * diskheigth ) {
+    const double cutoffRadius = 10.0, cutoffHeight = 5.0;
+    //const double cutoffRadius = 5.0, cutoffHeight = 2.5;
+    const double norm = Mgas / ( 4 * pi * diskscalelength * diskscalelength * diskheigth );
 
-        return Mgas / ( 4 * pi * diskscalelength * diskscalelength * diskheigth ) * exp ( -Radius / diskscalelength ) * pow ( 2 / ( exp ( z / diskheigth ) + exp ( -z / diskheigth ) ), 2 );
-
+    if ( Radius <= cutoffRadius * diskscalelength && z <= cutoffHeight * diskheigth ) {
+        return norm * exp ( -Radius / diskscalelength ) * pow ( 2 / ( exp ( z / diskheigth ) + exp ( -z / diskheigth ) ), 2 );
     } else {
-
-        return 1000 * Mgas / ( 4 * pi * diskscalelength * diskscalelength * diskheigth ) * exp ( -10.0 ) * pow ( 2 / ( exp ( 5 ) + exp ( -5 ) ), 2 );
-
+        return norm * exp ( -cutoffRadius ) * pow ( 2 / ( exp ( cutoffHeight ) + exp ( -cutoffHeight ) ), 2 );
     }
 
 }
