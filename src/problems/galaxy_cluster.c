@@ -24,8 +24,6 @@ void setup_GalaxyCluster()
 
     Problem.Rho_Max = Halo.Rho0;
 
-    Setup_Gas_Mass_Profile();
-
     Density_Func_Ptr = &GalaxyCluster_Density;
     U_Func_Ptr = &GalaxyCluster_U;
     Velocity_Func_Ptr = &GalaxyCluster_Velocity;
@@ -51,97 +49,6 @@ float GalaxyCluster_Density ( const int ipart )
 
     return betamodel ( r );
 }
-
-
-/* Cumulative Mass profile from the gas density profile by numerical
- * integration and cubic spline interpolation. This has to be called once
- * before the mass profile of a halo is used, to set the spline variables. */
-
-static gsl_spline *M_Spline = NULL;
-static gsl_interp_accel *M_Acc = NULL;
-#pragma omp threadprivate(M_Spline, M_Acc)
-
-static gsl_spline *Minv_Spline = NULL;
-static gsl_interp_accel *Minv_Acc = NULL;
-#pragma omp threadprivate(Minv_Spline, Minv_Acc)
-
-float Gas_Mass_Profile ( const float r_in )
-{
-    double r = fmin ( r_in, Halo.R_Sample );
-
-    return  gsl_spline_eval ( M_Spline, r, M_Acc );
-}
-
-float Inverted_Gas_Mass_Profile ( float M )
-{
-    return gsl_spline_eval ( Minv_Spline, M, Minv_Acc );
-}
-
-double m_integrant ( double r, void *param )
-{
-    return 4 * pi * r * r * betamodel ( r );
-}
-
-void Setup_Gas_Mass_Profile()
-{
-    double m_table[NTABLE] = { 0 };
-    double r_table[NTABLE] = { 0 };
-
-    double rmin = Zero;
-
-    double rmax = Halo.R_Sample * 1.2; // include R_Sample
-
-    double log_dr = ( log10 ( rmax / rmin ) ) / ( NTABLE - 1 );
-
-    gsl_function gsl_F = { 0 };
-
-    gsl_integration_workspace *gsl_workspace = NULL;
-    gsl_workspace = gsl_integration_workspace_alloc ( NTABLE );
-
-    for ( int i = 1; i < NTABLE; i++ ) {
-
-        double error = 0;
-
-        r_table[i] = rmin * pow ( 10, log_dr * i );
-
-        gsl_F.function = &m_integrant;
-
-        gsl_integration_qag ( &gsl_F, 0, r_table[i], 0, 1e-5, NTABLE,
-                              GSL_INTEG_GAUSS61, gsl_workspace, &m_table[i], &error );
-
-        if ( m_table[i] < m_table[i - 1] ) {
-            m_table[i] = m_table[i - 1];    // integrator may fluctuate
-        }
-
-        //printf("%g \n", m_table[i]);
-    }
-
-    m_table[0] = 0;
-
-    #pragma omp parallel
-    {
-
-        M_Acc  = gsl_interp_accel_alloc();
-
-        M_Spline = gsl_spline_alloc ( GSL_SPLINE, NTABLE );
-        gsl_spline_init ( M_Spline, r_table, m_table, NTABLE );
-
-        Minv_Acc  = gsl_interp_accel_alloc();
-
-        Minv_Spline = gsl_spline_alloc ( GSL_SPLINE, NTABLE );
-        gsl_spline_init ( Minv_Spline, m_table, r_table, NTABLE );
-
-    } // omp parallel
-
-    return ;
-}
-
-
-float GalaxyCluster_Mass ( const int ipart )
-{
-    return 0.0;
-}
-
 
 void GalaxyCluster_Velocity ( const int ipart, float out[3] )
 {
