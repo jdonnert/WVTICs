@@ -91,7 +91,13 @@ static void setup_density_from_image()
     printf ( "Beginning data loop (image_channels == %d)\n", image_channels );
     printf ( "(width = %ld, rowbytes = %ld, image_rowbytes = %ld)\n",
              xpix, ypix, image_rowbytes );
-
+    fprintf(stderr, "Detected %d channels in image, expected 3\n", image_channels);
+    if (image_channels == 4) 
+    {
+        fprintf(stdout, "Remove alpha channel from png!\n");
+        exit(4);
+    }
+   
     int red, green, blue;
 
     // Allocate a flat aray to hold the density
@@ -140,7 +146,7 @@ float Png_Density ( const int ipart )
 
     int index = ( floor ( Image.Ypix - y ) * Image.Xpix + floor ( x ) );
 
-    // printf("x, y, z, index, density = %g %g %g, %d, %g\n", x, y, z, index,  Image.Density[index]);
+    //printf("x, y, index, density = %g %g, %d, %g\n", x, y, index,  Image.Density[index]);
     return Image.Density[index];
 #else
     return 0;
