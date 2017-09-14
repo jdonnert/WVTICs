@@ -52,6 +52,7 @@ void Evrard_Collapse_Velocity ( const int ipart, float out[3] );
 float Evrard_Collapse_U ( const int ipart );
 
 void setup_Zeldovich_Pancake();
+float q_of_x ( const int ipart );
 float Zeldovich_Pancake_Density ( const int ipart );
 void Zeldovich_Pancake_Velocity ( const int ipart, float out[3] );
 float Zeldovich_Pancake_U ( const int ipart );

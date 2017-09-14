@@ -20,6 +20,11 @@ void setup_Zeldovich_Pancake()
 
 }
 
+float q_of_x ( const int ipart )
+{
+
+    return 0.0120544 + 0.999977 * P[ipart].Pos[0];
+}
 
 /* At first we set up a constant density in the Box */
 float Zeldovich_Pancake_Density ( const int ipart )
@@ -31,7 +36,7 @@ float Zeldovich_Pancake_Density ( const int ipart )
     const double rho = 3 * Hubble * Hubble / 8 / pi / G;
     const double  k = 2 * pi / Problem.Boxsize[0];
 
-    return rho / ( 1 - ( 1 + redshift_crit ) / ( 1 + redshift_start ) * cos ( k * P[ipart].Pos[0] ) );
+    return rho / ( 1 - ( 1 + redshift_crit ) / ( 1 + redshift_start ) * cos ( k * q_of_x ( ipart ) ) );
 }
 
 void Zeldovich_Pancake_Velocity ( const int ipart, float out[3] )
@@ -41,7 +46,7 @@ void Zeldovich_Pancake_Velocity ( const int ipart, float out[3] )
     const double Hubble = 67.74;
     const double k = 2 * pi / Problem.Boxsize[0];
 
-    out[0] = - Hubble * ( 1 + redshift_crit ) / sqrt ( 1 + redshift_start ) * sin ( k * P[ipart].Pos[0] ) / k;
+    out[0] = - Hubble * ( 1 + redshift_crit ) / sqrt ( 1 + redshift_start ) * sin ( k * q_of_x ( ipart ) ) / k;
     out[1] = 0.0;
     out[2] = 0.0;
 }
