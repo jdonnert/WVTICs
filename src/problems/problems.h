@@ -34,7 +34,7 @@ float Sod_Shock_U ( const int ipart );
 void setup_Sedov_Blast();
 float Sedov_Blast_Density ( const int ipart );
 float Sedov_Blast_U ( const int ipart );
-float Sedov_Blast_abs ( const int ipart );
+float Sedov_Blast_abs ();
 void Sedov_Blast_PostProcessing();
 
 void setup_Kelvin_Helmholtz_Instability();
