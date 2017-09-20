@@ -1,6 +1,8 @@
 #include "../globals.h"
 #include <gsl/gsl_sort.h>
+#include <gsl/gsl_sort_vector.h>
 #include <gsl/gsl_vector.h>
+
 
 void setup_Sedov_Blast()
 {
@@ -24,35 +26,60 @@ float Sedov_Blast_Density ( const int ipart )
     return 1.24E7;
 }
 
-// This function counts to the the wanted particle number
-// initializing the explosion and saves maximum of the
-// distance within this subset of particles
+// This function calculates the distance from each particle to the center of the Box. It returns the distance to the NNpart times furthest neighbour of zero.
 
 float Sedov_Blast_abs ()
 {
 
     int NNpart = 32;
 
-    // double const Estimated_Radius = pow((3 * Problem.Boxsize[0] * NNpart / 2 / pi / Param.Npart), 1./3.);
-
     gsl_vector *abs_of_zero = gsl_vector_alloc ( Param.Npart );
 
     for ( int i = 0; i < Param.Npart; i++ ) {
 
-        double r = sqrt ( ( P[i].Pos[0] - 0.5 * Problem.Boxsize[0] ) * ( P[i].Pos[0] - 0.5 * Problem.Boxsize[0] ) + ( P[i].Pos[1] * 0.5 * Problem.Boxsize[1] ) * ( P[i].Pos[1] - 0.5 * Problem.Boxsize[0] )
+        double r = sqrt ( ( P[i].Pos[0] - 0.5 * Problem.Boxsize[0] ) * ( P[i].Pos[0] - 0.5 * Problem.Boxsize[0] ) + ( P[i].Pos[1] * 0.5 * Problem.Boxsize[1] ) * ( P[i].Pos[1] - 0.5 * Problem.Boxsize[1] )
                           + ( P[i].Pos[2] - 0.5 * Problem.Boxsize[2] ) * ( P[i].Pos[2] - 0.5 * Problem.Boxsize[2] ) );
         gsl_vector_set ( abs_of_zero, i, r );
     }
 
     gsl_sort_vector ( abs_of_zero );
 
-    double dist = gsl_vector_get ( abs_of_zero, NNpart );
+    double dist = gsl_vector_get ( abs_of_zero, NNpart - 1 );
 
     gsl_vector_free ( abs_of_zero );
 
     return dist;
 
 }
+
+#ifdef KINETIC_SEDOV
+float Sedov_Blast_kinetic ()
+{
+
+    int NNpart = 32;
+    Radius =
+        double partpos[3][32];
+
+    float maxDistance = Sedov_Blast_abs ();
+
+    if ( Radius <= maxDistance ) {
+
+        for ( int i =; i < 3; i++ ) {
+
+            for ( int j = 0; j < NNpart, j++ ) {
+
+                double pos = P[i].Pos[j];
+                partpos[i][j] = pos;
+
+            }
+
+        }
+
+    }
+
+}
+#endif // KINETIC_SEDOV
+
 
 float Sedov_Blast_U ( const int ipart )
 {
