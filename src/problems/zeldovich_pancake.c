@@ -59,11 +59,17 @@ float Zeldovich_Pancake_U ( const int ipart )
     const double redshift_crit = 1.0;
     const double Hubble = 67.74;
     const double G = 6.67259e-8;
-    const double k = 2 * pi / Problem.Boxsize[0];
     const double gamma = 5. / 3.;
+    const double rho = 3 * Hubble * Hubble / 8 / pi / G;
+    const double temp_zero = 1.0;
+    const double kboltzmann = 1.380658e-16;
+    const double yhelium = ( 1 - 0.76 ) / ( 4 * 0.76 );
+    const double mean_mol_weight = ( 1 + 4 * yhelium ) / ( 1 + 3 * yhelium + 1 );
+    const double v_unit = 1e5;
+    const double prtn = 1.672623e-24;
+    const double u_fac = kboltzmann  / ( ( gamma - 1 ) * v_unit * v_unit * prtn * mean_mol_weight );
 
-    //! @todo set this up correctly
-    return 1.0;
+    return u_fac * temp_zero * pow ( redshift_start / redshift_crit, 2 ) * pow ( SphP[ipart].Rho / rho, 2. / 3. );
 
 }
 
