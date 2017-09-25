@@ -114,6 +114,9 @@ void setup_problem ( const int Flag, const int Subflag )
         case 2:
             setup_Kelvin_Helmholtz_Instability();
             break;
+        case 3:
+            setup_Keplerian_Ring();
+            break;
         case 4:
             setup_Blob();
             break;
