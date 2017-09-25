@@ -5,7 +5,7 @@ struct GasParticleData *SphP;
 
 struct Parameters Param = { 0 };
 struct ProblemParameters Problem = { 0 };
-#ifdef EAT_PNG
+#ifdef PNG_READER
 struct ImageProperties Image = { 0 };
 #endif
 

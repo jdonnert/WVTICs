@@ -1,4 +1,4 @@
-#ifdef EAT_PNG
+#ifdef PNG_READER
 
 #include "globals.h"
 
@@ -91,4 +91,4 @@ uch *readpng_get_image ( double display_exponent, int *pChannels,
 
 void readpng_cleanup ( int free_image_data );
 
-#endif  // EAT_PNG
+#endif  // PNG_READER

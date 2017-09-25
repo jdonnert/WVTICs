@@ -1,15 +1,15 @@
 SHELL = /bin/bash
 
 ## OPTIONS  ##
-#OPT     += -DSAVE_WVT_STEPS         # write IC file for every WVT step
-#OPT     += -DSPH_CUBIC_SPLINE      # for use with Gadget2
-#OPT     += -DSPH_WC2               #wendland c2 kernel
-OPT     += -DREJECTION_SAMPLING      # use von Neumann rejection sampling to improve initial random positions
-#OPT     += -DPEANO_SAMPLING      # use peano curve based sampling to improve initial random positions
-OPT     += -DEAT_PNG                 # Eat density profile from a png file
-#OPT     += -DTWO_DIM               # 2D instead of 3D -> set z component to 0
-#OPT     += -DBRUTE_FORCE_NGB               # Use a brute force neighbour finder instead of the tree based one
-OPT     += -DOUTPUT_DIAGNOSTICS     # Output extra diagnostics to file
+#OPT     += -DSAVE_WVT_STEPS            # write IC file for every WVT step
+#OPT     += -DSPH_CUBIC_SPLINE          # for use with Gadget2
+#OPT     += -DSPH_WC2                   # wendland c2 kernel
+OPT      += -DREJECTION_SAMPLING        # use von Neumann rejection sampling to improve initial random positions
+#OPT     += -DPEANO_SAMPLING            # use peano curve based sampling to improve initial random positions
+OPT      += -DPNG_READER                # Possibility to use .png files as input for density
+#OPT     += -DTWO_DIM                   # 2D instead of 3D -> set z component to 0
+#OPT     += -DBRUTE_FORCE_NGB           # Use a brute force neighbour finder instead of the tree based one
+OPT      += -DOUTPUT_DIAGNOSTICS        # Output extra diagnostics to file
 
 
 

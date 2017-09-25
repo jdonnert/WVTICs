@@ -32,7 +32,7 @@
 
 
 /* To eat PNG density files */
-#ifdef EAT_PNG
+#ifdef PNG_READER
 #include "png.h"
 #include "zlib.h"
 #endif
@@ -132,7 +132,7 @@ extern struct ProblemParameters {
     bool Periodic;
 } Problem;
 
-#ifdef EAT_PNG
+#ifdef PNG_READER
 extern struct ImageProperties {
     float *Density;
     int Xpix;
