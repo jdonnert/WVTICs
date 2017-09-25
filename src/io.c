@@ -18,7 +18,7 @@ void Write_output ( bool verbose )
 
     if ( verbose == 1 ) {
         printf ( "Output : \n"
-                 "   File Name = %s\n"
+                 "   File Problem_Filename = %s\n"
                  "   File Size ~ %.1f MB\n"
                  , Problem.Name, nBytes / 1e6 );
     }
@@ -384,6 +384,10 @@ void Read_param_file ( char *filename )
     addr[nt] = &Param.LastMoveStep;
     id[nt++] = INT;
 
+    strcpy ( tag[nt], "Problem_InputType" );
+    addr[nt] = &Param.Problem_InputType;
+    id[nt++] = INT;
+
     strcpy ( tag[nt], "Problem_Flag" );
     addr[nt] = &Param.Problem_Flag;
     id[nt++] = INT;
@@ -392,11 +396,9 @@ void Read_param_file ( char *filename )
     addr[nt] = &Param.Problem_Subflag;
     id[nt++] = INT;
 
-#ifdef EAT_PNG
-    strcpy ( tag[nt], "PNG_Filename" );
-    addr[nt] = &Image.Name;
+    strcpy ( tag[nt], "Problem_Filename" );
+    addr[nt] = &Param.Problem_Filename;
     id[nt++] = STRING;
-#endif
 
     /* Add above */
     id[nt] = LASTPARAMETERID;

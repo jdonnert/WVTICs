@@ -118,8 +118,10 @@ extern struct Parameters {
     double MoveFractionMax; // move at most this fraction of particles during redistribution steps
     int RedistributionFrequency;
     int LastMoveStep;
+    int Problem_InputType;
     int Problem_Flag;
     int Problem_Subflag;
+    char Problem_Filename[CHARBUFSIZE];
 } Param;
 
 extern struct ProblemParameters {
@@ -132,7 +134,6 @@ extern struct ProblemParameters {
 
 #ifdef EAT_PNG
 extern struct ImageProperties {
-    char Name[CHARBUFSIZE];
     float *Density;
     int Xpix;
     int Ypix;

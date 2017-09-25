@@ -7,7 +7,7 @@ static void setup_density_from_image();
 void setup_Png_Density()
 {
 #ifndef EAT_PNG
-    Assert(false, "Error: must use OPT += -DEAT_PNG in Makefile\n" );
+    Assert ( false, "Error: must use OPT += -DEAT_PNG in Makefile\n" );
 #else
 
     sprintf ( Problem.Name, "IC_PNG" );
@@ -34,8 +34,8 @@ static void setup_density_from_image()
     int rc;
     int error = 0;
 
-    if ( ! ( infile = fopen ( Image.Name, "rb" ) ) ) {
-        fprintf ( stderr, PROG_NAME ":  can't open PNG file [%s]\n", Image.Name );
+    if ( ! ( infile = fopen ( Param.Problem_Filename, "rb" ) ) ) {
+        fprintf ( stderr, PROG_NAME ":  can't open PNG file [%s]\n", Param.Problem_Filename );
         ++error;
         exit ( 1 );
     } else {
@@ -44,11 +44,11 @@ static void setup_density_from_image()
             case 1:
                 fprintf ( stderr, PROG_NAME
                           ":  [%s] is not a PNG file: incorrect signature\n",
-                          Image.Name );
+                          Param.Problem_Filename );
                 break;
             case 2:
                 fprintf ( stderr, PROG_NAME
-                          ":  [%s] has bad IHDR (libpng longjmp)\n", Image.Name );
+                          ":  [%s] has bad IHDR (libpng longjmp)\n", Param.Problem_Filename );
                 break;
             case 4:
                 fprintf ( stderr, PROG_NAME ":  insufficient memory\n" );
@@ -91,13 +91,12 @@ static void setup_density_from_image()
     printf ( "Beginning data loop (image_channels == %d)\n", image_channels );
     printf ( "(width = %ld, rowbytes = %ld, image_rowbytes = %ld)\n",
              xpix, ypix, image_rowbytes );
-    fprintf(stderr, "Detected %d channels in image, expected 3\n", image_channels);
-    if (image_channels == 4) 
-    {
-        fprintf(stdout, "Remove alpha channel from png!\n");
-        exit(4);
+    fprintf ( stderr, "Detected %d channels in image, expected 3\n", image_channels );
+    if ( image_channels == 4 ) {
+        fprintf ( stdout, "Remove alpha channel from png!\n" );
+        exit ( 4 );
     }
-   
+
     int red, green, blue;
 
     // Allocate a flat aray to hold the density
@@ -148,8 +147,8 @@ float Png_Density ( const int ipart )
 
     //printf("x, y, index, density = %g %g, %d, %g\n", x, y, index,  Image.Density[index]);
     return Image.Density[index];
-#else 
-	return 0;
+#else
+    return 0;
 #endif
 }
 

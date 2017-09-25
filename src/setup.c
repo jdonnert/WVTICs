@@ -21,7 +21,16 @@ void Setup()
     SphP = Malloc ( nBytes );
     memset ( SphP, 0, nBytes );
 
-    setup_problem ( Param.Problem_Flag, Param.Problem_Subflag );
+    switch ( Param.Problem_InputType ) {
+    case 0:
+        setup_problem ( Param.Problem_Flag, Param.Problem_Subflag );
+        break;
+    case 1:
+    case 2:
+    default:
+        Assert ( false, "Input type %d not implemented", Param.Problem_InputType );
+        break;
+    }
 
     mpart_from_integral();
 
