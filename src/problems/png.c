@@ -1,6 +1,6 @@
 
 #include "../globals.h"
-#include "../readpng.h"
+#include "../external/readpng.h"
 
 static void setup_density_from_image();
 

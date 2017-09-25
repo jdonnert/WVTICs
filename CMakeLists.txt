@@ -75,7 +75,7 @@ set(SOURCE_FILES
     src/tree.c
     src/tree.h
     src/wvt_relax.c
-    src/readpng.c
+    src/external/readpng.c
     src/external/morton_utils.c
     src/peanowalk.c
     src/kernel.c
