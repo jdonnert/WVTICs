@@ -44,8 +44,8 @@ float Gresho_Vortex_Phi ( const int ipart )
 
 void Gresho_Vortex_Velocity ( const int ipart, float out[3] )
 {
-    double x = P[ipart].Pos[0] - Problem.Boxsize[0];
-    double y = P[ipart].Pos[1] - Problem.Boxsize[1];
+    double x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
+    double y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
     double Radius = sqrt ( x * x + y * y );
 
     if ( Radius < 0.2 ) {
@@ -69,8 +69,8 @@ float Gresho_Vortex_U ( const int ipart )
 {
     const double gamma = 5.0 / 3.0;
     const double rho = 1.0;
-    double x = P[ipart].Pos[0] - Problem.Boxsize[0];
-    double y = P[ipart].Pos[1] - Problem.Boxsize[1];
+    double x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
+    double y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
     double Radius = sqrt ( x * x + y * y );
 
     if ( Radius < 0.2 ) {
