@@ -38,8 +38,6 @@ void Write_output ( bool verbose )
     if ( verbose == 1 ) {
         printf ( "done\n" );
     }
-
-    return;
 }
 
 void write_header ( FILE *fp, bool verbose )
@@ -91,8 +89,6 @@ void write_header ( FILE *fp, bool verbose )
     my_fwrite ( &Header, blocksize, 1, fp );
 
     WRITE_F90REC
-
-    return;
 }
 
 void add_block ( FILE *fp, enum iofields iblock, bool verbose )
@@ -152,8 +148,6 @@ void add_block ( FILE *fp, enum iofields iblock, bool verbose )
     WRITE_F90REC
 
     free ( write_buffer );
-
-    return;
 }
 
 void fill_write_buffer ( enum iofields blocknr, void *wbuf,
@@ -196,9 +190,8 @@ void fill_write_buffer ( enum iofields blocknr, void *wbuf,
         Assert ( 0, "Block not found %d", blocknr );
         break;
     }
-
-    return;
 }
+
 void set_block_info ( enum iofields blocknr )
 {
     int i = 0;
@@ -286,8 +279,6 @@ void set_block_info ( enum iofields blocknr )
     for ( int i = Block.Ntot = 0; i < 6; i++ ) {
         Block.Ntot += Block.Npart[i];
     }
-
-    return;
 }
 
 /* Basic routine to write data to a file */
@@ -454,11 +445,14 @@ void Read_param_file ( char *filename )
             exit ( 1 );
         }
     }
-
-    return;
 }
 #undef REAL
 #undef STRING
 #undef INT
 #undef LASTPARAMETERID
+
+void readGriddedoData()
+{
+    //! @todo implement
+}
 

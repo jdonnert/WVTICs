@@ -6,7 +6,7 @@ struct GasParticleData *SphP;
 struct Parameters Param = { 0 };
 struct ProblemParameters Problem = { 0 };
 #ifdef PNG_READER
-struct ImageProperties Image = { 0 };
+struct GridProperties Grid = { 0 };
 #endif
 
 float ( *Density_Func_Ptr ) ( const int ) = NULL;

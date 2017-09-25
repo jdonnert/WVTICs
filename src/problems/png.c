@@ -16,9 +16,9 @@ void setup_Png_Density()
 
     Density_Func_Ptr = &Png_Density;
 
-    Problem.Boxsize[0] = Image.Xpix;
-    Problem.Boxsize[1] = Image.Ypix;
-    Problem.Boxsize[2] = Image.Zpix;
+    Problem.Boxsize[0] = Grid.Xpix;
+    Problem.Boxsize[1] = Grid.Ypix;
+    Problem.Boxsize[2] = Grid.Zpix;
 #endif // PNG_READER
 }
 
@@ -100,22 +100,22 @@ static void setup_density_from_image()
     int red, green, blue;
 
     // Allocate a flat aray to hold the density
-    Image.Xpix = ( int ) xpix;
-    Image.Ypix = ( int ) ypix;
-    Image.Zpix = ( int ) ypix;
-    int nBytes = Image.Xpix * Image.Ypix *  sizeof ( float );
-    printf ( "xpix, ypix, nBytes = %d %d %d\n", Image.Xpix, Image.Ypix, nBytes );
-    Image.Density = Malloc ( nBytes );
-    memset ( Image.Density, 0, nBytes );
+    Grid.Xpix = ( int ) xpix;
+    Grid.Ypix = ( int ) ypix;
+    Grid.Zpix = ( int ) ypix;
+    int nBytes = Grid.Xpix * Grid.Ypix *  sizeof ( float );
+    printf ( "xpix, ypix, nBytes = %d %d %d\n", Grid.Xpix, Grid.Ypix, nBytes );
+    Grid.Density = Malloc ( nBytes );
+    memset ( Grid.Density, 0, nBytes );
 
     float gray;
     unsigned char *src;
     float rho;
     int index;
-    for ( int row = 0;  row < Image.Ypix;  row++ ) {
+    for ( int row = 0;  row < Grid.Ypix;  row++ ) {
         src = image_data + row * image_rowbytes;
         if ( image_channels == 3 ) {
-            for ( int i = 0; i < Image.Xpix;  i++ ) {
+            for ( int i = 0; i < Grid.Xpix;  i++ ) {
                 red   = *src++;
                 green = *src++;
                 blue  = *src++;
@@ -123,15 +123,15 @@ static void setup_density_from_image()
                 gray = ( 0.2989 * red + 0.5870 * green + 0.1140 * blue );
                 rho = ( 255 - gray ) / 255.;
                 // printf("gray = %f; rho = %f\n", gray, rho);
-                index = row * Image.Xpix + i;
-                Image.Density[index] = rho;
-                // printf("Image.Density[%d] = %g for gray = %g\n",
-                //    index, Image.Density[index], gray);
+                index = row * Grid.Xpix + i;
+                Grid.Density[index] = rho;
+                // printf("Grid.Density[%d] = %g for gray = %g\n",
+                //    index, Grid.Density[index], gray);
             }
         }
     }
 
-    printf ( "Success building Image.Density\n" );
+    printf ( "Success building Grid.Density\n" );
 
 #endif  // PNG_READER
     return;
@@ -140,13 +140,13 @@ static void setup_density_from_image()
 float Png_Density ( const int ipart )
 {
 #ifdef PNG_READER
-    const float x = P[ipart].Pos[0] * Image.Xpix / Problem.Boxsize[0];
-    const float y = P[ipart].Pos[1] * Image.Ypix / Problem.Boxsize[1];
+    const float x = P[ipart].Pos[0] * Grid.Xpix / Problem.Boxsize[0];
+    const float y = P[ipart].Pos[1] * Grid.Ypix / Problem.Boxsize[1];
 
-    int index = ( floor ( Image.Ypix - y ) * Image.Xpix + floor ( x ) );
+    int index = ( floor ( Grid.Ypix - y ) * Grid.Xpix + floor ( x ) );
 
-    //printf("x, y, index, density = %g %g, %d, %g\n", x, y, index,  Image.Density[index]);
-    return Image.Density[index];
+    //printf("x, y, index, density = %g %g, %d, %g\n", x, y, index,  Grid.Density[index]);
+    return Grid.Density[index];
 #else
     return 0;
 #endif

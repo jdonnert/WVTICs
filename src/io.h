@@ -1,3 +1,6 @@
+#ifndef IO_H
+#define IO_H
+
 extern struct GADGET_Header {
     int npart[6];
     double mass[6];
@@ -63,3 +66,7 @@ void add_block ( FILE *, enum iofields, bool );
 void set_block_info ( enum iofields );
 void fill_write_buffer ( enum iofields, void *, size_t, size_t );
 size_t  my_fwrite ( void *, size_t, size_t, FILE * );
+
+void readGriddedoData();
+
+#endif

@@ -132,14 +132,12 @@ extern struct ProblemParameters {
     bool Periodic;
 } Problem;
 
-#ifdef PNG_READER
-extern struct ImageProperties {
+extern struct GridProperties {
     float *Density;
     int Xpix;
     int Ypix;
     int Zpix;
-} Image;
-#endif
+} Grid;
 
 
 extern struct ParticleData {

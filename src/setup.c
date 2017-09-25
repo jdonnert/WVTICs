@@ -1,15 +1,17 @@
 #include "globals.h"
+#include "io.h"
 
 /* Standard Gadget units */
 const double ULength = 3.08568025e21; 	// kpc in cgs
 const double UMass = 1.989e43;			// 10^10 Msol in cgs
-const double UVel = 1e5;					// km/s in cgs
 
-float zero_function ( const int ipart );
-void zero_function_vec ( const int ipart, float out[3] );
+float zeroFunction ( const int ipart );
+void zeroFunctionVec ( const int ipart, float *out );
 
-void setup_problem ( const int Flag, const int Subflag );
-void mpart_from_integral();
+void setupProblemFromModel ( const int Flag, const int Subflag );
+void setupProblemFromGridData();
+
+void mpartFromIntegral();
 
 void Setup()
 {
@@ -23,16 +25,20 @@ void Setup()
 
     switch ( Param.Problem_InputType ) {
     case 0:
-        setup_problem ( Param.Problem_Flag, Param.Problem_Subflag );
+        setupProblemFromModel ( Param.Problem_Flag, Param.Problem_Subflag );
         break;
     case 1:
+        Assert ( false, "Input type %d not implemented", Param.Problem_InputType );
+        break;
     case 2:
+        setupProblemFromGridData();
+        break;
     default:
         Assert ( false, "Input type %d not implemented", Param.Problem_InputType );
         break;
     }
 
-    mpart_from_integral();
+    mpartFromIntegral();
 
     printf ( "Problem %d.%d : %s \n"
              "   Npart: %d \n"
@@ -44,12 +50,12 @@ void Setup()
              Problem.Boxsize[1], Problem.Boxsize[2], Problem.Periodic );
 }
 
-void setup_problem ( const int Flag, const int Subflag )
+void setupProblemFromModel ( const int Flag, const int Subflag )
 {
-    Density_Func_Ptr = &zero_function;
-    U_Func_Ptr = &zero_function;
-    Velocity_Func_Ptr = &zero_function_vec;
-    Magnetic_Field_Func_Ptr = &zero_function_vec;
+    Density_Func_Ptr = &zeroFunction;
+    U_Func_Ptr = &zeroFunction;
+    Velocity_Func_Ptr = &zeroFunctionVec;
+    Magnetic_Field_Func_Ptr = &zeroFunctionVec;
 
     Problem.Mpart = 1; // required to renormalize later
 
@@ -142,19 +148,24 @@ void setup_problem ( const int Flag, const int Subflag )
     return ;
 }
 
-float zero_function ( const int ipart )
+void setupProblemFromGridData()
+{
+    readGriddedoData();
+}
+
+float zeroFunction ( const int ipart )
 {
     return 0;
 }
 
-void zero_function_vec ( const int ipart, float out[3] )
+void zeroFunctionVec ( const int ipart, float *out )
 {
     out[0] = out[1] = out[2] = 0;
 
     return;
 }
 
-void mpart_from_integral()
+void mpartFromIntegral()
 {
     const int N = 1ULL << 9;
     const double dx = Problem.Boxsize[0] / N;
