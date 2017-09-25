@@ -4,7 +4,7 @@ void setup_Box()
 {
     Problem.Boxsize[0] = 1.0;
     Problem.Boxsize[1] = 1.0;
-    Problem.Boxsize[2] = 1.0;
+    Problem.Boxsize[2] = 0.1;
 
     sprintf ( Problem.Name, "IC_Box" );
 
@@ -17,11 +17,11 @@ void setup_Box()
 
 bool isInnerBox ( const int ipart )
 {
-    const double x = P[ipart].Pos[0];
-    const double y = P[ipart].Pos[1];
-    const double z = P[ipart].Pos[2];
+    const double x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
+    const double y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
+    const double z = P[ipart].Pos[2] - Problem.Boxsize[2] * 0.5;
 
-    if ( x <= Problem.Boxsize[0] / 2 && y <= Problem.Boxsize[0] / 2 && z <= Problem.Boxsize[2] / 2 ) {
+    if ( x <= abs ( Problem.Boxsize[0] / 2 ) && y <= abs ( Problem.Boxsize[0] / 2 ) && z <= abs ( Problem.Boxsize[2] / 2 ) ) {
         return true;
     } else {
         return false;
