@@ -450,8 +450,8 @@ void Read_param_file ( char *filename )
 // Format to suite: int index = floor(z) * Grid.Xpix * Grid.Ypix + floor ( y ) * Grid.Xpix + floor ( x );
 void readGriddedoData()
 {
-    FILE *fp = fopen ( Param.Problem_Filename, "rb" );
-    if ( ! ( fp = fopen ( Param.Problem_Filename, "w" ) ) ) {
+    FILE *fp;
+    if ( ! ( fp = fopen ( Param.Problem_Filename, "rb" ) ) ) {
         fprintf ( stderr, "Can't open fp %s\n" , Param.Problem_Filename );
         exit ( 1 );
     }
@@ -474,7 +474,7 @@ void readGriddedoData()
     printf ( "xpix, ypix, zpix, nBytes = %d %d %d %ld\n", Grid.Xpix, Grid.Ypix, Grid.Zpix, nBytes );
     Grid.Density = Malloc ( nBytes );
 
-    if ( fread ( &Grid.Density, sizeof ( float ), nElements, fp ) != nElements ) {
+    if ( fread ( Grid.Density, sizeof ( float ), nElements, fp ) != nElements ) {
         fprintf ( stderr, "Error reading file %s\n" , Param.Problem_Filename );
         exit ( 1 );
     }
@@ -484,8 +484,8 @@ void readGriddedoData()
 void writeGridTestData()
 {
     const char *outfileName = "gridData.bin";
-    FILE *fp = fopen ( outfileName, "wb" );
-    if ( ! ( fp = fopen ( outfileName, "w" ) ) ) {
+    FILE *fp;
+    if ( ! ( fp = fopen ( outfileName, "wb" ) ) ) {
         fprintf ( stderr, "Can't open fp %s\n" , outfileName );
         exit ( 1 );
     }
@@ -512,17 +512,17 @@ void writeGridTestData()
     printf ( "xpix, ypix, zpix, nBytes = %d %d %d %ld\n", xpix, ypix, zpix, nBytes );
 
     float *rho = Malloc ( nBytes );
+    long int index = 0L;
     for ( int z = 0; z < zpix; ++z ) {
         for ( int y = 0; y < ypix; ++y ) {
-            for ( int x = 0; x < xpix; ++x ) {
-                long int index = 1L * z * ypix * xpix + y * xpix + x;
+            for ( int x = 0; x < xpix; ++x, ++index ) {
                 rho[index] = 1.0 + 0.5 * sin ( 2 * pi * x / xpix ) * cos ( pi * y / ypix ) * ( zpix - z ) / zpix;
             }
         }
     }
 
-    if ( fwrite ( &rho, sizeof ( float ), nElements, fp ) != nElements ) {
-        fprintf ( stderr, "Error reading file %s\n" , outfileName );
+    if ( fwrite ( rho, sizeof ( float ), nElements, fp ) != nElements ) {
+        fprintf ( stderr, "Error writing file %s\n" , outfileName );
         exit ( 1 );
     }
 }
