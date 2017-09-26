@@ -21,7 +21,7 @@ bool isInnerBox ( const int ipart )
     const double y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
     const double z = P[ipart].Pos[2] - Problem.Boxsize[2] * 0.5;
 
-    if ( x <= abs ( Problem.Boxsize[0] / 2 ) && y <= abs ( Problem.Boxsize[0] / 2 ) && z <= abs ( Problem.Boxsize[2] / 2 ) ) {
+    if ( x <= abs ( Problem.Boxsize[0] * 0.5 ) && y <= abs ( Problem.Boxsize[0] * 0.5 ) && z <= abs ( Problem.Boxsize[2] * 0.5 ) ) {
         return true;
     } else {
         return false;
@@ -52,17 +52,12 @@ void Box_Velocity ( const int ipart, float out[3] )
 
 float Box_U ( const int ipart )
 {
-
     const double gamma = 5.0 / 3.0;
     const double rho1 = 4.0;
     const double rho2 = 1.0;
     const double pressure = 2.5;
 
-    if ( isInnerBox ( ipart ) ) {
-        return pressure / ( gamma - 1 ) / rho1;
-    } else {
-        return pressure / ( gamma - 1 ) / rho2;
-    }
+    return pressure / ( gamma - 1 ) / SphP[ipart].Rho;
 }
 
 /* Just a note at the end, the Box test is very tricky for any Code, because of several reasons. In a grid Code you suffer from advection errors (in principle bulk motion along the grid). For SPH th test is difficult, because of the jumping density
