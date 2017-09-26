@@ -22,6 +22,9 @@ float Magneticum_Density ( const int ipart );
 void setup_Png_Density();
 float Png_Density ( const int ipart );
 
+void setup_Grid_Densiy();
+float Grid_Density ( const int ipart );
+
 void setup_Double_Shock ( const int subflag );
 float Double_Shock_Density ( const int ipart );
 float Double_Shock_U ( const int ipart );
@@ -29,7 +32,5 @@ void Double_Shock_Velocity ( const int ipart, float vel[3] );
 
 void setup_User_Density ( const int subflag );
 float User_Density ( const int ipart );
-
-float Grid_Density ( const int ipart );
 
 #endif //WVTICS_PROBLEMS_H_H

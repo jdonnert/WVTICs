@@ -375,10 +375,6 @@ void Read_param_file ( char *filename )
     addr[nt] = &Param.LastMoveStep;
     id[nt++] = INT;
 
-    strcpy ( tag[nt], "Problem_InputType" );
-    addr[nt] = &Param.Problem_InputType;
-    id[nt++] = INT;
-
     strcpy ( tag[nt], "Problem_Flag" );
     addr[nt] = &Param.Problem_Flag;
     id[nt++] = INT;

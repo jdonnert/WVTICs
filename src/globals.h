@@ -118,7 +118,6 @@ extern struct Parameters {
     double MoveFractionMax; // move at most this fraction of particles during redistribution steps
     int RedistributionFrequency;
     int LastMoveStep;
-    int Problem_InputType;
     int Problem_Flag;
     int Problem_Subflag;
     char Problem_Filename[CHARBUFSIZE];

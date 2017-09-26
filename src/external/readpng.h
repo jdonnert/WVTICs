@@ -1,7 +1,5 @@
 #ifdef PNG_READER
 
-#include "../globals.h"
-
 /*---------------------------------------------------------------------------
 
    rpng - simple PNG display program                              readpng.h

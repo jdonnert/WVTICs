@@ -9,7 +9,6 @@ float zeroFunction ( const int ipart );
 void zeroFunctionVec ( const int ipart, float *out );
 
 void setupProblemFromModel ( const int Flag, const int Subflag );
-void setupProblemFromGridData();
 
 void mpartFromIntegral();
 
@@ -23,21 +22,7 @@ void Setup()
     SphP = Malloc ( nBytes );
     memset ( SphP, 0, nBytes );
 
-    switch ( Param.Problem_InputType ) {
-    case 0:
-        setupProblemFromModel ( Param.Problem_Flag, Param.Problem_Subflag );
-        break;
-    case 1:
-        Assert ( false, "Input type %d not implemented", Param.Problem_InputType );
-        break;
-    case 2:
-        setupProblemFromGridData();
-        break;
-    default:
-        Assert ( false, "Input type %d not implemented", Param.Problem_InputType );
-        break;
-    }
-
+    setupProblemFromModel ( Param.Problem_Flag, Param.Problem_Subflag );
     mpartFromIntegral();
 
     printf ( "Problem %d.%d : %s \n"
@@ -121,6 +106,14 @@ void setupProblemFromModel ( const int Flag, const int Subflag )
             setup_Png_Density();
             break;
 
+        case 2:
+            setup_Grid_Densiy();
+            break;
+
+        case 3:
+            Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
+            break;
+
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
             break;
@@ -146,20 +139,6 @@ void setupProblemFromModel ( const int Flag, const int Subflag )
              "Boxsize[0] has to be largest for ngb finding to work." );
 
     return ;
-}
-
-void setupProblemFromGridData()
-{
-    readGriddedoData();
-    Density_Func_Ptr = &Grid_Density;
-
-    const long int nElements = Grid.Xpix * Grid.Ypix * Grid.Zpix;
-    Problem.Rho_Max = Grid.Density[0];
-    for ( long int i = 1; i < nElements; ++i ) {
-        if ( Problem.Rho_Max < Grid.Density[0] ) {
-            Problem.Rho_Max = Grid.Density[0];
-        }
-    }
 }
 
 float zeroFunction ( const int ipart )

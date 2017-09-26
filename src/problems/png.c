@@ -1,5 +1,8 @@
 #include "../globals.h"
+
+#ifdef PNG_READER
 #include "../external/readpng.h"
+#endif
 
 static void setup_density_from_image();
 

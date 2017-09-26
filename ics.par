@@ -20,13 +20,6 @@ LastMoveStep 256
 
 % Problem
 
-Problem_InputType 0
-
-% Input Types:
-% 0: Hard coded model using Problem_Flag and Problem_Subflag
-% 1: Read in Gadget2 format (not implemented yet)
-% 2: Read in 3D gridded data from Problem_Filename (work in progress)
-
 Problem_Flag 2
 Problem_Subflag 0
 
@@ -41,9 +34,11 @@ Problem_Filename logos/DarthVader.png
 %   3 - Sine wave
 % 1 - Simple non-periodic tests
     0 - Gradient
-% 2 - Write Logos 
-%   0 - Magneticum
+% 2 - Special Inputs / Logos
+%   0 - Magneticum Logo
 %   1 - PNG
+%   2 - Gridded binary data
+%   3 - Gadget 2 formated data
 % 3 - Double Shock test
 %	0 - Mach 2
 %	1 - Mach 3
