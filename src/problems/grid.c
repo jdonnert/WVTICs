@@ -6,7 +6,7 @@ float Grid_Density ( const int ipart )
     const float y = P[ipart].Pos[1] * Grid.Ypix / Problem.Boxsize[1];
     const float z = P[ipart].Pos[2] * Grid.Zpix / Problem.Boxsize[1];
 
-    int index = floor ( z ) * Grid.Xpix * Grid.Ypix + floor ( y ) * Grid.Xpix + floor ( x );
+    long int index = 1L * floor ( z ) * Grid.Xpix * Grid.Ypix + floor ( y ) * Grid.Xpix + floor ( x );
 
     return Grid.Density[index];
 }

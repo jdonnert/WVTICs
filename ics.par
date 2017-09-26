@@ -23,7 +23,7 @@ LastMoveStep 256
 Problem_InputType 0
 
 % Input Types:
-% 0: Hard coded modell using Problem_Flag and Problem_Subflag
+% 0: Hard coded model using Problem_Flag and Problem_Subflag
 % 1: Read in Gadget2 format (not implemented yet)
 % 2: Read in 3D gridded data from Problem_Filename (work in progress)
 

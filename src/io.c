@@ -451,11 +451,10 @@ void Read_param_file ( char *filename )
 #undef INT
 #undef LASTPARAMETERID
 
-//Format to suite: int index = floor(z) * Grid.Xpix * Grid.Ypix + floor ( y ) * Grid.Xpix + floor ( x );
+// Format to suite: int index = floor(z) * Grid.Xpix * Grid.Ypix + floor ( y ) * Grid.Xpix + floor ( x );
 void readGriddedoData()
 {
-    FILE *fp;
-    fp = fopen ( Param.Problem_Filename, "rb" );
+    FILE *fp = fopen ( Param.Problem_Filename, "rb" );
     if ( ! ( fp = fopen ( Param.Problem_Filename, "w" ) ) ) {
         fprintf ( stderr, "Can't open fp %s\n" , Param.Problem_Filename );
         exit ( 1 );
@@ -476,7 +475,7 @@ void readGriddedoData()
 
     const long int nElements = Grid.Xpix * Grid.Ypix * Grid.Zpix;
     const long int nBytes = nElements * sizeof ( float );
-    printf ( "xpix, ypix, zpix, nBytes = %d %d %d %d\n", Grid.Xpix, Grid.Ypix, Grid.Zpix, nBytes );
+    printf ( "xpix, ypix, zpix, nBytes = %d %d %d %ld\n", Grid.Xpix, Grid.Ypix, Grid.Zpix, nBytes );
     Grid.Density = Malloc ( nBytes );
 
     if ( fread ( &Grid.Density, sizeof ( float ), nElements, fp ) != nElements ) {
@@ -485,3 +484,49 @@ void readGriddedoData()
     }
 }
 
+// For testing purpose of grid reader
+void writeGridTestData()
+{
+    const char *outfileName = "gridData.bin";
+    FILE *fp = fopen ( outfileName, "wb" );
+    if ( ! ( fp = fopen ( outfileName, "w" ) ) ) {
+        fprintf ( stderr, "Can't open fp %s\n" , outfileName );
+        exit ( 1 );
+    }
+
+    const int xpix = 128;
+    const int ypix = 64;
+    const int zpix = 32;
+
+    if ( fwrite ( &xpix, sizeof ( int ), 1, fp ) != 1 ) {
+        fprintf ( stderr, "Error writing file %s\n" , outfileName );
+        exit ( 1 );
+    }
+    if ( fwrite ( &ypix, sizeof ( int ), 1, fp ) != 1 ) {
+        fprintf ( stderr, "Error writing file %s\n" , outfileName );
+        exit ( 1 );
+    }
+    if ( fwrite ( &zpix, sizeof ( int ), 1, fp ) != 1 ) {
+        fprintf ( stderr, "Error writing file %s\n" , outfileName );
+        exit ( 1 );
+    }
+
+    const long int nElements = xpix * ypix * zpix;
+    const long int nBytes = nElements * sizeof ( float );
+    printf ( "xpix, ypix, zpix, nBytes = %d %d %d %ld\n", xpix, ypix, zpix, nBytes );
+
+    float *rho = Malloc ( nBytes );
+    for ( int z = 0; z < zpix; ++z ) {
+        for ( int y = 0; y < ypix; ++y ) {
+            for ( int x = 0; x < xpix; ++x ) {
+                long int index = 1L * z * ypix * xpix + y * xpix + x;
+                rho[index] = 1.0 + 0.5 * sin ( 2 * pi * x / xpix ) * cos ( pi * y / ypix ) * ( zpix - z ) / zpix;
+            }
+        }
+    }
+
+    if ( fwrite ( &rho, sizeof ( float ), nElements, fp ) != nElements ) {
+        fprintf ( stderr, "Error reading file %s\n" , outfileName );
+        exit ( 1 );
+    }
+}
