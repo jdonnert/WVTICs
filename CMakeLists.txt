@@ -13,86 +13,87 @@ option(TWO_DIM "Set the code to do 2D initial conditions instead of 3D -> z comp
 option(BRUTE_FORCE_NGB "Use a brute force neighbour finder instead of the tree based one" OFF)
 option(OUTPUT_DIAGNOSTICS "Output extra diagnostics to file" ON)
 
-if(SAVE_WVT_STEPS)
+if (SAVE_WVT_STEPS)
     add_definitions(-DSAVE_WVT_STEPS)
-endif(SAVE_WVT_STEPS)
+endif (SAVE_WVT_STEPS)
 
-if(SPH_CUBIC_SPLINE)
+if (SPH_CUBIC_SPLINE)
     add_definitions(-DSPH_CUBIC_SPLINE)
-endif(SPH_CUBIC_SPLINE)
+endif (SPH_CUBIC_SPLINE)
 
-if(SPH_WC2)
+if (SPH_WC2)
     add_definitions(-DSPH_WC2)
-endif(SPH_WC2)
+endif (SPH_WC2)
 
-if(PEANO_SAMPLING)
+if (PEANO_SAMPLING)
     add_definitions(-DPEANO_SAMPLING)
-endif(PEANO_SAMPLING)
+endif (PEANO_SAMPLING)
 
-if(REJECTION_SAMPLING)
+if (REJECTION_SAMPLING)
     add_definitions(-DREJECTION_SAMPLING)
-endif(REJECTION_SAMPLING)
+endif (REJECTION_SAMPLING)
 
-if(PNG_READER)
+if (PNG_READER)
     add_definitions(-DPNG_READER)
 
     find_package(PNG REQUIRED)
     add_definitions(${PNG_DEFINITIONS})
-endif(PNG_READER)
+endif (PNG_READER)
 
-if(TWO_DIM)
+if (TWO_DIM)
     add_definitions(-DTWO_DIM)
-endif(TWO_DIM)
+endif (TWO_DIM)
 
-if(BRUTE_FORCE_NGB)
+if (BRUTE_FORCE_NGB)
     add_definitions(-DBRUTE_FORCE_NGB)
-endif(BRUTE_FORCE_NGB)
+endif (BRUTE_FORCE_NGB)
 
-if(OUTPUT_DIAGNOSTICS)
+if (OUTPUT_DIAGNOSTICS)
     add_definitions(-DOUTPUT_DIAGNOSTICS)
-endif(OUTPUT_DIAGNOSTICS)
+endif (OUTPUT_DIAGNOSTICS)
 
 message(STATUS "Compiling with ${CMAKE_CXX_FLAGS}")
 
 
 set(SOURCE_FILES
-    src/problems/constant_density.c
-    src/problems/magneticum.c
-    src/aux.c
-    src/globals.h
-    src/ids.c
-    src/io.c
-    src/io.h
-    src/macro.h
-    src/main.c
-    src/peano.c
-    src/peano.h
-    src/positions.c
-    src/proto.h
-    src/setup.c
-    src/sph.c
-    src/sph.h
-    src/tree.c
-    src/tree.h
-    src/wvt_relax.c
-    src/external/readpng.c
-    src/external/morton_utils.c
-    src/peanowalk.c
-    src/kernel.c
-    src/problems/sawtooth.c
-    src/problems/tophat.c
-    src/problems/sinewave.c
-    src/problems/gradient.c
-    src/problems/doubleshock.c
-    src/problems/png.c
-    src/problems/user.c
-    src/diagnostics.c
-    src/redistribution.c)
+        src/problems/constant_density.c
+        src/problems/magneticum.c
+        src/aux.c
+        src/globals.h
+        src/ids.c
+        src/io.c
+        src/io.h
+        src/macro.h
+        src/main.c
+        src/peano.c
+        src/peano.h
+        src/positions.c
+        src/proto.h
+        src/setup.c
+        src/sph.c
+        src/sph.h
+        src/tree.c
+        src/tree.h
+        src/wvt_relax.c
+        src/external/readpng.c
+        src/external/morton_utils.c
+        src/peanowalk.c
+        src/kernel.c
+        src/problems/sawtooth.c
+        src/problems/tophat.c
+        src/problems/sinewave.c
+        src/problems/gradient.c
+        src/problems/doubleshock.c
+        src/problems/png.c
+        src/problems/user.c
+        src/problems/grid.c
+        src/diagnostics.c
+        src/redistribution.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
-target_link_libraries(WVTICs -lm -lgsl -lgslcblas )
+target_link_libraries(WVTICs -lm -lgsl -lgslcblas)
 
-if(PNG_READER)
+if (PNG_READER)
     target_link_libraries(WVTICs ${PNG_LIBRARIES})
-endif(PNG_READER)
+endif (PNG_READER)

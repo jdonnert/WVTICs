@@ -451,8 +451,37 @@ void Read_param_file ( char *filename )
 #undef INT
 #undef LASTPARAMETERID
 
+//Format to suite: int index = floor(z) * Grid.Xpix * Grid.Ypix + floor ( y ) * Grid.Xpix + floor ( x );
 void readGriddedoData()
 {
-    //! @todo implement
+    FILE *fp;
+    fp = fopen ( Param.Problem_Filename, "rb" );
+    if ( ! ( fp = fopen ( Param.Problem_Filename, "w" ) ) ) {
+        fprintf ( stderr, "Can't open fp %s\n" , Param.Problem_Filename );
+        exit ( 1 );
+    }
+
+    if ( fread ( &Grid.Xpix, sizeof ( int ), 1, fp ) != 1 ) {
+        fprintf ( stderr, "Error reading file %s\n" , Param.Problem_Filename );
+        exit ( 1 );
+    }
+    if ( fread ( &Grid.Ypix, sizeof ( int ), 1, fp ) != 1 ) {
+        fprintf ( stderr, "Error reading file %s\n" , Param.Problem_Filename );
+        exit ( 1 );
+    }
+    if ( fread ( &Grid.Zpix, sizeof ( int ), 1, fp ) != 1 ) {
+        fprintf ( stderr, "Error reading file %s\n" , Param.Problem_Filename );
+        exit ( 1 );
+    }
+
+    const long int nElements = Grid.Xpix * Grid.Ypix * Grid.Zpix;
+    const long int nBytes = nElements * sizeof ( float );
+    printf ( "xpix, ypix, zpix, nBytes = %d %d %d %d\n", Grid.Xpix, Grid.Ypix, Grid.Zpix, nBytes );
+    Grid.Density = Malloc ( nBytes );
+
+    if ( fread ( &Grid.Density, sizeof ( float ), nElements, fp ) != nElements ) {
+        fprintf ( stderr, "Error reading file %s\n" , Param.Problem_Filename );
+        exit ( 1 );
+    }
 }
 

@@ -151,6 +151,15 @@ void setupProblemFromModel ( const int Flag, const int Subflag )
 void setupProblemFromGridData()
 {
     readGriddedoData();
+    Density_Func_Ptr = &Grid_Density;
+
+    const long int nElements = Grid.Xpix * Grid.Ypix * Grid.Zpix;
+    Problem.Rho_Max = Grid.Density[0];
+    for ( long int i = 1; i < nElements; ++i ) {
+        if ( Problem.Rho_Max < Grid.Density[0] ) {
+            Problem.Rho_Max = Grid.Density[0];
+        }
+    }
 }
 
 float zeroFunction ( const int ipart )
