@@ -68,5 +68,6 @@ void fill_write_buffer ( enum iofields, void *, size_t, size_t );
 size_t  my_fwrite ( void *, size_t, size_t, FILE * );
 
 void readGriddedoData();
+void writeGridTestData();
 
 #endif
