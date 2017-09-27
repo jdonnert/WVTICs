@@ -110,10 +110,6 @@ void setupProblemFromModel ( const int Flag, const int Subflag )
             setup_Grid_Densiy();
             break;
 
-        case 3:
-            Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
-            break;
-
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
             break;
