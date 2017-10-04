@@ -43,6 +43,11 @@ float Kelvin_Helmholtz_Instability_Density ( const int ipart );
 float Kelvin_Helmholtz_Instability_U ( const int ipart );
 void Kelvin_Helmholtz_Instability_Velocity ( const int ipart, float out[3] );
 
+void setup_Keplerian_Ring();
+float Keplerian_Ring_Density ( const int ipart );
+float Keplerian_Ring_U ( const int ipart );
+void Keplerian_Ring_Velocity ( const int ipart, float out[3] );
+
 void setup_Blob();
 float Blob_Density ( const int ipart );
 void Blob_Velocity ( const int ipart, float out[3] );
