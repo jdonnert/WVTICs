@@ -82,6 +82,10 @@ void Rotor_Magnetic_Field ( const int ipart, float out[3] );
 float Rotor_U ( const int ipart );
 
 void setup_Strong_Blast();
+float Strong_Blast_Density ( const int ipart );
+void Strong_Blast_Velocity ( const int ipart, float out[3] );
+void Strong_Blast_Magnetic_Field ( const int ipart, float out[3] );
+float Strong_Blast_U ( const int ipart );
 
 void setup_Exponential_Disk();
 float Exponential_Disk_Density ( const int ipart );
