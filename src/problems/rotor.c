@@ -21,7 +21,11 @@ void setup_Rotor()
 /* At first we set up a constant density in the Box */
 float Rotor_Density ( const int ipart )
 {
-    double Radius = sqrt ( P[ipart].Pos[0] * P[ipart].Pos[0] + P[ipart].Pos[1] * P[ipart].Pos[1] );
+
+    double x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
+    double y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
+
+    double Radius = sqrt ( p2 ( x ) + p2 ( y ) );
 
     if ( Radius > 0 && Radius <= 0.1 ) {
         return 10.0;
@@ -38,7 +42,7 @@ void Rotor_Velocity ( const int ipart, float out[3] )
     double const x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
     double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
 
-    double Radius = sqrt ( x * x + y * y );
+    double Radius = sqrt ( p2 ( x ) + p2 ( y ) );
 
     if ( Radius > 0 && Radius <= 0.1 ) {
         out[0] = -2 * y / 0.1;
@@ -73,7 +77,18 @@ float Rotor_U ( const int ipart )
     const double gamma = 5.0 / 3.0;
     const double pressure = 1.0;
 
-    return pressure / ( gamma - 1 ) / SphP[ipart].Rho;
+    double x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
+    double y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
+
+    double Radius = sqrt ( p2 ( x ) + p2 ( y ) );
+
+    if ( Radius > 0 && Radius <= 0.1 ) {
+        return pressure / ( gamma - 1 ) / 10.0;
+    } else if ( Radius > 0.1 && Radius <= 0.115 ) {
+        return pressure / ( gamma - 1 ) / ( 1 + 9 * ( ( 0.115 - Radius ) / ( 0.115 - 0.1 ) ) );
+    } else {
+        return pressure / ( gamma - 1 ) / 1.0;
+    }
 }
 
 
