@@ -56,8 +56,6 @@ float Orszag_Tang_Vortex_U ( const int ipart )
     const double rho = 25.0 / ( 36.0 * pi );
     const double pressure = 5.0 / 12.0 * pi;
 
-    printf ( "%g\n", pressure / ( gamma - 1 ) / rho );
-
     return pressure / ( gamma - 1 ) / rho;
 }
 
