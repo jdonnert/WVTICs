@@ -2,7 +2,7 @@
 
 void setup_Kelvin_Helmholtz_Instability()
 {
-    Problem.Boxsize[0] = 512;
+    Problem.Boxsize[0] = 256;
     Problem.Boxsize[1] = 256;
     Problem.Boxsize[2] = 16;
 
