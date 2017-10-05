@@ -21,8 +21,8 @@ void setup_User_Density ( const int subflag )
 float User_Density ( const int ipart )
 {
     //float x = P[ipart].Pos[0] / Problem.Boxsize[0];
-    //float y = P[ipart].Pos[1] / Problem.Boxsize[0];
-    //float z = P[ipart].Pos[2] / Problem.Boxsize[0];
+    //float y = P[ipart].Pos[1] / Problem.Boxsize[1];
+    //float z = P[ipart].Pos[2] / Problem.Boxsize[2];
 
     float rho = 1.0f;
 
