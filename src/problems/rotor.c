@@ -8,7 +8,7 @@ void setup_Rotor()
 
     sprintf ( Problem.Name, "IC_Rotor" );
 
-    const double rho = 25.0 / ( 36.0 * pi );
+    const double rho = 10;
 
     Problem.Rho_Max = rho;
 
@@ -71,10 +71,9 @@ void Rotor_Magnetic_Field ( const int ipart, float out[3] )
 float Rotor_U ( const int ipart )
 {
     const double gamma = 5.0 / 3.0;
-    const double rho = 25.0 / ( 36.0 * pi );
-    const double pressure = 5.0 / 12.0 * pi;
+    const double 1.0;
 
-    return pressure / ( gamma - 1 ) / rho;
+    return pressure / ( gamma - 1 ) / SphP.Rho;
 }
 
 
