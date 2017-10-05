@@ -1,0 +1,77 @@
+Npart      100000
+
+% Convergence of relaxation
+
+Maxiter 512
+% Recommended like 5.0 for 3D and 0.1 for 2D
+MpsFraction 5.0
+StepReduction 0.95
+LimitMps -1
+LimitMps10 -1
+LimitMps100 -1
+LimitMps1000 1
+
+% Parameters for Monte Carlo redistribution
+
+MoveFractionMin 0.001
+MoveFractionMax 0.1
+RedistributionFrequency 5
+LastMoveStep 256
+
+% Problem
+
+Problem_Flag 5
+Problem_Subflag 0
+
+PNG_Filename logos/DarthVader.png
+
+% Problem Descriptions
+%
+% 0 - Simple periodic tests
+%   0 - Constant Density
+%   1 - Top Hat with gradients
+%   2 - Sawtooth Density
+%   3 - Sine wave
+% 1 - Simple non-periodic tests
+    0 - Gradient
+% 2 - Write Logos 
+%   0 - Magneticum
+%   1 - PNG
+% 3 - Double Shock test
+%    0 - Mach 2
+%    1 - Mach 3
+%    2 - Mach 4
+% 4 - Classical hydrodynamics tests
+%   0 - Sod Shock                       (tested, density for the high density region is very noisy)
+%   1 - Sedov Blast                     (not fully implemented yet)
+%   2 - Kelvin-Helmholtz Instability    (tested, looks good)
+%   3 - Keplerian Ring                  (not implemented yet)
+%   4 - Cold Blob                       (nearly finished)
+%   5 - Hydrostatic Sphere              (not implemented yet)
+%   6 - Evrard Collapse                 (tested, but rejection sampling fails because of inf density)
+%   7 - Zel'dovic Pancake               (in principle implemented)
+%   8 - Box                             (tested, some issues because it is a 2d test set up for three dimensions...)
+%   9 - Gresho-Vortex  			        (tested, looks good)
+%   10 - Exponential Disk		        (implemented)
+%   11 - Boss-Bodenheimer test          (implemented)
+%   12 - Isolated Cluster of Galaxies
+% 5 - Classical magnetohydrodynamics tests
+%   0 - Fast Rotor                      (tested, seems to work)
+%   1 - Strong Blast                    (not implemented yet)
+%   2 - Orszang-Tang Vortex             (tested, looks good)
+%   3 - Linear Alfvén Wave              (not tested yet)
+%   4 - Rayleigh-Taylor Instability     (not tested yet)
+%   5 - Ryu Jones Shocktube 1A          (not tested yet)
+%   6 - Ryu Jones Shocktube 1B          (not tested yet)
+%   7 - Ryu Jones Shocktube 2A          (not tested yet)
+%   8 - Ryu Jones Shocktube 2B          (not tested yet)
+%   9 - Ryu Jones Shocktube 3A          (not tested yet)
+%   10 - Ryu Jones Shocktube 3B         (not tested yet)
+%   11 - Ryu Jones Shocktube 4A         (not tested yet)
+%   12 - Ryu Jones Shocktube 4B         (not tested yet)
+%   13 - Ryu Jones Shocktube 4C         (not tested yet)
+%   14 - Ryu Jones Shocktube 4D         (not tested yet)
+%   15 - Ryu Jones Shocktube 5A         (not tested yet)
+%   16 - Ryu Jones Shocktube 5B         (not tested yet)
+% 6 - Custom user defined ics
+%   X - All which you define in user.c
