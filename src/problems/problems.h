@@ -102,6 +102,10 @@ void Orszag_Tang_Vortex_Magnetic_Field ( const int ipart, float out[3] );
 float Orszag_Tang_Vortex_U ( const int ipart );
 
 void setup_Linear_Alfven_Wave();
+float Linear_Alfven_Wave_Density ( const int ipart );
+void Linear_Alfven_Wave_Velocity ( const int ipart, float out[3] );
+void Linear_Alfven_Wave_Magnetic_Field ( const int ipart, float out[3] );
+float Linear_Alfven_Wave_U ( const int ipart );
 
 void setup_Rayleigh_Taylor_Instability();
 
