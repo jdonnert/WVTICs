@@ -108,6 +108,10 @@ void Linear_Alfven_Wave_Magnetic_Field ( const int ipart, float out[3] );
 float Linear_Alfven_Wave_U ( const int ipart );
 
 void setup_Rayleigh_Taylor_Instability();
+float Rayleigh_Taylor_Instability_Density ( const int ipart );
+void Rayleigh_Taylor_Instability_Velocity ( const int ipart, float out[3] );
+void Rayleigh_Taylor_Instability_Magnetic_Field ( const int ipart, float out[3] );
+float Rayleigh_Taylor_Instability_U ( const int ipart );
 
 void set_Ryu_Jones_Parameters_1A();
 void set_Ryu_Jones_Parameters_1B();

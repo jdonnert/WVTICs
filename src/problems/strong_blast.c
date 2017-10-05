@@ -13,7 +13,7 @@ void setup_Strong_Blast()
 
     sprintf ( Problem.Name, "IC_StrongBlast" );
 
-    const double rho = 1.0;
+    const float rho = 1.0;
 
     Problem.Rho_Max = rho;
 
@@ -51,13 +51,13 @@ void Strong_Blast_Magnetic_Field ( const int ipart, float out[3] )
 float Strong_Blast_U ( const int ipart )
 {
 
-    double const x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
-    double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
+    const float x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
+    const float y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
 
-    double radius = sqrt ( p2 ( x ) + p2 ( y ) );
+    float radius = sqrt ( p2 ( x ) + p2 ( y ) );
 
-    const double gamma = 5.0 / 3.0;
-    double pressure = 1.0;
+    const float gamma = 5.0 / 3.0;
+    float pressure = 1.0;
 
 
     if ( radius > 0 && radius <= 0.1 ) {

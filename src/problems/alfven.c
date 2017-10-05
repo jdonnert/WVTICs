@@ -42,7 +42,7 @@ void Linear_Alfven_Wave_Velocity ( const int ipart, float out[3] )
 
 void Linear_Alfven_Wave_Magnetic_Field ( const int ipart, float out[3] )
 {
-    const double sqrt_fourpi = sqrt ( 4 * pi );
+    const float sqrt_fourpi = sqrt ( 4 * pi );
 
     out[0] = sqrt_fourpi * 1.0;
     out[1] = sqrt_fourpi * sqrt2;
@@ -55,8 +55,8 @@ void Linear_Alfven_Wave_Magnetic_Field ( const int ipart, float out[3] )
 
 float Linear_Alfven_Wave_U ( const int ipart )
 {
-    const double gamma = 5.0 / 3.0;
-    double pressure = 1.0 / gamma;
+    const float gamma = 5.0 / 3.0;
+    float pressure = 1.0 / gamma;
 
     return pressure / ( gamma - 1 ) / Linear_Alfven_Wave_Density ( ipart );
 }
