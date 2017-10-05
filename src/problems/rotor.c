@@ -71,9 +71,9 @@ void Rotor_Magnetic_Field ( const int ipart, float out[3] )
 float Rotor_U ( const int ipart )
 {
     const double gamma = 5.0 / 3.0;
-    const double 1.0;
+    const double pressure = 1.0;
 
-    return pressure / ( gamma - 1 ) / SphP.Rho;
+    return pressure / ( gamma - 1 ) / SphP[ipart].Rho;
 }
 
 
