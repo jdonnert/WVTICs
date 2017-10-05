@@ -20,6 +20,9 @@ void setup_Linear_Alfven_Wave()
     Problem.Rho_Max = 1.0 + 1e-6;
 
     Density_Func_Ptr = &Linear_Alfven_Wave_Density;
+    U_Func_Ptr = &Linear_Alfven_Wave_U;
+    Velocity_Func_Ptr = &Linear_Alfven_Wave_Velocity;
+    Magnetic_Field_Func_Ptr = &Linear_Alfven_Wave_Magnetic_Field;
 }
 
 float Linear_Alfven_Wave_Density ( const int ipart )
