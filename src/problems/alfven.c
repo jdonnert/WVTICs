@@ -19,7 +19,7 @@ void setup_Linear_Alfven_Wave()
 
     Problem.Rho_Max = 1.0 + 1e-6;
 
-    Density_Func_Ptr = &SineWave_Density;
+    Density_Func_Ptr = &Linear_Alfven_Wave_Density;
 }
 
 float Linear_Alfven_Wave_Density ( const int ipart )
