@@ -47,7 +47,7 @@ void Rayleigh_Taylor_Instability_Velocity ( const int ipart, float out[3] )
     float x = P[ipart].Pos[0] / Problem.Boxsize[0];
     float y = P[ipart].Pos[1] / Problem.Boxsize[1];
 
-    if ( y > 0.3 && x < 0.7 ) {
+    if ( x > 0.3 && x < 0.7 ) {
         // Density perturbation in the x-direction
         out[0] = 0.025 * ( 1 + cos ( 8 * pi * ( y + 0.25 ) ) ) * ( 1 + sin ( 5 * pi * ( x - 0.5 ) ) );
     } else {
