@@ -19,6 +19,8 @@ void setup_Rayleigh_Taylor_Instability()
 
     sprintf ( Problem.Name, "IC_RayleighTaylorInstability" );
 
+    Problem.Periodic[0] = false;
+
     Problem.Boxsize[0] = 1.0;
     Problem.Boxsize[1] = 0.5;
     Problem.Boxsize[2] = 0.1;

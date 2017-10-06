@@ -6,7 +6,7 @@
 
 void setup_Exponential_Disk()
 {
-    Problem.Periodic = 0;
+    Problem.Periodic[0] = Problem.Periodic[1] = Problem.Periodic[2] = 0;
 
     Problem.Boxsize[0] = 50.0;
     Problem.Boxsize[1] = 50.0;
@@ -38,7 +38,7 @@ float Exponential_Disk_Density ( const int ipart )
     //const double cutoffRadius = 5.0, cutoffHeight = 2.5;
     const double norm = Mgas / ( 4 * pi * diskscalelength * diskscalelength * diskheigth );
 
-    if ( Radius <= cutoffRadius * diskscalelength && fabs(z) <= cutoffHeight * diskheigth ) {
+    if ( Radius <= cutoffRadius * diskscalelength && fabs ( z ) <= cutoffHeight * diskheigth ) {
         return norm * exp ( -Radius / diskscalelength ) * pow ( 2 / ( exp ( z / diskheigth ) + exp ( -z / diskheigth ) ), 2 );
     } else {
         return norm * exp ( -cutoffRadius ) * pow ( 2 / ( exp ( cutoffHeight ) + exp ( -cutoffHeight ) ), 2 );

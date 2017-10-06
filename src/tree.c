@@ -50,7 +50,7 @@ int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] )
         float dy = pos_i[1] - Tree[node].Pos[1];
         float dz = pos_i[2] - Tree[node].Pos[2];
 
-        if ( Problem.Periodic ) {
+        if ( Problem.Periodic[0] ) {
 
             while ( dx > boxhalf[0] ) {
                 dx -= boxsize[0];
@@ -59,6 +59,9 @@ int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] )
             while ( dx < -boxhalf[0] ) {
                 dx += boxsize[0];
             }
+        }
+
+        if ( Problem.Periodic[1] ) {
 
             while ( dy > boxhalf[1] ) {
                 dy -= boxsize[1];
@@ -67,6 +70,9 @@ int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] )
             while ( dy < -boxhalf[1] ) {
                 dy += boxsize[1];
             }
+        }
+
+        if ( Problem.Periodic[2] ) {
 
             while ( dz > boxhalf[2] ) {
                 dz -= boxsize[2];
@@ -92,7 +98,7 @@ int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] )
                     float dy = pos_i[1] - P[jpart].Pos[1];
                     float dz = pos_i[2] - P[jpart].Pos[2];
 
-                    if ( Problem.Periodic ) {
+                    if ( Problem.Periodic[0] ) {
 
                         while ( dx > boxhalf[0] ) {
                             dx -= boxsize[0];
@@ -101,6 +107,9 @@ int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] )
                         while ( dx < -boxhalf[0] ) {
                             dx += boxsize[0];
                         }
+                    }
+
+                    if ( Problem.Periodic[1] ) {
 
                         while ( dy > boxhalf[1] ) {
                             dy -= boxsize[1];
@@ -109,6 +118,9 @@ int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] )
                         while ( dy < -boxhalf[1] ) {
                             dy += boxsize[1];
                         }
+                    }
+
+                    if ( Problem.Periodic[2] ) {
 
                         while ( dz > boxhalf[2] ) {
                             dz -= boxsize[2];

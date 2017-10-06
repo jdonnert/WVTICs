@@ -136,9 +136,9 @@ void Regularise_sph_particles()
         }
 
 #ifdef TWO_DIM
-        float norm_hsml = pow ( WVTNNGB / vSphSum / pi , 1.0 / 2.0 ) * median_boxsize;
+        float norm_hsml = pow ( WVTNNGB / vSphSum / pi, 1.0 / 2.0 ) * median_boxsize;
 #else
-        float norm_hsml = pow ( WVTNNGB / vSphSum / fourpithird , 1.0 / 3.0 ) * median_boxsize;
+        float norm_hsml = pow ( WVTNNGB / vSphSum / fourpithird, 1.0 / 3.0 ) * median_boxsize;
 #endif
 
         #pragma omp parallel for
@@ -166,7 +166,7 @@ void Regularise_sph_particles()
                 float dy = P[ipart].Pos[1] - P[jpart].Pos[1];
                 float dz = P[ipart].Pos[2] - P[jpart].Pos[2];
 
-                if ( Problem.Periodic ) {
+                if ( Problem.Periodic[0] ) {
 
                     while ( dx > boxhalf[0] ) { // closest image
                         dx -= boxsize[0];
@@ -176,6 +176,10 @@ void Regularise_sph_particles()
                         dx += boxsize[0];
                     }
 
+                }
+
+                if ( Problem.Periodic[1] ) {
+
                     while ( dy > boxhalf[1] ) {
                         dy -= boxsize[1];
                     }
@@ -183,7 +187,9 @@ void Regularise_sph_particles()
                     while ( dy < -boxhalf[1] ) {
                         dy += boxsize[1];
                     }
+                }
 
+                if ( Problem.Periodic[2] ) {
                     while ( dz > boxhalf[2] ) {
                         dz -= boxsize[2];
                     }
@@ -218,8 +224,8 @@ void Regularise_sph_particles()
 
                 // Also 1/3 for 2D since density contrast is not affected by dimensionality
                 const double dens_contrast = pow ( SphP[ipart].Rho_Model / rho_mean, 1 / 3 );
-	        const double dens_error = fabs(SphP[ipart].Rho - SphP[ipart].Rho_Model) / SphP[ipart].Rho_Model;
-	       
+                const double dens_error = fabs ( SphP[ipart].Rho - SphP[ipart].Rho_Model ) / SphP[ipart].Rho_Model;
+
                 delta[0][ipart] += step / dens_contrast * dens_error * hsml[ipart] * wk * dx / r;
                 delta[1][ipart] += step / dens_contrast * dens_error * hsml[ipart] * wk * dy / r;
 #ifndef TWO_DIM

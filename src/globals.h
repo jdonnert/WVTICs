@@ -127,7 +127,8 @@ extern struct ProblemParameters {
     double Mpart;
     double Boxsize[3]; // [0] is ALWAYS the largest one !
     double Rho_Max;
-    bool Periodic;
+    bool Periodic[3];
+    bool Reflective[3];
 } Problem;
 
 #ifdef EAT_PNG
