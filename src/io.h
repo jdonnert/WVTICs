@@ -1,26 +1,6 @@
 #ifndef IO_H
 #define IO_H
 
-extern struct GADGET_Header {
-    int npart[6];
-    double mass[6];
-    double time;
-    double redshift;
-    int flag_sfr;
-    int flag_feedback;
-    unsigned int npartTotal[6];
-    int flag_cooling;
-    int num_files;
-    double BoxSize;
-    double Omega0;
-    double OmegaLambda;
-    double HubbleParam;
-    int flag_stellarage;
-    int flag_metals;
-    unsigned int npartTotalHighWord[6];
-    char fill[64];      // fill to 256 Bytes
-} Header;
-
 struct Block_Info {
     char Name[CHARBUFSIZE];
     char Label[4];
@@ -32,7 +12,6 @@ struct Block_Info {
 } Block;
 
 // Gadget-2 expects specific block order
-#ifdef SPH_CUBIC_SPLINE
 enum iofields {
     IO_POS,
     IO_VEL,
@@ -44,21 +23,7 @@ enum iofields {
     IO_RHOMODEL,
     IO_LASTENTRY
 };
-#else
-enum iofields {
-    IO_POS,
-    IO_VEL,
-    IO_ID,
-    IO_RHO,
-    IO_RHOMODEL,
-    IO_HSML,
-    IO_U,
-    IO_BFLD,
-    IO_LASTENTRY
-};
-#endif  // SPH_CUBIC_SPLINE
 
-size_t my_fread ( void *, size_t, size_t, FILE *, int );
 int find_block ( FILE *, char * );
 
 void write_header ( FILE *, bool );
@@ -67,7 +32,13 @@ void set_block_info ( enum iofields );
 void fill_write_buffer ( enum iofields, void *, size_t, size_t );
 size_t  my_fwrite ( void *, size_t, size_t, FILE * );
 
+size_t my_fread ( FILE *file, void *ptr, size_t size, size_t nmemb );
+bool checkFileAtEndSafely ( FILE *file );
+void swapNbyte ( char *data, int n, int m );
+
 void readGriddedoData();
 void writeGridTestData();
+
+void readGadget2File ( const char *fileName );
 
 #endif

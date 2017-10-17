@@ -1,6 +1,6 @@
 #include "globals.h"
 #include "io.h"
-#include <inttypes.h>
+#include "io/gadgetreader.h"
 
 /* These two handle the F90 Records required for the file format */
 #define WRITE_F90REC  {my_fwrite(&blocksize,sizeof(int),1,fp);}
@@ -288,16 +288,11 @@ size_t my_fwrite ( void *data, size_t size, size_t nItems, FILE *fp )
     size_t nWritten = 0;
 
     if ( nItems * size > 0 ) {
-
         if ( ( nWritten = fwrite ( data, size, nItems, fp ) ) != nItems ) {
-
             fprintf ( stderr, "I/O error (fwrite) " );
-
             fflush ( stderr );
-
             exit ( 6 );
         }
-
     } else {
         nWritten = 0;
     }
@@ -306,6 +301,47 @@ size_t my_fwrite ( void *data, size_t size, size_t nItems, FILE *fp )
 }
 
 #undef WRITE_F90REC
+
+size_t my_fread ( FILE *file, void *ptr, size_t size, size_t nmemb )
+{
+    size_t nread;
+
+    if ( ( nread = fread ( ptr, size, nmemb, file ) ) != nmemb ) {
+        fprintf ( stdout , "I/O error (fread) !\n" );
+        exit ( 6 );
+        return 0;
+    }
+
+    return nread;
+}
+
+bool checkFileAtEndSafely ( FILE *file )
+{
+    if ( feof ( file ) ) {
+        return true;
+    } else {
+        long int pos = ftell ( file );
+        if ( fgetc ( file ) == EOF ) {
+            return true;
+        } else {
+            fseek ( file, pos, SEEK_SET );
+            return false;
+        }
+    }
+}
+
+void swapNbyte ( char *data, int n, int m )
+{
+    int i, j;
+    char old_data[16];
+
+    for ( j = 0; j < n; j++ ) {
+        memcpy ( &old_data[0], &data[j * m], m );
+        for ( i = 0; i < m; i++ ) {
+            data[j * m + i] = old_data[m - i - 1];
+        }
+    }
+}
 
 /* Read a number of tags from an ascii file the comment sign is % */
 
@@ -525,4 +561,23 @@ void writeGridTestData()
         fprintf ( stderr, "Error writing file %s\n" , outfileName );
         exit ( 1 );
     }
+}
+
+void readGadget2File ( const char *fileName )
+{
+    FILE *fp;
+    printf ( "Reading file %s\n", fileName );
+
+    if ( ! ( fp = fopen ( fileName, "rb" ) ) ) {
+        fprintf ( stderr, "Can't open file" );
+    }
+
+    readHeader ( fp );
+
+    for ( int iblock = 0; iblock < IO_LASTENTRY; ++iblock ) {
+        readBlock ( fp, ( enum iofields ) iblock );
+    }
+
+    fclose ( fp );
+    printf ( "done\n" );
 }

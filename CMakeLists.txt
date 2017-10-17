@@ -88,7 +88,8 @@ set(SOURCE_FILES
         src/problems/user.c
         src/problems/grid.c
         src/diagnostics.c
-        src/redistribution.c)
+        src/redistribution.c
+        src/io/gadgetreader.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
