@@ -9,11 +9,14 @@ int findParticleToRedistribute();
 int findParticleAsTargetLocation();
 void moveParticleInNeighborhoodOf ( const int ipart, const int jpart );
 
+double randomNumber();
 int randomParticle();
-bool isOverdense ( const int ipart );
-bool isUnderdense ( const int ipart );
+
+bool acceptParticleForMovement ( const int ipart );
+bool acceptParticleAsTarget ( const int ipart );
+float relativeDensityErrorWithSign ( const int ipart );
 float relativeDensityError ( const int ipart );
-float getPositionInProximity ( const int jpart, const int i );
+float getPositionInProximity ( const int ipart, const int i );
 
 void resetRedistributionFlags();
 

@@ -11,6 +11,7 @@
  * so that we can omit recalculation of density during the process.
  */
 
+//! @todo count rejected particles and set a max for that; maybe we can remove the decay of the redistribution then again
 void redistributeParticles ( const int movePart )
 {
     printf ( "Redistributing %d particles (=%g%%)\n", movePart, movePart * 100. / Param.Npart );
@@ -32,7 +33,7 @@ int findParticleToRedistribute()
     //! @todo eventually we want to even accept underdense particles with a small probability
     bool run = true;
     while ( run ) {
-        while ( P[ipart].Redistributed || isUnderdense ( ipart ) ) {
+        while ( P[ipart].Redistributed || !acceptParticleForMovement ( ipart ) ) {
             ipart = randomParticle();
         }
         #pragma omp critical
@@ -49,7 +50,7 @@ int findParticleAsTargetLocation()
 {
     int ipart = randomParticle();
 
-    while ( isOverdense ( ipart ) ) {
+    while ( !acceptParticleAsTarget ( ipart ) ) {
         ipart = randomParticle();
     }
 
@@ -63,33 +64,47 @@ void moveParticleInNeighborhoodOf ( const int ipart, const int jpart )
     }
 }
 
+double randomNumber()
+{
+    return erand48 ( Omp.Seed );
+}
+
 int randomParticle()
 {
-    return erand48 ( Omp.Seed ) * Param.Npart;
+    return randomNumber() * Param.Npart;
 }
 
-bool isOverdense ( const int ipart )
+bool acceptParticleForMovement ( const int ipart )
 {
-    return SphP[ipart].Rho > ( *Density_Func_Ptr ) ( ipart );
+    const double r = randomNumber();
+    return r < erf ( relativeDensityErrorWithSign ( ipart ) );
 }
 
-bool isUnderdense ( const int ipart )
+bool acceptParticleAsTarget ( const int ipart )
 {
-    return SphP[ipart].Rho < ( *Density_Func_Ptr ) ( ipart );
+    const double r = randomNumber();
+    return r < ( -1.0 ) * relativeDensityErrorWithSign ( ipart );
+}
+
+//This ranges from -1 (Rho = 0) to infinity (Rho = infinity)
+float relativeDensityErrorWithSign ( const int ipart )
+{
+    const float rhoModel = ( *Density_Func_Ptr ) ( ipart );
+    return ( SphP[ipart].Rho - rhoModel ) / rhoModel;
 }
 
 float relativeDensityError ( const int ipart )
 {
     const float rho = ( *Density_Func_Ptr ) ( ipart );
-    return fabs ( SphP[ipart].Rho - rho ) / rho;
+    return fabs ( relativeDensityErrorWithSign ( ipart ) );
 }
 
-float getPositionInProximity ( const int jpart, const int i )
+float getPositionInProximity ( const int ipart, const int i )
 {
     float ret = -1.0;
 
     while ( ret < 0.0 || ret >= Problem.Boxsize[i] ) {
-        ret = P[jpart].Pos[i] + ( 2.0 * erand48 ( Omp.Seed ) - 1.0 ) * SphP[jpart].Hsml * 0.3;
+        ret = P[ipart].Pos[i] + ( 2.0 * erand48 ( Omp.Seed ) - 1.0 ) * SphP[ipart].Hsml * 0.3;
         if ( Problem.Periodic ) {
             if ( ret >= Problem.Boxsize[i] ) {
                 ret -= Problem.Boxsize[i];
