@@ -48,6 +48,7 @@ int findParticleToRedistribute ( int *probes )
 
         probes ++;
         if ( ! acceptParticleForMovement ( ipart ) ) {
+            ipart = randomParticle();
             continue;
         }
 
