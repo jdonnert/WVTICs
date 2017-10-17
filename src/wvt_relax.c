@@ -87,8 +87,9 @@ void Regularise_sph_particles()
             const double decay = log ( Param.MoveFractionMax / Param.MoveFractionMin ) / ( Param.LastMoveStep / Param.RedistributionFrequency - firstIt );
             const double moveFraction = amplitude * exp ( -decay * ( it / Param.RedistributionFrequency - firstIt ) );
             const int movePart = Param.Npart * moveFraction;
+            const int maxProbes = Param.Npart * Param.ProbesFraction;
 
-            redistributeParticles ( movePart );
+            redistributeParticles ( movePart, maxProbes );
             Find_sph_quantities();
         }
 
@@ -218,8 +219,8 @@ void Regularise_sph_particles()
 
                 // Also 1/3 for 2D since density contrast is not affected by dimensionality
                 const double dens_contrast = pow ( SphP[ipart].Rho_Model / rho_mean, 1 / 3 );
-	        const double dens_error = fabs(SphP[ipart].Rho - SphP[ipart].Rho_Model) / SphP[ipart].Rho_Model;
-	       
+                const double dens_error = fabs ( SphP[ipart].Rho - SphP[ipart].Rho_Model ) / SphP[ipart].Rho_Model;
+
                 delta[0][ipart] += step / dens_contrast * dens_error * hsml[ipart] * wk * dx / r;
                 delta[1][ipart] += step / dens_contrast * dens_error * hsml[ipart] * wk * dy / r;
 #ifndef TWO_DIM

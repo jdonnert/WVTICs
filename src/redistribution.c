@@ -11,33 +11,47 @@
  * so that we can omit recalculation of density during the process.
  */
 
-//! @todo count rejected particles and set a max for that; maybe we can remove the decay of the redistribution then again
-void redistributeParticles ( const int movePart )
+void redistributeParticles ( const int movePart, const int maxProbes )
 {
     printf ( "Redistributing %d particles (=%g%%)\n", movePart, movePart * 100. / Param.Npart );
 
     resetRedistributionFlags();
+    int probeCounter = 0;
 
-    #pragma omp parallel for
+    #pragma omp parallel for shared(probeCounter)
     for ( int i = 0; i < movePart; ++i ) {
-        const int ipart = findParticleToRedistribute();
-        const int jpart = findParticleAsTargetLocation();
-        moveParticleInNeighborhoodOf ( ipart, jpart );
+        if ( probeCounter < maxProbes ) {
+            int probes;
+            const int ipart = findParticleToRedistribute ( &probes );
+            const int jpart = findParticleAsTargetLocation();
+
+            moveParticleInNeighborhoodOf ( ipart, jpart );
+
+            #pragma omp atomic
+            probeCounter += probes;
+        }
     }
 }
 
-int findParticleToRedistribute()
+int findParticleToRedistribute ( int *probes )
 {
     int ipart = randomParticle();
 
-    //! @todo eventually we want to even accept underdense particles with a small probability
     bool run = true;
     while ( run ) {
-        while ( P[ipart].Redistributed || !acceptParticleForMovement ( ipart ) ) {
+        while ( P[ipart].Redistributed ) {
             ipart = randomParticle();
         }
+
+        probes ++;
+        if ( ! acceptParticleForMovement ( ipart ) ) {
+            continue;
+        }
+
         #pragma omp critical
-        if ( !P[ipart].Redistributed ) {
+        if ( P[ipart].Redistributed ) {
+            probes --;
+        } else {
             P[ipart].Redistributed = true;
             run = false;
         }
@@ -95,7 +109,6 @@ float relativeDensityErrorWithSign ( const int ipart )
 
 float relativeDensityError ( const int ipart )
 {
-    const float rho = ( *Density_Func_Ptr ) ( ipart );
     return fabs ( relativeDensityErrorWithSign ( ipart ) );
 }
 

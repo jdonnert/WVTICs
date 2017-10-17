@@ -3,9 +3,9 @@
 
 #include "globals.h"
 
-void redistributeParticles ( const int movePart );
+void redistributeParticles ( const int movePart, const int maxProbes );
 
-int findParticleToRedistribute();
+int findParticleToRedistribute ( int *probes );
 int findParticleAsTargetLocation();
 void moveParticleInNeighborhoodOf ( const int ipart, const int jpart );
 

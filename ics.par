@@ -13,8 +13,9 @@ LimitMps1000 1
 
 % Parameters for Monte Carlo redistribution
 
-MoveFractionMin 0.001
-MoveFractionMax 0.1
+MoveFractionMin 0.01
+MoveFractionMax 0.01
+ProbesFraction 0.1
 RedistributionFrequency 5
 LastMoveStep 256
 

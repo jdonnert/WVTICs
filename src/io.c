@@ -376,6 +376,10 @@ void Read_param_file ( char *filename )
     addr[nt] = &Param.MoveFractionMax;
     id[nt++] = REAL;
 
+    strcpy ( tag[nt], "ProbesFraction" );
+    addr[nt] = &Param.ProbesFraction;
+    id[nt++] = REAL;
+
     strcpy ( tag[nt], "RedistributionFrequency" );
     addr[nt] = &Param.RedistributionFrequency;
     id[nt++] = INT;
