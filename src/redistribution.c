@@ -13,7 +13,7 @@
 
 void redistributeParticles ( const int movePart, const int maxProbes )
 {
-    printf ( "Redistributing %d particles (=%g%%)\n", movePart, movePart * 100. / Param.Npart );
+    printf ( "Attempting to redistribute %d particles (=%g%%) by probing %d\n", movePart, movePart * 100. / Param.Npart, maxProbes );
 
     resetRedistributionFlags();
     int redistCounter = 0, probeCounter = 0;
@@ -26,7 +26,7 @@ void redistributeParticles ( const int movePart, const int maxProbes )
             const int jpart = findParticleAsTargetLocation();
 
             moveParticleInNeighborhoodOf ( ipart, jpart );
-            redistCounter++;
+            ++redistCounter;
 
             #pragma omp atomic
             probeCounter += probes;
@@ -46,7 +46,7 @@ int findParticleToRedistribute ( int *probes )
             ipart = randomParticle();
         }
 
-        probes ++;
+        ++ ( *probes );
         if ( ! acceptParticleForMovement ( ipart ) ) {
             ipart = randomParticle();
             continue;
@@ -54,7 +54,7 @@ int findParticleToRedistribute ( int *probes )
 
         #pragma omp critical
         if ( P[ipart].Redistributed ) {
-            probes --;
+            -- ( *probes );
         } else {
             P[ipart].Redistributed = true;
             run = false;
