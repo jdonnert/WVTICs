@@ -68,7 +68,7 @@ int findParticleAsTargetLocation()
 {
     int ipart = randomParticle();
 
-    while ( !acceptParticleAsTarget ( ipart ) ) {
+    while ( P[ipart].Redistributed || !acceptParticleAsTarget ( ipart ) ) {
         ipart = randomParticle();
     }
 
