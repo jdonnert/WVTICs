@@ -16,9 +16,9 @@ void redistributeParticles ( const int movePart, const int maxProbes )
     printf ( "Redistributing %d particles (=%g%%)\n", movePart, movePart * 100. / Param.Npart );
 
     resetRedistributionFlags();
-    int probeCounter = 0;
+    int redistCounter = 0, probeCounter = 0;
 
-    #pragma omp parallel for shared(probeCounter)
+    #pragma omp parallel for shared(probeCounter) reduction(+:redistCounter)
     for ( int i = 0; i < movePart; ++i ) {
         if ( probeCounter < maxProbes ) {
             int probes;
@@ -26,11 +26,14 @@ void redistributeParticles ( const int movePart, const int maxProbes )
             const int jpart = findParticleAsTargetLocation();
 
             moveParticleInNeighborhoodOf ( ipart, jpart );
+            redistCounter++;
 
             #pragma omp atomic
             probeCounter += probes;
         }
     }
+
+    printf ( "Redistributed %d particles after probing %d particles\n", redistCounter, probeCounter );
 }
 
 int findParticleToRedistribute ( int *probes )
