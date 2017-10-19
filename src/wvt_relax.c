@@ -87,7 +87,7 @@ void Regularise_sph_particles()
             const double decay = log ( Param.MoveFractionMax / Param.MoveFractionMin ) / ( Param.LastMoveStep / Param.RedistributionFrequency - firstIt );
             const double moveFraction = amplitude * exp ( -decay * ( it / Param.RedistributionFrequency - firstIt ) );
             const int movePart = Param.Npart * moveFraction;
-            const int maxProbes = Param.Npart * Param.ProbesFraction;
+            const int maxProbes = Param.Npart * Param.ProbesFraction * moveFraction / Param.MoveFractionMax;
 
             redistributeParticles ( movePart, maxProbes );
             Find_sph_quantities();
