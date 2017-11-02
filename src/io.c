@@ -192,6 +192,11 @@ void fill_write_buffer ( enum iofields blocknr, void *wbuf,
             ( ( float * ) wbuf ) [ibuf + i] = SphP[ipart].Bfld[i];
         }
         break;
+#ifdef OUTPUT_DIAGNOSTICS
+    case IO_REDISTRIBUTED:
+        ( ( int * ) wbuf ) [ibuf] = P[ipart].Redistributed;
+        break;
+#endif
     default:
         Assert ( 0, "Block not found %d", blocknr );
         break;
@@ -268,6 +273,15 @@ void set_block_info ( enum iofields blocknr )
         Block.Val_per_element = 3;
         Block.Bytes_per_element = sizeof ( SphP[0].Bfld[0] );
         break;
+#ifdef OUTPUT_DIAGNOSTICS
+    case IO_REDISTRIBUTED:
+        strncpy ( Block.Label, "REDI", 4 );
+        strncpy ( Block.Name, "Redistributed", 16 );
+        Block.Npart[0] = Param.Npart;
+        Block.Val_per_element = 1;
+        Block.Bytes_per_element = sizeof ( int );
+        break;
+#endif
     case IO_LASTENTRY:
         strncpy ( Block.Label, "LAST", 4 );
         strncpy ( Block.Name, " ", 1 );

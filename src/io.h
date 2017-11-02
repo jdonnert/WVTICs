@@ -39,6 +39,9 @@ enum iofields {
     IO_HSML,
     IO_BFLD,
     IO_RHOMODEL,
+#ifdef OUTPUT_DIAGNOSTICS
+    IO_REDISTRIBUTED,
+#endif
     IO_LASTENTRY
 };
 #else
@@ -51,6 +54,9 @@ enum iofields {
     IO_HSML,
     IO_U,
     IO_BFLD,
+#ifdef OUTPUT_DIAGNOSTICS
+    IO_REDISTRIBUTED,
+#endif
     IO_LASTENTRY
 };
 #endif  // SPH_CUBIC_SPLINE
