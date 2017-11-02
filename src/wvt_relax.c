@@ -81,6 +81,7 @@ void Regularise_sph_particles()
         writeStepFile ( it );
 #endif
 
+        resetRedistributionFlags();
         if ( it <= Param.LastMoveStep && it % Param.RedistributionFrequency == 0 ) {
             const int firstIt = 1;
             const double amplitude = Param.MoveFractionMax;

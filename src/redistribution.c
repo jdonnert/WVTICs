@@ -15,7 +15,6 @@ void redistributeParticles ( const int movePart, const int maxProbes )
 {
     printf ( "Attempting to redistribute %d particles (=%g%%) by probing %d\n", movePart, movePart * 100. / Param.Npart, maxProbes );
 
-    resetRedistributionFlags();
     int redistCounter = 0, probeCounter = 0;
 
     #pragma omp parallel for shared(probeCounter) reduction(+:redistCounter)
