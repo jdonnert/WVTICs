@@ -219,7 +219,7 @@ void Regularise_sph_particles()
                 float wk = sph_kernel ( r, h ) * kernel_fac;
 
                 // Also 1/3 for 2D since density contrast is not affected by dimensionality
-                const double dens_contrast = pow ( SphP[ipart].Rho_Model / rho_mean, 1 / 3 );
+                const double dens_contrast = pow ( SphP[ipart].Rho_Model / rho_mean, 1.0 / 3.0 );
                 const double dens_error = fabs ( SphP[ipart].Rho - SphP[ipart].Rho_Model ) / SphP[ipart].Rho_Model;
 
                 delta[0][ipart] += step / dens_contrast * dens_error * hsml[ipart] * wk * dx / r;
