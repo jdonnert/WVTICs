@@ -19,32 +19,42 @@ void redistributeParticles ( const int movePart, const int maxProbes )
 
     #pragma omp parallel for shared(probeCounter) reduction(+:redistCounter)
     for ( int i = 0; i < movePart; ++i ) {
-        if ( probeCounter < maxProbes ) {
-            int probes;
-            const int ipart = findParticleToRedistribute ( &probes );
-            const int jpart = findParticleAsTargetLocation();
-
-            moveParticleInNeighborhoodOf ( ipart, jpart );
-            ++redistCounter;
-
-            #pragma omp atomic
-            probeCounter += probes;
+        int atomicProbeCounter;
+        #pragma omp critical
+        atomicProbeCounter = probeCounter;
+       
+        if ( atomicProbeCounter < maxProbes ) {
+            const int ipart = findParticleToRedistribute ( &probeCounter, maxProbes );
+	    if (ipart >= 0) {
+	        const int jpart = findParticleAsTargetLocation();
+	       
+	        moveParticleInNeighborhoodOf ( ipart, jpart );
+	        ++redistCounter;
+	    }  
         }
     }
 
     printf ( "Redistributed %d particles after probing %d particles\n", redistCounter, probeCounter );
 }
 
-int findParticleToRedistribute ( int *probes )
+int findParticleToRedistribute ( int *probes, const int maxProbes )
 {
     int ipart = randomParticle();
 
     bool run = true;
-    while ( run ) {
+    while ( run ) {       
         while ( P[ipart].Redistributed ) {
             ipart = randomParticle();
         }
 
+        #pragma omp critical
+        run = (*probes) < maxProbes;
+        if ( ! run ) {
+	    ipart = -1;
+	    break;
+	}
+
+        #pragma omp atomic
         ++ ( *probes );
         if ( ! acceptParticleForMovement ( ipart ) ) {
             ipart = randomParticle();
@@ -53,6 +63,7 @@ int findParticleToRedistribute ( int *probes )
 
         #pragma omp critical
         if ( P[ipart].Redistributed ) {
+	    #pragma omp atomic
             -- ( *probes );
         } else {
             P[ipart].Redistributed = true;
