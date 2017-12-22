@@ -38,6 +38,7 @@ if(EAT_PNG)
 
     find_package(PNG REQUIRED)
     add_definitions(${PNG_DEFINITIONS})
+    include_directories(${PNG_INCLUDE_DIRS})
 endif(EAT_PNG)
 
 if(TWO_DIM)
@@ -52,7 +53,10 @@ if(OUTPUT_DIAGNOSTICS)
     add_definitions(-DOUTPUT_DIAGNOSTICS)
 endif(OUTPUT_DIAGNOSTICS)
 
-message(STATUS "Compiling with ${CMAKE_CXX_FLAGS}")
+find_package(GSL REQUIRED)
+include_directories(${GSL_INCLUDE_DIRS})
+
+message(STATUS "Compiling with ${CMAKE_C_FLAGS}")
 
 
 set(SOURCE_FILES
@@ -91,7 +95,7 @@ set(SOURCE_FILES
 
 add_executable(WVTICs ${SOURCE_FILES})
 
-target_link_libraries(WVTICs -lm -lgsl -lgslcblas )
+target_link_libraries(WVTICs -lm ${GSL_LIBRARIES} ${GSL_CBLAS_LIBRARIES} )
 
 if(EAT_PNG)
     target_link_libraries(WVTICs ${PNG_LIBRARIES})
