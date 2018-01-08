@@ -13,8 +13,5 @@ void setup_Constant_Density()
 
 float Constant_Density ( const int ipart )
 {
-    double volume = Problem.Boxsize[0] * Problem.Boxsize[1] * Problem.Boxsize[2];
-    double mass = Param.Npart * Problem.Mpart;
-
-    return mass / volume;
+    return 1.0;
 }
