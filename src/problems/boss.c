@@ -2,7 +2,7 @@
 
 void setup_Boss()
 {
-    Problem.Periodic = 0;
+    Problem.Periodic[0] = Problem.Periodic[1] = Problem.Periodic[2] = false;
 
     Problem.Boxsize[0] = 0.016; //5e16 cm in parsec
     Problem.Boxsize[1] = 0.016;

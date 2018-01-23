@@ -51,30 +51,14 @@ int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] )
         float dy = pos_i[1] - Tree[node].Pos[1];
         float dz = pos_i[2] - Tree[node].Pos[2];
 
-        if ( Problem.Periodic ) {
-
-            while ( dx > boxhalf[0] ) {
-                dx -= boxsize[0];
-            }
-
-            while ( dx < -boxhalf[0] ) {
-                dx += boxsize[0];
-            }
-
-            while ( dy > boxhalf[1] ) {
-                dy -= boxsize[1];
-            }
-
-            while ( dy < -boxhalf[1] ) {
-                dy += boxsize[1];
-            }
-
-            while ( dz > boxhalf[2] ) {
-                dz -= boxsize[2];
-            }
-
-            while ( dz < -boxhalf[2] ) {
-                dz += boxsize[2];
+        for ( int p = 0; p < 3; ++p ) {
+            if ( Problem.Periodic[p] ) {
+                while ( dx > boxhalf[p] ) { // find closest image
+                    dx -= boxsize[p];
+                }
+                while ( dx < -boxhalf[p] ) {
+                    dx += boxsize[p];
+                }
             }
         }
 
@@ -93,30 +77,14 @@ int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] )
                     float dy = pos_i[1] - P[jpart].Pos[1];
                     float dz = pos_i[2] - P[jpart].Pos[2];
 
-                    if ( Problem.Periodic ) {
-
-                        while ( dx > boxhalf[0] ) {
-                            dx -= boxsize[0];
-                        }
-
-                        while ( dx < -boxhalf[0] ) {
-                            dx += boxsize[0];
-                        }
-
-                        while ( dy > boxhalf[1] ) {
-                            dy -= boxsize[1];
-                        }
-
-                        while ( dy < -boxhalf[1] ) {
-                            dy += boxsize[1];
-                        }
-
-                        while ( dz > boxhalf[2] ) {
-                            dz -= boxsize[2];
-                        }
-
-                        while ( dz < -boxhalf[2] ) {
-                            dz += boxsize[2];
+                    for ( int p = 0; p < 3; ++p ) {
+                        if ( Problem.Periodic[p] ) {
+                            while ( dx > boxhalf[p] ) { // find closest image
+                                dx -= boxsize[p];
+                            }
+                            while ( dx < -boxhalf[p] ) {
+                                dx += boxsize[p];
+                            }
                         }
                     }
 
@@ -397,30 +365,14 @@ int Find_ngb_simple ( const int ipart, const float hsml, int ngblist[NGBMAX] )
         float dy = ( P[ipart].Pos[1] - P[jpart].Pos[1] );
         float dz = ( P[ipart].Pos[2] - P[jpart].Pos[2] );
 
-        if ( Problem.Periodic ) {
-
-            while ( dx > boxhalf[0] ) { // find closest image
-                dx -= boxsize[0];
-            }
-
-            while ( dy > boxhalf[1] ) {
-                dy -= boxsize[1];
-            }
-
-            while ( dz > boxhalf[2] ) {
-                dz -= boxsize[2];
-            }
-
-            while ( dx < -boxhalf[0] ) {
-                dx += boxsize[0];
-            }
-
-            while ( dy < -boxhalf[1] ) {
-                dy += boxsize[1];
-            }
-
-            while ( dz < -boxhalf[2] ) {
-                dz += boxsize[2];
+        for ( int p = 0; p < 3; ++p ) {
+            if ( Problem.Periodic[p] ) {
+                while ( dx > boxhalf[p] ) { // find closest image
+                    dx -= boxsize[p];
+                }
+                while ( dx < -boxhalf[p] ) {
+                    dx += boxsize[p];
+                }
             }
         }
 

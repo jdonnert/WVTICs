@@ -22,15 +22,15 @@ void redistributeParticles ( const int movePart, const int maxProbes )
         int atomicProbeCounter;
         #pragma omp critical
         atomicProbeCounter = probeCounter;
-       
+
         if ( atomicProbeCounter < maxProbes ) {
             const int ipart = findParticleToRedistribute ( &probeCounter, maxProbes );
-	    if (ipart >= 0) {
-	        const int jpart = findParticleAsTargetLocation();
-	       
-	        moveParticleInNeighborhoodOf ( ipart, jpart );
-	        ++redistCounter;
-	    }  
+            if ( ipart >= 0 ) {
+                const int jpart = findParticleAsTargetLocation();
+
+                moveParticleInNeighborhoodOf ( ipart, jpart );
+                ++redistCounter;
+            }
         }
     }
 
@@ -42,17 +42,17 @@ int findParticleToRedistribute ( int *probes, const int maxProbes )
     int ipart = randomParticle();
 
     bool run = true;
-    while ( run ) {       
+    while ( run ) {
         while ( P[ipart].Redistributed ) {
             ipart = randomParticle();
         }
 
         #pragma omp critical
-        run = (*probes) < maxProbes;
+        run = ( *probes ) < maxProbes;
         if ( ! run ) {
-	    ipart = -1;
-	    break;
-	}
+            ipart = -1;
+            break;
+        }
 
         #pragma omp atomic
         ++ ( *probes );
@@ -63,7 +63,7 @@ int findParticleToRedistribute ( int *probes, const int maxProbes )
 
         #pragma omp critical
         if ( P[ipart].Redistributed ) {
-	    #pragma omp atomic
+            #pragma omp atomic
             -- ( *probes );
         } else {
             P[ipart].Redistributed = true;
@@ -132,7 +132,7 @@ float getPositionInProximity ( const int ipart, const int i )
 
     while ( ret < 0.0 || ret >= Problem.Boxsize[i] ) {
         ret = P[ipart].Pos[i] + ( 2.0 * erand48 ( Omp.Seed ) - 1.0 ) * SphP[ipart].Hsml * 0.3;
-        if ( Problem.Periodic ) {
+        if ( Problem.Periodic[i] ) {
             if ( ret >= Problem.Boxsize[i] ) {
                 ret -= Problem.Boxsize[i];
             } else if ( ret < 0.0 ) {
