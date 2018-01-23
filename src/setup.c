@@ -30,10 +30,11 @@ void Setup()
              "   Npart: %d \n"
              "   Mpart: %g \n"
              "   Boxsize: %g x %g x %g \n"
-             "   Periodic: %d \n\n",
+             "   Periodic: %d %d %d \n\n",
              Param.Problem_Flag, Param.Problem_Subflag, Problem.Name,
              Param.Npart, Problem.Mpart, Problem.Boxsize[0],
-             Problem.Boxsize[1], Problem.Boxsize[2], Problem.Periodic );
+             Problem.Boxsize[1], Problem.Boxsize[2],
+             Problem.Periodic[0], Problem.Periodic[1], Problem.Periodic[2] );
 }
 
 void setup_problem ( const int Flag, const int Subflag )
@@ -46,7 +47,7 @@ void setup_problem ( const int Flag, const int Subflag )
 
     Problem.Mpart = 1; // required to renormalize later
 
-    Problem.Periodic = true; // standard settings
+    Problem.Periodic[0] = Problem.Periodic[1] = Problem.Periodic[2] = true; // standard settings
     Problem.Rho_Max = 1.0;
     Problem.Boxsize[0] = Problem.Boxsize[1] = Problem.Boxsize[2] = 1;
 
@@ -73,7 +74,7 @@ void setup_problem ( const int Flag, const int Subflag )
         break;
 
     case 1:
-        Problem.Periodic = false;
+        Problem.Periodic[0] = Problem.Periodic[1] = Problem.Periodic[2] = false;
         switch ( Subflag ) {
         case 0:
             setup_Gradient_Density();
