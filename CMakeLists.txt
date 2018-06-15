@@ -56,7 +56,8 @@ endif(OUTPUT_DIAGNOSTICS)
 find_package(GSL REQUIRED)
 include_directories(${GSL_INCLUDE_DIRS})
 
-message(STATUS "Compiling with ${CMAKE_C_FLAGS}")
+get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
+message(STATUS "Compiling with ${CMAKE_C_FLAGS}\n   and definitions ${DirDefs}")
 
 
 set(SOURCE_FILES
