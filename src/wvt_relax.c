@@ -164,22 +164,23 @@ void Regularise_sph_particles()
                     continue;
                 }
 
-                float dx = P[ipart].Pos[0] - P[jpart].Pos[0];
-                float dy = P[ipart].Pos[1] - P[jpart].Pos[1];
-                float dz = P[ipart].Pos[2] - P[jpart].Pos[2];
+                double d[3];
+                double r2 = 0.0;
 
                 for ( int p = 0; p < 3; ++p ) {
+                    d[p] = P[ipart].Pos[p] - P[jpart].Pos[p];
+
                     if ( Problem.Periodic[p] ) {
-                        while ( dx > boxhalf[p] ) { // find closest image
-                            dx -= boxsize[p];
+                        while ( d[p] > boxhalf[p] ) { // find closest image
+                            d[p] -= boxsize[p];
                         }
-                        while ( dx < -boxhalf[p] ) {
-                            dx += boxsize[p];
+                        while ( d[p] < -boxhalf[p] ) {
+                            d[p] += boxsize[p];
                         }
                     }
-                }
 
-                float r2 = ( dx * dx + dy * dy + dz * dz );
+                    r2 += d[p] * d[p];
+                }
 
                 Assert ( r2 > 0,
                          "Found two particles %d & %d at the same location. "
@@ -202,10 +203,10 @@ void Regularise_sph_particles()
 #endif
                 float wk = sph_kernel ( r, h ) * kernel_fac;
 
-                delta[0][ipart] += step * h * wk * dx / r;
-                delta[1][ipart] += step * h * wk * dy / r;
+                delta[0][ipart] += step * h * wk * d[0] / r;
+                delta[1][ipart] += step * h * wk * d[1] / r;
 #ifndef TWO_DIM
-                delta[2][ipart] += step * h * wk * dz / r;
+                delta[2][ipart] += step * h * wk * d[2] / r;
 #endif
             }
 
