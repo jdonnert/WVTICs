@@ -108,22 +108,22 @@ extern bool Find_hsml ( const int ipart, const int *ngblist, const int ngbcnt,
 
             int jpart = ngblist[i];
 
-            double dx = pos_i[0] - P[jpart].Pos[0];
-            double dy = pos_i[1] - P[jpart].Pos[1];
-            double dz = pos_i[2] - P[jpart].Pos[2];
+            double r2 = 0.0;
 
             for ( int p = 0; p < 3; ++p ) {
+                double d = pos_i[p] - P[jpart].Pos[p];
+
                 if ( Problem.Periodic[p] ) {
-                    while ( dx > boxhalf[p] ) { // find closest image
-                        dx -= boxsize[p];
+                    while ( d > boxhalf[p] ) { // find closest image
+                        d -= boxsize[p];
                     }
-                    while ( dx < -boxhalf[p] ) {
-                        dx += boxsize[p];
+                    while ( d < -boxhalf[p] ) {
+                        d += boxsize[p];
                     }
                 }
-            }
 
-            double r2 = dx * dx + dy * dy + dz * dz;
+                r2 += d * d;
+            }
 
             if ( r2 > p2 ( hsml ) ) {
                 continue ;
