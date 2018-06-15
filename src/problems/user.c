@@ -3,13 +3,20 @@
 // Adjust all these to your liking
 void setup_User_Density ( const int subflag )
 {
-    Problem.Boxsize[0] = 1.0;
-    Problem.Boxsize[1] = 1.0;
+    Problem.Boxsize[0] = 300.0;
+    Problem.Boxsize[1] = 200.0;
     Problem.Boxsize[2] = 1.0;
+
+    Problem.Periodic[0] = false;
 
     sprintf ( Problem.Name, "IC_User" );
 
-    Problem.Rho_Max = 1.0;
+    const double rho0 = 0.0027747626;
+    const double xmin = 3.0;
+    const double af = 0.78655113;
+    const double xne0 = 0.13;
+    Problem.Rho_Max = rho0 * xne0 * exp ( -af * log ( xmin ) );
+    printf ( "RhoMax = %g\n", Problem.Rho_Max );
 
     Density_Func_Ptr = &User_Density;
     U_Func_Ptr = &User_U;
@@ -20,13 +27,14 @@ void setup_User_Density ( const int subflag )
 
 float User_Density ( const int ipart )
 {
-    //float x = P[ipart].Pos[0] / Problem.Boxsize[0];
-    //float y = P[ipart].Pos[1] / Problem.Boxsize[1];
-    //float z = P[ipart].Pos[2] / Problem.Boxsize[2];
+    const double rho0 = 0.0027747626;
+    const double xmin = 3.0;
+    const double af = 0.78655113;
+    const double xne0 = 0.13;
 
-    float rho = 1.0f;
+    const double x = P[ipart].Pos[0];
 
-    return rho;
+    return rho0 * xne0 * exp ( -af * log ( x + xmin ) );
 }
 
 float User_U ( const int ipart )
