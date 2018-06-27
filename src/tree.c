@@ -17,6 +17,7 @@ int Max_Nodes = 0;
 static int key_fragment ( const int node );
 static void add_particle_to_node ( const int ipart, const int node );
 static bool particle_is_inside_node ( const peanoKey key, const int lvl,        const int node );
+static bool particle_is_inside_node_easy ( const int ipart, const int node );
 static void create_node_from_particle ( const int ipart, const int parent,
                                         const peanoKey key, const int lvl, int *NNodes );
 
@@ -173,7 +174,9 @@ void Build_Tree()
 
         while ( lvl < N_PEANO_TRIPLETS ) {
 
-            if ( particle_is_inside_node ( key, lvl, node ) ) { // open
+            // @todo this seems to be buggy!!!
+            //if ( particle_is_inside_node ( key, lvl, node ) ) { // open
+            if ( particle_is_inside_node_easy ( ipart, node ) ) { // open
 
                 if ( Tree[node].Npart == 1 ) { // refine
 
@@ -267,6 +270,20 @@ static bool particle_is_inside_node ( const peanoKey key, const int lvl,
     int node_triplet = key_fragment ( node );
 
     return node_triplet == part_triplet;
+}
+
+static bool particle_is_inside_node_easy ( const int ipart, const int node )
+{
+    for ( int d = 0; d < 3; ++d ) {
+        const double lower = Tree[node].Pos[d] - 0.5 * Tree[node].Size[d];
+        const double upper = Tree[node].Pos[d] + 0.5 * Tree[node].Size[d];
+        const double pos = P[ipart].Pos[d];
+
+        if ( lower > pos || pos > upper ) {
+            return false;
+        }
+    }
+    return true;
 }
 
 /* A new node gets the Peano triplet from the containing particle. */
