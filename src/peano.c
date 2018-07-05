@@ -6,6 +6,22 @@
 peanoKey Peano_Key ( const double x, const double y, const double z );
 static void reorder_particles();
 
+void Print_Int_Bits64 ( const peanoKey val )
+{
+    for ( int i = 63; i >= 0; i-- ) {
+
+        printf ( "%llu", ( long long ) ( ( val & ( ( peanoKey ) 1 << i ) ) >> i ) );
+
+        if ( i % 3 == 0 && i != 0 ) {
+            printf ( "." );
+        }
+    }
+    printf ( "\n" );
+    fflush ( stdout );
+
+    return ;
+}
+
 void Print_Int_Bits128 ( const peanoKey val )
 {
     for ( int i = 127; i >= 0; i-- ) {
@@ -13,6 +29,22 @@ void Print_Int_Bits128 ( const peanoKey val )
         printf ( "%llu", ( long long ) ( ( val & ( ( peanoKey ) 1 << i ) ) >> i ) );
 
         if ( i % 3 == 0 && i != 0 ) {
+            printf ( "." );
+        }
+    }
+    printf ( "\n" );
+    fflush ( stdout );
+
+    return ;
+}
+
+void Print_Int_Bits64r ( const peanoKey val )
+{
+    for ( int i = 63; i >= 0; i-- ) {
+
+        printf ( "%llu", ( long long ) ( ( val & ( ( peanoKey ) 1 << i ) ) >> i ) );
+
+        if ( i % 3 - 1 == 0 && i != 0 ) {
             printf ( "." );
         }
     }
@@ -291,28 +323,46 @@ peanoKey Reversed_Peano_Key ( const double x, const double y, const double z )
 
 void test_peanokey()
 {
-    const double box[3]  = { 1.0, 1, 1};
-    double a[3] = { 0 };
-    int order = 1;
-    float delta = 1 / pow ( 2.0, order );
-    int n = roundf ( 1 / delta );
+    Problem.Boxsize[0] = 1.0;
+    Problem.Boxsize[1] = 1.0;
+    Problem.Boxsize[2] = 1.0;
 
-    for ( int i = 0; i < n; i++ ) {
-        for ( int j = 0; j < n; j++ ) {
-            for ( int k = 0; k < n; k++ ) {
+    float a[3] = { 0 };
+    for ( int order = 0; order < 3; ++order ) {
+        printf ( "\nTesting order %d\n\n", order );
+        float delta = 1 / pow ( 2.0, order );
+        int n = roundf ( 1 / delta );
 
-                a[0] = ( i + 0.5 ) * delta / box[0];
-                a[1] = ( j + 0.5 ) * delta / box[1];
-                a[2] = ( k + 0.5 ) * delta / box[2];
+        const uint64_t cellSize = peanoCellSize();
+        const double halfCellSize = 0.5 * cellSize;
+        const double norm = peanoNormFactor();
+        printf ( "Half cell size: %g; norm: %g\n", halfCellSize, norm );
 
-                peanoKey stdkey =  Peano_Key ( a[0], a[1], a[2] );
+        for ( int i = 0; i < n; i++ ) {
+            for ( int j = 0; j < n; j++ ) {
+                for ( int k = 0; k < n; k++ ) {
 
-                printf ( "%g %g %g %llu  \n", a[0], a[1], a[2],
-                         ( long long ) stdkey );
+                    a[0] = ( i + 0.5 ) * delta / Problem.Boxsize[0];
+                    a[1] = ( j + 0.5 ) * delta / Problem.Boxsize[1];
+                    a[2] = ( k + 0.5 ) * delta / Problem.Boxsize[2];
 
-                Print_Int_Bits128 ( stdkey );
+                    peanoKey stdkey = Peano_Key ( a[0], a[1], a[2] );
 
-                printf ( "\n" );
+                    printf ( "%g %g %g %llu  \n", a[0], a[1], a[2],
+                             ( long long ) stdkey );
+
+                    Print_Int_Bits128r ( stdkey );
+
+                    /*translateAndRenormalizeCoordsForPeano(a, halfCellSize, norm);
+                    int64_t alternateKey = coordsToPeano(a[0], a[1], a[2]);
+
+                    printf("%g %g %g %lu  \n", a[0], a[1], a[2], alternateKey);
+
+                    Print_Int_Bits64(alternateKey);
+                    Print_Int_Bits64r(reverseBitsInPeanoKey(alternateKey));*/
+
+                    printf ( "\n" );
+                }
             }
         }
     }

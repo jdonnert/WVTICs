@@ -2,6 +2,7 @@
 #include "tree.h"
 
 #define NODES_PER_PARTICLE 2
+#define N_PEANO_TRIPLETS PEANO_ORDER
 
 struct Tree_Node {
     uint32_t Bitfield;  // bit 0-5:level, 6-8:key, 9:local, 10:top, 11-31:free
@@ -175,8 +176,8 @@ void Build_Tree()
         while ( lvl < N_PEANO_TRIPLETS ) {
 
             // @todo this seems to be buggy!!!
-            //if ( particle_is_inside_node ( key, lvl, node ) ) { // open
-            if ( particle_is_inside_node_easy ( ipart, node ) ) { // open
+            if ( particle_is_inside_node ( key, lvl, node ) ) { // open
+                //if ( particle_is_inside_node_easy ( ipart, node ) ) { // open
 
                 if ( Tree[node].Npart == 1 ) { // refine
 

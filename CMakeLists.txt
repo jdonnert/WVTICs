@@ -65,7 +65,7 @@ set(SOURCE_FILES
         src/ids.c
         src/io.c
         src/main.c
-        src/peano.c
+        #src/peano.c
         src/positions.c
         src/setup.c
         src/sph.c

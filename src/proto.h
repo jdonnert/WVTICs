@@ -26,9 +26,6 @@ double U2T ( double U );
 double T2U ( double T );
 double Density ( float rho );
 
-void Print_Int_Bits128 ( const peanoKey val );
-void Print_Int_Bits128r ( const peanoKey val );
-
 /* From system libs */
 double erand48 ( unsigned short * );
 
