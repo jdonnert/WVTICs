@@ -9,7 +9,7 @@ option(SPH_WC2 "Use wendland c2 instead of wendland c6" OFF)
 option(REJECTION_SAMPLING "Use von Neumann rejection sampling to improve initial random positions" ON)
 option(PEANO_SAMPLING "Use peano curve based sampling to improve initial random positions" OFF)
 option(EAT_PNG "Possibility to use .png files as input for density" ON)
-option(TWO_DIM "Set the code to do 2D initial conditions instead of 3D -> z component is set to 0" ON)
+option(TWO_DIM "Set the code to do 2D initial conditions instead of 3D -> z component is set to 0" OFF)
 option(BRUTE_FORCE_NGB "Use a brute force neighbour finder instead of the tree based one" OFF)
 option(OUTPUT_DIAGNOSTICS "Output extra diagnostics to file" ON)
 
@@ -59,13 +59,14 @@ include_directories(${GSL_INCLUDE_DIRS})
 get_directory_property( DirDefs DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 message(STATUS "Compiling with ${CMAKE_C_FLAGS}\n   and definitions ${DirDefs}")
 
+add_definitions(-DNEW_PEANO)
 
 set(SOURCE_FILES
         src/aux.c
         src/ids.c
         src/io.c
         src/main.c
-        #src/peano.c
+        src/peano.c
         src/positions.c
         src/setup.c
         src/sph.c

@@ -27,7 +27,9 @@
 
 /* Global Prototypes */
 #include "macro.h"
-//#include "peano.h"
+#ifndef NEW_PEANO
+#include "peano.h"
+#endif
 #include "proto.h"
 
 

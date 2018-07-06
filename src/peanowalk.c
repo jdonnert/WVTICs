@@ -70,32 +70,7 @@ void translateAndRenormalizeCoordsForPeano ( float *coords, const double halfCel
     coords[2] = coords[2] / ( Problem.Boxsize[2] * norm ); // - halfCellSize;
 }
 
-/*unsigned char reverseBitsInByte(unsigned char b)
-{
-    return (b * 0x0202020202ULL & 0x010884422010ULL) % 1023;
-}
-
-uint32_t reverseBitsInInt32(uint32_t i)
-{
-    uint32_t reversed;
-    unsigned char inByte0 = (i & 0xFF);
-    unsigned char inByte1 = (i & 0xFF00) >> 8;
-    unsigned char inByte2 = (i & 0xFF0000) >> 16;
-    unsigned char inByte3 = (i & 0xFF000000) >> 24;
-    reversed = (reverseBitsInByte(inByte0) << 24) | (reverseBitsInByte(inByte1) << 16) |
-               (reverseBitsInByte(inByte2) << 8) | (reverseBitsInByte(inByte3));
-    return reversed;
-}
-
-uint64_t reverseBitsInInt64(uint64_t i)
-{
-    uint64_t reversed;
-    uint32_t inInt0 = (i & 0xFFFFFFFF);
-    uint32_t inInt1 = (i & 0xFFFFFFFF00000000) >> 32;
-    reversed = (reverseBitsInInt32(inInt0) << 32) | (reverseBitsInInt32(inInt1));
-    return reversed;
-}*/
-
+#ifdef NEW_PEANO
 
 void Print ( const __uint128_t val )
 {
@@ -267,6 +242,7 @@ peanoKey Reversed_Peano_Key ( const double x, const double y, const double z )
     int64_t key = coordsToPeano ( a[0], a[1], a[2] );
     key = reverseBitsInPeanoKey ( key );
     key = ( key >> 0x1 ) & ~ ( 1LL << 63 ); // useless bit from end to start
+    key = ( key << 3 ); // Patch: add root node on the right
 
     return key;
 }
@@ -315,5 +291,7 @@ void test_peanokey()
 
     return ;
 }
+
+#endif
 
 #undef MORTON_BITS

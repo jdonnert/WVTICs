@@ -3,6 +3,8 @@
 #include <gsl/gsl_heapsort.h>
 
 
+#ifndef NEW_PEANO
+
 peanoKey Peano_Key ( const double x, const double y, const double z );
 static void reorder_particles();
 
@@ -369,3 +371,5 @@ void test_peanokey()
 
     return ;
 }
+
+#endif
