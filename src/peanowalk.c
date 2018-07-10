@@ -65,9 +65,9 @@ void translateAndRenormalizePeanoCoords ( float *coords, const double halfCellSi
 
 void translateAndRenormalizeCoordsForPeano ( float *coords, const double halfCellSize, const double norm )
 {
-    coords[0] = coords[0] / ( Problem.Boxsize[0] * norm ); // - halfCellSize;
-    coords[1] = coords[1] / ( Problem.Boxsize[1] * norm ); // - halfCellSize;
-    coords[2] = coords[2] / ( Problem.Boxsize[2] * norm ); // - halfCellSize;
+    coords[0] = coords[0] / ( /*Problem.Boxsize[0] **/ norm ); // - halfCellSize;
+    coords[1] = coords[1] / ( /*Problem.Boxsize[1] **/ norm ); // - halfCellSize;
+    coords[2] = coords[2] / ( /*Problem.Boxsize[2] **/ norm ); // - halfCellSize;
 }
 
 #ifdef NEW_PEANO
