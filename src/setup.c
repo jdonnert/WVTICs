@@ -223,6 +223,10 @@ void setup_problem ( const int Flag, const int Subflag )
         setup_User_Density ( Subflag );
         break;
 
+    case 7:
+        setup_BinaryReader_Density ( Subflag );
+        break;
+
     default:
         Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
         break;

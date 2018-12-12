@@ -141,4 +141,7 @@ void User_PostProcessing();
 
 void setup_GalaxyCluster();
 
+void setup_BinaryReader_Density ( const int subflag );
+float BinaryReader_Density ( const int ipart );
+
 #endif //WVTICS_PROBLEMS_H_H
