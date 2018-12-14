@@ -6,9 +6,10 @@
 struct Tree_Node {
     uint32_t Bitfield;  // bit 0-5:level, 6-8:key, 9:local, 10:top, 11-31:free
     int DNext;          // Distance to the next node; or particle -DNext-1
-    float Pos[3];       // Node Center
+    double Pos[3];       // Node Center
     int Npart;          // Number of particles in node
-    float Size[3];
+    double Size[3];
+    int Parent;
 } *Tree;
 
 int NNodes = 0;
@@ -312,14 +313,14 @@ static void create_node_from_particle ( const int ipart, const int parent,
 
     Tree[node].Bitfield = lvl | keyfragment;
 
-    const int sign[3] = { -1 + 2 * ( P[ipart].Pos[0] > Tree[parent].Pos[0] ),
-                          -1 + 2 * ( P[ipart].Pos[1] > Tree[parent].Pos[1] ),
-                          -1 + 2 * ( P[ipart].Pos[2] > Tree[parent].Pos[2] )
+    const int sign[3] = { -1.0 + 2.0 * ( P[ipart].Pos[0] > Tree[parent].Pos[0] ),
+                          -1.0 + 2.0 * ( P[ipart].Pos[1] > Tree[parent].Pos[1] ),
+                          -1.0 + 2.0 * ( P[ipart].Pos[2] > Tree[parent].Pos[2] )
                         };
 
-    float size[3] = { 	Problem.Boxsize[0] / ( 1ULL << lvl ),
-                        Problem.Boxsize[1] / ( 1ULL << lvl ),
-                        Problem.Boxsize[2] / ( 1ULL << lvl )
+    double size[3] = { (double) (Problem.Boxsize[0]) / (double)( 1ULL << lvl ),
+                       (double) (Problem.Boxsize[1]) / (double)( 1ULL << lvl ),
+                       (double) (Problem.Boxsize[2]) / (double)( 1ULL << lvl )
                     };
 
     Tree[node].Size[0] = size[0];
@@ -330,7 +331,8 @@ static void create_node_from_particle ( const int ipart, const int parent,
     Tree[node].Pos[1] = Tree[parent].Pos[1] + sign[1] * size[1] * 0.5;
     Tree[node].Pos[2] = Tree[parent].Pos[2] + sign[2] * size[2] * 0.5;
 
-    P[ipart].Tree_Parent = parent;
+    P[ipart].Tree_Parent = node;
+    Tree[node].Parent = parent;
 
     add_particle_to_node ( ipart, node );
 

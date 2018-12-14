@@ -143,8 +143,8 @@ extern struct ImageProperties {
 
 
 extern struct ParticleData {
-    float Pos[3];
-    float Vel[3];
+    double Pos[3];
+    double Vel[3];
     int32_t ID;
     int Type;
     peanoKey Key;
