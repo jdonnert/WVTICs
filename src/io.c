@@ -164,12 +164,12 @@ void fill_write_buffer ( enum iofields blocknr, void *wbuf,
     switch ( blocknr ) {
     case IO_POS:
         for ( i = 0; i < 3; i++ ) {
-            ( ( float * ) wbuf ) [ibuf + i] = P[ipart].Pos[i];
+            ( ( float * ) wbuf ) [ibuf + i] = (float) P[ipart].Pos[i];
         }
         break;
     case IO_VEL:
         for ( i = 0; i < 3; i++ ) {
-            ( ( float * ) wbuf ) [ibuf + i] = P[ipart].Vel[i];
+            ( ( float * ) wbuf ) [ibuf + i] = (float) P[ipart].Vel[i];
         }
         break;
     case IO_ID:
@@ -221,14 +221,14 @@ void set_block_info ( enum iofields blocknr )
         Block.Npart[0] = Param.Npart;
 
         Block.Val_per_element = 3;
-        Block.Bytes_per_element = sizeof ( P[0].Pos[0] );
+        Block.Bytes_per_element = sizeof ( float );
         break;
     case IO_VEL:
         strncpy ( Block.Label, "VEL ", 4 );
         strncpy ( Block.Name, "Velocities", 11 );
         Block.Npart[0] = Param.Npart;
         Block.Val_per_element = 3;
-        Block.Bytes_per_element = sizeof ( P[0].Vel[0] );
+        Block.Bytes_per_element = sizeof ( float );
         break;
     case IO_ID:
         strncpy ( Block.Label, "ID  ", 4 );
