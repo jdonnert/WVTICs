@@ -20,15 +20,9 @@ void setup_Boss()
 
 float Boss_Phi ( double const x, double const y )
 {
-    if ( x > 0 ) {
-        return atan ( y / x );
-    } else if ( x == 0 ) {
-        return y / abs ( y ) * 0.5 * pi;
-    } else if ( x < 0 && y >= 0 ) {
-        return atan ( y / x ) + pi;
-    } else {
-        return atan ( y / x ) - pi;
-    }
+      
+   return atan2( y , x ) * 57.2958;
+
 }
 
 /* At first we set up a constant density in the Box */
@@ -38,13 +32,13 @@ float Boss_Density ( const int ipart )
     double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
     double const z = P[ipart].Pos[2] - Problem.Boxsize[2] * 0.5;
 
-    double Radius = sqrt ( x * x + y * y + z * z );
+    double Radius = sqrt ( x*x + y*y + z*z );
     const double rho = 5624.3;
 
     if ( Radius < 0.016 * 0.5 ) {
         return rho * ( 1 + 0.1 * cos ( 2 * Boss_Phi ( x, y ) ) );
     } else {
-        return rho * 0.01;
+        return rho * 10.0;
     }
 
 }
