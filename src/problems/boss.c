@@ -10,7 +10,7 @@ void setup_Boss()
 
     sprintf ( Problem.Name, "IC_Boss" );
 
-    const double rho = 5624.3; // 3.82 *10e-18 in g/cm^3 in solar masses per cubic parsec
+    const double rho = 564214; // 3.82 *10e-18 in g/cm^3 in solar masses per cubic parsec
 
     Problem.Rho_Max = rho * 1.1;
 
@@ -21,7 +21,7 @@ void setup_Boss()
 float Boss_Phi ( double const x, double const y )
 {
       
-   return atan2( y , x ) * 57.2958;
+   return atan2( y , x );
 
 }
 
@@ -33,12 +33,12 @@ float Boss_Density ( const int ipart )
     double const z = P[ipart].Pos[2] - Problem.Boxsize[2] * 0.5;
 
     double Radius = sqrt ( x*x + y*y + z*z );
-    const double rho = 5624.3;
+    const double rho = 564214;
 
-    if ( Radius < 0.016 * 0.5 ) {
+    if ( Radius < 0.016 ) {
         return rho * ( 1 + 0.1 * cos ( 2 * Boss_Phi ( x, y ) ) );
     } else {
-        return rho * 10.0;
+        return rho * 0.01;
     }
 
 }
