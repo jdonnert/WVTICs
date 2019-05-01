@@ -68,8 +68,9 @@ int main ( int argc, char *argv[] )
 
     Make_PostProcessing();
 
+    Calculate_Bias();
+
     Write_output ( 1 ); // verbose
 
     return EXIT_SUCCESS ;
 }
-

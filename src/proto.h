@@ -11,6 +11,7 @@ void Make_PostProcessing();
 void Find_sph_quantities();
 void Write_output ( bool );
 void Regularise_sph_particles();
+void Calculate_Bias();
 
 /* Helper Monkeys */
 
