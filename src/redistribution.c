@@ -117,7 +117,7 @@ bool acceptParticleAsTarget ( const int ipart )
 //This ranges from -1 (Rho = 0) to infinity (Rho = infinity)
 float relativeDensityErrorWithSign ( const int ipart )
 {
-    const float rhoModel = ( *Density_Func_Ptr ) ( ipart );
+    const float rhoModel = ( *Density_Func_Ptr ) ( ipart, Param.BiasCorrection );
     return ( SphP[ipart].Rho - rhoModel ) / rhoModel;
 }
 

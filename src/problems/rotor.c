@@ -19,7 +19,7 @@ void setup_Rotor()
 }
 
 /* At first we set up a constant density in the Box */
-float Rotor_Density ( const int ipart )
+float Rotor_Density ( const int ipart , const double bias )
 {
 
     double x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
@@ -90,5 +90,3 @@ float Rotor_U ( const int ipart )
         return pressure / ( gamma - 1 ) / 1.0;
     }
 }
-
-

@@ -18,7 +18,7 @@ void setup_Keplerian_Ring ()
 }
 
 /* At first we set up a constant density in the Box */
-float Keplerian_Ring_Density ( const int ipart )
+float Keplerian_Ring_Density ( const int ipart , const double bias )
 {
 
     const double x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
@@ -58,4 +58,3 @@ void Keplerian_Ring_Velocity ( const int ipart, float out[3] )
 
 /* Just a note at the end, the gresho vortex is in general a twodimensional testcase. We set it up in three dimesnions, because in a common simulation we
 will only use three dimensions. So you can check the third dimension, but if your code works proper it should remain zero everywhere */
-

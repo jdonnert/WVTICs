@@ -92,12 +92,12 @@ static void setup_density_from_image()
     printf ( "(width = %ld, rowbytes = %ld, image_rowbytes = %ld)\n",
              xpix, ypix, image_rowbytes );
     fprintf(stderr, "Detected %d channels in image, expected 3\n", image_channels);
-    if (image_channels == 4) 
+    if (image_channels == 4)
     {
         fprintf(stdout, "Remove alpha channel from png!\n");
         exit(4);
     }
-   
+
     int red, green, blue;
 
     // Allocate a flat aray to hold the density
@@ -138,7 +138,7 @@ static void setup_density_from_image()
     return;
 }
 
-float Png_Density ( const int ipart )
+float Png_Density ( const int ipart , const double bias)
 {
 #ifdef EAT_PNG
     const float x = P[ipart].Pos[0] * Image.Xpix / Problem.Boxsize[0];
@@ -152,4 +152,3 @@ float Png_Density ( const int ipart )
     return 0;
 #endif
 }
-

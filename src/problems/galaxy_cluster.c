@@ -39,7 +39,7 @@ float betamodel ( const float r )
     return rho0 * pow ( 1 + p2 ( r / rc ), -1.5 * beta );
 }
 
-float GalaxyCluster_Density ( const int ipart )
+float GalaxyCluster_Density ( const int ipart , const double bias )
 {
     const float x = P[ipart].Pos[0] - 0.5 * Problem.Boxsize[0];
     const float y = P[ipart].Pos[1] - 0.5 * Problem.Boxsize[1];;

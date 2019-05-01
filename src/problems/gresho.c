@@ -18,7 +18,7 @@ void setup_Gresho_Vortex()
 }
 
 /* At first we set up a constant density in the Box */
-float Gresho_Vortex_Density ( const int ipart )
+float Gresho_Vortex_Density ( const int ipart , const double bias )
 {
     return 1.0;
 }
@@ -84,4 +84,3 @@ float Gresho_Vortex_U ( const int ipart )
 
 /* Just a note at the end, the gresho vortex is in general a twodimensional testcase. We set it up in three dimesnions, because in a common simulation we
 will only use three dimensions. So you can check the third dimension, but if your code works proper it should remain zero everywhere */
-

@@ -31,7 +31,7 @@ void setup_Rayleigh_Taylor_Instability()
     Magnetic_Field_Func_Ptr = &Rayleigh_Taylor_Instability_Magnetic_Field;
 }
 
-float Rayleigh_Taylor_Instability_Density ( const int ipart )
+float Rayleigh_Taylor_Instability_Density ( const int ipart , const double bias )
 {
     float x = P[ipart].Pos[0] / Problem.Boxsize[0];
     const float rho1 = 1.0f;

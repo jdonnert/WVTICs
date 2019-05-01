@@ -44,7 +44,7 @@ bool isOnLeft ( const int ipart )
     }
 }
 
-float Ryu_Jones_Density ( const int ipart )
+float Ryu_Jones_Density ( const int ipart , const double bias )
 {
     if ( isOnLeft ( ipart ) ) {
         return RJ95.left_rho;

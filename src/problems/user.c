@@ -18,7 +18,7 @@ void setup_User_Density ( const int subflag )
     PostProcessing_Func_Ptr = &User_PostProcessing;
 }
 
-float User_Density ( const int ipart )
+float User_Density ( const int ipart , const double bias )
 {
     //float x = P[ipart].Pos[0] / Problem.Boxsize[0];
     //float y = P[ipart].Pos[1] / Problem.Boxsize[1];

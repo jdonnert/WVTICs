@@ -19,7 +19,7 @@ void setup_Orszag_Tang_Vortex()
 }
 
 /* At first we set up a constant density in the Box */
-float Orszag_Tang_Vortex_Density ( const int ipart )
+float Orszag_Tang_Vortex_Density ( const int ipart , const double bias)
 {
     return 25.0 / ( 36.0 * pi );
 }
@@ -58,4 +58,3 @@ float Orszag_Tang_Vortex_U ( const int ipart )
 
     return pressure / ( gamma - 1 ) / rho;
 }
-

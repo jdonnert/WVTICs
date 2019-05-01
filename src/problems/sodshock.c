@@ -14,7 +14,7 @@ void setup_Sod_Shock()
     U_Func_Ptr = &Sod_Shock_U;
 }
 
-float Sod_Shock_Density ( const int ipart )
+float Sod_Shock_Density ( const int ipart , const double bias )
 {
     const double rhoLeft = 1.0, rhoRight = 0.125;
 

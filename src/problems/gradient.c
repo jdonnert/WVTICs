@@ -10,7 +10,7 @@ void setup_Gradient_Density()
     Density_Func_Ptr = &Gradient_Density;
 }
 
-float Gradient_Density ( const int ipart )
+float Gradient_Density ( const int ipart , const double bias)
 {
     float x = P[ipart].Pos[0] / Problem.Boxsize[0];
 

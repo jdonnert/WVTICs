@@ -117,7 +117,7 @@ void setup_Double_Shock ( const int subflag )
     return ;
 }
 
-float Double_Shock_Density ( const int ipart )
+float Double_Shock_Density ( const int ipart, const double bias )
 {
     const float x = P[ipart].Pos[0];
 

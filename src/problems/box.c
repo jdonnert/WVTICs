@@ -28,7 +28,7 @@ bool isInnerBox ( const int ipart )
     }
 }
 
-float Box_Density ( const int ipart )
+float Box_Density ( const int ipart , const double bias )
 {
     if ( isInnerBox ( ipart ) ) {
         return 4.0;
@@ -63,4 +63,3 @@ float Box_U ( const int ipart )
 /* Just a note at the end, the Box test is very tricky for any Code, because of several reasons. In a grid Code you suffer from advection errors (in principle bulk motion along the grid). For SPH th test is difficult, because of the jumping density
 at the edge of the inner Box and the bad behaviour of SPH at contact discontinuities. Further we use a glass which could be problematic in terms of regularity. We would advise to use this Test with caution and probablt setting the ICs up by using a regular grid
 structure and run the simulation with a moving mesh or the advanced MFM and MFV methods presented in Gaburov 2011 */
-

@@ -15,7 +15,7 @@ void setup_Magneticum_Density()
     Density_Func_Ptr = &Magneticum_Density;
 }
 
-float Magneticum_Density ( const int ipart )
+float Magneticum_Density ( const int ipart , const double bias )
 {
     const float x = ( P[ipart].Pos[0] - BOUNDARY * Problem.Boxsize[0] )
                     / ( ACTUALREGION * Problem.Boxsize[0] );

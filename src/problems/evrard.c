@@ -18,13 +18,11 @@ void setup_Evrard_Collapse()
 
 
 /* At first we set up a constant density in the Box */
-float Evrard_Collapse_Density ( const int ipart )
+float Evrard_Collapse_Density ( const int ipart , const double bias )
 {
     double const x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
     double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
     double const z = P[ipart].Pos[2] - Problem.Boxsize[2] * 0.5;
-
-
 
     double Radius = sqrt ( x * x + y * y + z * z );
     double epsilon = 0.01;
@@ -50,4 +48,3 @@ float Evrard_Collapse_U ( const int ipart )
 {
     return 0.05;
 }
-

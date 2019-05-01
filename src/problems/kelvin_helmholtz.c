@@ -27,7 +27,7 @@ bool isOuterLayer ( const int ipart )
     }
 }
 
-float Kelvin_Helmholtz_Instability_Density ( const int ipart )
+float Kelvin_Helmholtz_Instability_Density ( const int ipart , const double bias)
 {
     if ( isOuterLayer ( ipart ) ) {
         return 3.13E-8;

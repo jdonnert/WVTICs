@@ -27,7 +27,7 @@ float q_of_x ( const int ipart )
 }
 
 /* At first we set up a constant density in the Box */
-float Zeldovich_Pancake_Density ( const int ipart )
+float Zeldovich_Pancake_Density ( const int ipart , const double bias )
 {
     const double redshift_start = 100.0;
     const double redshift_crit = 1.0;
@@ -72,4 +72,3 @@ float Zeldovich_Pancake_U ( const int ipart )
     return u_fac * temp_zero * pow ( redshift_start / redshift_crit, 2 ) * pow ( SphP[ipart].Rho / rho, 2. / 3. );
 
 }
-

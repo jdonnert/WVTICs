@@ -40,7 +40,7 @@ float Boss_Phi ( double const x, double const y )
 // }
 
 /* At first we set up a constant density in the Box */
-float Boss_Density ( const int ipart )
+float Boss_Density ( const int ipart , const double bias )
 {
     double const x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
     double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;

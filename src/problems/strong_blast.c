@@ -24,7 +24,7 @@ void setup_Strong_Blast()
 }
 
 /* At first we set up a constant density in the Box */
-float Strong_Blast_Density ( const int ipart )
+float Strong_Blast_Density ( const int ipart , const double bias )
 {
     return 1.0;
 }

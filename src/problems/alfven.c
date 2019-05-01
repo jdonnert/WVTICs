@@ -25,11 +25,13 @@ void setup_Linear_Alfven_Wave()
     Magnetic_Field_Func_Ptr = &Linear_Alfven_Wave_Magnetic_Field;
 }
 
-float Linear_Alfven_Wave_Density ( const int ipart )
+float Linear_Alfven_Wave_Density ( const int ipart , const double bias )
 {
     float x = P[ipart].Pos[0] / Problem.Boxsize[0];
-
-    return RHO_MEAN * ( 1 + 1e-6 * sin ( 2 * pi * ORDER * x ) );
+    double ret;
+    ret = RHO_MEAN * ( 1 + 1e-6 * sin ( 2 * pi * ORDER * x ) );
+    ret += (ret - RHO_MEAN) * bias;
+    return ret;
 }
 
 

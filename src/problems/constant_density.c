@@ -11,7 +11,7 @@ void setup_Constant_Density()
     Density_Func_Ptr = &Constant_Density;
 }
 
-float Constant_Density ( const int ipart )
+float Constant_Density ( const int ipart , const double bias )
 {
     return 1.0;
 }

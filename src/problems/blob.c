@@ -20,7 +20,7 @@ void setup_Blob()
 
 
 /* At first we set up a constant density in the Box */
-float Blob_Density ( const int ipart )
+float Blob_Density ( const int ipart , const double bias )
 {
     double const x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
     double const y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
@@ -49,4 +49,3 @@ float Blob_U ( const int ipart )
 {
     return 0.05;
 }
-

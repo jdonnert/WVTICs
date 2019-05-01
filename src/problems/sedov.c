@@ -21,7 +21,7 @@ void setup_Sedov_Blast()
     PostProcessing_Func_Ptr = &Sedov_Blast_PostProcessing;
 }
 
-float Sedov_Blast_Density ( const int ipart )
+float Sedov_Blast_Density ( const int ipart , const double bias )
 {
     return 1.24E7;
 }
