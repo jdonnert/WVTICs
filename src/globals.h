@@ -113,6 +113,7 @@ extern struct Parameters {
     int Maxiter;
     double MpsFraction; // move this fraction of the mean particle sep
     double StepReduction; // force convergence at this rate
+    double BiasCorrection; // density bias correction factor
     double LimitMps[4]; // Convergence criterium for particle movement
     double MoveFractionMin; // move at least this fraction of particles during redistribution steps
     double MoveFractionMax; // move at most this fraction of particles during redistribution steps

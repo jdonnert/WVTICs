@@ -122,7 +122,7 @@ void Regularise_sph_particles()
         #pragma omp parallel for shared(hsml) reduction(+:vSphSum,max_hsml)
         for ( int ipart = 0; ipart < nPart; ipart++ ) { // find hsml
 
-            float rho = ( *Density_Func_Ptr ) ( ipart );
+            float rho = ( *Density_Func_Ptr ) ( ipart, Param.BiasCorrection );
 
             SphP[ipart].Rho_Model = rho;
 

@@ -19,6 +19,10 @@ ProbesFraction 0.1
 RedistributionFrequency 5
 LastMoveStep 256
 
+% Artificial bias correction of resulting density
+
+BiasCorrection 0.0
+
 % Problem
 
 Problem_Flag 5
@@ -35,7 +39,7 @@ PNG_Filename logos/DarthVader.png
 %   3 - Sine wave
 % 1 - Simple non-periodic tests
     0 - Gradient
-% 2 - Write Logos 
+% 2 - Write Logos
 %   0 - Magneticum
 %   1 - PNG
 % 3 - Double Shock test

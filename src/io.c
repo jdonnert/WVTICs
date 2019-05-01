@@ -402,6 +402,10 @@ void Read_param_file ( char *filename )
     addr[nt] = &Param.LastMoveStep;
     id[nt++] = INT;
 
+    strcpy ( tag[nt], "BiasCorrection" );
+    addr[nt] = &Param.BiasCorrection;
+    id[nt++] = REAL;
+
     strcpy ( tag[nt], "Problem_Flag" );
     addr[nt] = &Param.Problem_Flag;
     id[nt++] = INT;
@@ -477,4 +481,3 @@ void Read_param_file ( char *filename )
 #undef STRING
 #undef INT
 #undef LASTPARAMETERID
-

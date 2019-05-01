@@ -6,7 +6,7 @@ const double UMass = 1.989e43;			// 10^10 Msol in cgs
 const double UVel = 1e5;					// km/s in cgs
 
 void zero_function_empty ();
-float zero_function ( const int ipart );
+float zero_function ( const int ipart , const double bias );
 void zero_function_vec ( const int ipart, float out[3] );
 
 void setup_problem ( const int Flag, const int Subflag );
@@ -241,7 +241,7 @@ void zero_function_empty ()
     return;
 }
 
-float zero_function ( const int ipart )
+float zero_function ( const int ipart , const double bias = 0.0 )
 {
     return 0;
 }
@@ -273,11 +273,11 @@ void mpart_from_integral()
 
 #ifdef TWO_DIM
             P[0].Pos[2] = 0.0;
-            tot_mass += Density_Func_Ptr ( 0 ) * dx * dy;
+            tot_mass += Density_Func_Ptr ( 0, Param.BiasCorrection ) * dx * dy;
 #else
             for ( int k = 0; k < N; k++ ) {
                 P[0].Pos[2] = ( k + 0.5 ) * dz;
-                tot_mass += Density_Func_Ptr ( 0 ) * dx * dy * dz;
+                tot_mass += Density_Func_Ptr ( 0, Param.BiasCorrection ) * dx * dy * dz;
             }
 #endif
         }

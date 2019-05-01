@@ -6,6 +6,7 @@ void Calculate_Bias()
   double epsilon = 0.01; // to avoid divergence.
   double bias = 0.0;
   double rho_mean = 0.0;
+  int i;
 
   // loop to find rho_mean of particles
   for ( i = 0; i < Param.Npart; i++)

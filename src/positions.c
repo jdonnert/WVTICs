@@ -30,7 +30,7 @@ void Make_Positions()
         assignPeanoCoordinates ( P[ipart].Pos, peano );
         translateAndRenormalizePeanoCoords ( P[ipart].Pos, halfCellSize, norm );
 
-        const double probability = probabilityFactor * Density_Func_Ptr ( ipart );
+        const double probability = probabilityFactor * Density_Func_Ptr ( ipart, Param.BiasCorrection );
         probabilitySum += probability;
 
         //Accept particle
@@ -73,7 +73,7 @@ void Make_Positions()
 #endif //TWO_DIM
 
             rho = Problem.Rho_Max * erand48 ( Omp.Seed );
-            rho_r = Density_Func_Ptr ( ipart );
+            rho_r = Density_Func_Ptr ( ipart , Param.BiasCorrection );
         }
 #else
         P[ipart].Pos[0] = erand48 ( Omp.Seed ) * Problem.Boxsize[0];
@@ -165,4 +165,3 @@ void Make_PostProcessing()
 
     return ;
 }
-
