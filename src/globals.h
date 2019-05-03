@@ -163,8 +163,8 @@ extern struct GasParticleData {
     float Bfld[3];
 } *SphP;
 
-extern float ( *Density_Func_Ptr ) ( const int );
-extern float ( *U_Func_Ptr ) ( const int );
+extern float ( *Density_Func_Ptr ) ( const int, const double );
+extern float ( *U_Func_Ptr ) ( const int , const double );
 extern void ( *Velocity_Func_Ptr ) ( const int, float * );
 extern void ( *Magnetic_Field_Func_Ptr ) ( const int, float * );
 extern void ( *PostProcessing_Func_Ptr ) ();

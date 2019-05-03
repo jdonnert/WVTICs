@@ -16,7 +16,7 @@ void setup_Sawtooth_Density()
     Density_Func_Ptr = &Sawtooth_Density;
 }
 
-float Sawtooth_Density ( const int ipart , const double bias = 0.0)
+float Sawtooth_Density ( const int ipart , const double bias )
 {
     float x = P[ipart].Pos[0] / Problem.Boxsize[0];
     double ret;

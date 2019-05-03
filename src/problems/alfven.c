@@ -55,10 +55,10 @@ void Linear_Alfven_Wave_Magnetic_Field ( const int ipart, float out[3] )
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Linear_Alfven_Wave_U ( const int ipart )
+float Linear_Alfven_Wave_U ( const int ipart , const double bias )
 {
     const float gamma = 5.0 / 3.0;
     float pressure = 1.0 / gamma;
 
-    return pressure / ( gamma - 1 ) / Linear_Alfven_Wave_Density ( ipart );
+    return pressure / ( gamma - 1 ) / Linear_Alfven_Wave_Density ( ipart , bias );
 }

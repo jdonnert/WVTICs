@@ -57,7 +57,7 @@ void GalaxyCluster_Velocity ( const int ipart, float out[3] )
     out[2] = 0.0;
 }
 
-float GalaxyCluster_U ( const int ipart )
+float GalaxyCluster_U ( const int ipart , const double bias )
 {
     return 0;
 }

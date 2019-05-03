@@ -29,7 +29,7 @@ float User_Density ( const int ipart , const double bias )
     return rho;
 }
 
-float User_U ( const int ipart )
+float User_U ( const int ipart , const double bias )
 {
     return 1.0f;
 }

@@ -25,7 +25,7 @@ float Sod_Shock_Density ( const int ipart , const double bias )
     }
 }
 
-float Sod_Shock_U ( const int ipart )
+float Sod_Shock_U ( const int ipart , const double bias )
 {
     const double gamma = 5.0 / 3.0;
     const double rhoLeft = 1.0, rhoRight = 0.125;

@@ -72,7 +72,7 @@ void Rotor_Magnetic_Field ( const int ipart, float out[3] )
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Rotor_U ( const int ipart )
+float Rotor_U ( const int ipart , const double bias )
 {
     const double gamma = 5.0 / 3.0;
     const double pressure = 1.0;

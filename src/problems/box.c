@@ -50,7 +50,7 @@ void Box_Velocity ( const int ipart, float out[3] )
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Box_U ( const int ipart )
+float Box_U ( const int ipart , const double bias)
 {
     const double gamma = 5.0 / 3.0;
     const double rho1 = 4.0;

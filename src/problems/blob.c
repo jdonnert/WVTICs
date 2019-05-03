@@ -45,7 +45,7 @@ void Blob_Velocity ( const int ipart, float out[3] )
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Blob_U ( const int ipart )
+float Blob_U ( const int ipart , const double bias)
 {
     return 0.05;
 }

@@ -134,7 +134,7 @@ float Double_Shock_Density ( const int ipart, const double bias )
     return rho;
 }
 
-float Double_Shock_U ( const int ipart )
+float Double_Shock_U ( const int ipart , const double bias)
 {
     const float x = P[ipart].Pos[0];
 

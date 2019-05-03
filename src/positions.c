@@ -124,7 +124,7 @@ void Make_Temperatures()
     #pragma omp parallel for
     for ( int ipart = 0; ipart < Param.Npart; ipart++ ) {
 
-        SphP[ipart].U = ( *U_Func_Ptr ) ( ipart );
+        SphP[ipart].U = ( *U_Func_Ptr ) ( ipart, Param.BiasCorrection );
     }
 
     printf ( " done\n" );

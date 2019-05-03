@@ -241,7 +241,7 @@ void zero_function_empty ()
     return;
 }
 
-float zero_function ( const int ipart , const double bias = 0.0 )
+float zero_function ( const int ipart , const double bias )
 {
     return 0;
 }
@@ -273,11 +273,11 @@ void mpart_from_integral()
 
 #ifdef TWO_DIM
             P[0].Pos[2] = 0.0;
-            tot_mass += Density_Func_Ptr ( 0, Param.BiasCorrection ) * dx * dy;
+            tot_mass += Density_Func_Ptr ( 0, 0.0 ) * dx * dy;  // pass bias = 0.0 to density pointer to conserve mass integral
 #else
             for ( int k = 0; k < N; k++ ) {
                 P[0].Pos[2] = ( k + 0.5 ) * dz;
-                tot_mass += Density_Func_Ptr ( 0, Param.BiasCorrection ) * dx * dy * dz;
+                tot_mass += Density_Func_Ptr ( 0, 0.0 ) * dx * dy * dz;
             }
 #endif
         }

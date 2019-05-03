@@ -81,7 +81,7 @@ float Sedov_Blast_kinetic ()
 #endif // KINETIC_SEDOV
 
 
-float Sedov_Blast_U ( const int ipart )
+float Sedov_Blast_U ( const int ipart , const double bias )
 {
     return 0.0;
 }

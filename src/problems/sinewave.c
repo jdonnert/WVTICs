@@ -16,7 +16,7 @@ void setup_SineWave_Density()
     Density_Func_Ptr = &SineWave_Density;
 }
 
-float SineWave_Density ( const int ipart , const double bias = 0.0 )
+float SineWave_Density ( const int ipart , const double bias )
 {
     float x = P[ipart].Pos[0] / Problem.Boxsize[0];
 

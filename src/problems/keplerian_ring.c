@@ -38,7 +38,7 @@ float Keplerian_Ring_Density ( const int ipart , const double bias )
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Keplerian_Ring_U ( const int ipart )
+float Keplerian_Ring_U ( const int ipart , const double bias )
 {
     const double gamma = 5.0 / 3.0;
     const double Pressure = 1e-6;
