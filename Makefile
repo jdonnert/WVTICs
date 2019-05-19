@@ -18,10 +18,8 @@ ifndef SYSTYPE
 endif
 
 OPTIMIZE = -Wall -O3
-# GSL_INCL = $(CPPFLAGS)
-# GSL_LIBS = $(LD_LIBRARY_FLAGS)
-GSL_INCL = -I/home/ludwig/gsl/include
-GSL_LIBS = -L/home/ludwig/gsl/lib
+GSL_INCL = $(CPPFLAGS)
+GSL_LIBS = $(LD_LIBRARY_FLAGS)
 PNG_LIBS = -L/usr/local/Cellar/libpng/1.6.21/lib -lpng -lz
 PNG_INCL = -I/usr/local/Cellar/libpng/1.6.21/include
 
