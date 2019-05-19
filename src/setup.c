@@ -7,6 +7,7 @@ const double UVel = 1e5;					// km/s in cgs
 
 void zero_function_empty ();
 float zero_function ( const int ipart , const double bias );
+float zero_function_U ( const int ipart );
 void zero_function_vec ( const int ipart, float out[3] );
 
 void setup_problem ( const int Flag, const int Subflag );
@@ -40,7 +41,7 @@ void Setup()
 void setup_problem ( const int Flag, const int Subflag )
 {
     Density_Func_Ptr = &zero_function;
-    U_Func_Ptr = &zero_function;
+    U_Func_Ptr = &zero_function_U;
     Velocity_Func_Ptr = &zero_function_vec;
     Magnetic_Field_Func_Ptr = &zero_function_vec;
     PostProcessing_Func_Ptr = &zero_function_empty;
@@ -242,6 +243,11 @@ void zero_function_empty ()
 }
 
 float zero_function ( const int ipart , const double bias )
+{
+    return 0;
+}
+
+float zero_function_U ( const int ipart )
 {
     return 0;
 }

@@ -48,7 +48,7 @@ void Strong_Blast_Magnetic_Field ( const int ipart, float out[3] )
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Strong_Blast_U ( const int ipart , const double bias )
+float Strong_Blast_U ( const int ipart )
 {
 
     const float x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
@@ -67,5 +67,5 @@ float Strong_Blast_U ( const int ipart , const double bias )
     }
 
 
-    return pressure / ( gamma - 1 ) / Strong_Blast_Density ( ipart , bias );
+    return pressure / ( gamma - 1 ) / SphP[ipart].Rho;
 }

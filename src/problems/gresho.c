@@ -65,7 +65,7 @@ void Gresho_Vortex_Velocity ( const int ipart, float out[3] )
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Gresho_Vortex_U ( const int ipart , const double bias )
+float Gresho_Vortex_U ( const int ipart )
 {
     const double gamma = 5.0 / 3.0;
     const double rho = 1.0;

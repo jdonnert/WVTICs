@@ -50,7 +50,7 @@ void Orszag_Tang_Vortex_Magnetic_Field ( const int ipart, float out[3] )
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Orszag_Tang_Vortex_U ( const int ipart , const double bias )
+float Orszag_Tang_Vortex_U ( const int ipart )
 {
     const double gamma = 5.0 / 3.0;
     const double rho = 25.0 / ( 36.0 * pi );
