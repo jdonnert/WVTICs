@@ -19,7 +19,7 @@ Contributions are *welcome* and will be *credited*
 
 ### *Credits*
 Please cite:
-- [Donnert 2014, MNRAS](http://adsabs.harvard.edu/abs/2014MNRAS.438.1971D "Toycluster Paper")
+- [Donnert 2017, MNRAS](http://adsabs.harvard.edu/abs/2017MNRAS.471.4587D "Toycluster Paper")
 - [Arth et al. 2017, MNRAS](http://adsabs.harvard.edu/cgi-bin/basic_connect?qsearch=%5EArth%202017 "WVTICs Paper") 
 
 ### *License*
