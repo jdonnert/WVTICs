@@ -33,4 +33,4 @@ GPL-3.0
   - Do we want to add example scripts?
 
 
-(c) Donnert, Arth, Steinwandel, Halbesma 2016-7
+(c) Donnert, Arth, Steinwandel, Halbesma 2016-9
