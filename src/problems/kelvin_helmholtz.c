@@ -36,7 +36,7 @@ float Kelvin_Helmholtz_Instability_Density ( const int ipart , const double bias
     }
 }
 
-float Kelvin_Helmholtz_Instability_U ( const int ipart , const double bias )
+float Kelvin_Helmholtz_Instability_U ( const int ipart )
 {
     return 101527.0;
 }

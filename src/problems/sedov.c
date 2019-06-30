@@ -57,8 +57,7 @@ float Sedov_Blast_kinetic ()
 {
 
     int NNpart = 32;
-    Radius =
-        double partpos[3][32];
+    double Radius = partpos[3][32];
 
     float maxDistance = Sedov_Blast_abs ();
 
@@ -78,10 +77,11 @@ float Sedov_Blast_kinetic ()
     }
 
 }
+
 #endif // KINETIC_SEDOV
 
 
-float Sedov_Blast_U ( const int ipart , const double bias )
+float Sedov_Blast_U ( const int ipart)
 {
     return 0.0;
 }

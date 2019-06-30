@@ -164,7 +164,7 @@ extern struct GasParticleData {
 } *SphP;
 
 extern float ( *Density_Func_Ptr ) ( const int, const double );
-extern float ( *U_Func_Ptr ) ( const int , const double );
+extern float ( *U_Func_Ptr ) ( const int );
 extern void ( *Velocity_Func_Ptr ) ( const int, float * );
 extern void ( *Magnetic_Field_Func_Ptr ) ( const int, float * );
 extern void ( *PostProcessing_Func_Ptr ) ();

@@ -53,7 +53,7 @@ void Zeldovich_Pancake_Velocity ( const int ipart, float out[3] )
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Zeldovich_Pancake_U ( const int ipart , const double bias )
+float Zeldovich_Pancake_U ( const int ipart )
 {
     const double redshift_start = 100.0;
     const double redshift_crit = 1.0;

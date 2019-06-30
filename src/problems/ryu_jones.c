@@ -79,7 +79,7 @@ void Ryu_Jones_Magnetic_Field ( const int ipart, float out[3] )
     }
 }
 
-float Ryu_Jones_U ( const int ipart , const double bias )
+float Ryu_Jones_U ( const int ipart )
 {
     if ( isOnLeft ( ipart ) ) {
         return RJ95.left_energy;

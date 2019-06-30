@@ -49,11 +49,11 @@ LINK    = $(GSL_LIBS) -lm -lgsl -lgslcblas $(PNG_LIBS)
 	@$(CC) $(CFLAGS)  -o $@ -c $<
 
 $(EXEC) : $(OBJFILES)
-	@echo $(CC) 
+	@echo $(CC)
 	$(CC) $(CFLAGS) $(OBJFILES) $(LINK) -o $(EXEC)
 	@ctags -w $(SRCFILES) $(INCLFILES)
 
 $(OBJFILES) : $(INCLFILES) $(SRCFILES)
 
-clean : 
+clean :
 	rm $(OBJFILES) $(EXEC)

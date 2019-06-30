@@ -74,7 +74,7 @@ void Rayleigh_Taylor_Instability_Magnetic_Field ( const int ipart, float out[3] 
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
 
-float Rayleigh_Taylor_Instability_U ( const int ipart , const double bias )
+float Rayleigh_Taylor_Instability_U ( const int ipart )
 {
     const float gamma = 1.4;
     const float rho1 = 1.0;
@@ -92,7 +92,7 @@ float Rayleigh_Taylor_Instability_U ( const int ipart , const double bias )
      */
 
     float x = P[ipart].Pos[0] / Problem.Boxsize[0];
-    float pressure = rho2 / gamma + grav_acc * Rayleigh_Taylor_Instability_Density ( ipart , bias ) * ( x - 0.5 );
+    float pressure = rho2 / gamma + grav_acc *  SphP[ipart].Rho * ( x - 0.5 );
 
-    return pressure / ( gamma - 1 ) / Rayleigh_Taylor_Instability_Density ( ipart , bias );
+    return pressure / ( gamma - 1 ) /  SphP[ipart].Rho;
 }

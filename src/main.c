@@ -10,7 +10,7 @@ struct ImageProperties Image = { 0 };
 #endif
 
 float ( *Density_Func_Ptr ) ( const int , const double) = NULL;
-float ( *U_Func_Ptr ) ( const int , const double ) = NULL;
+float ( *U_Func_Ptr ) ( const int ) = NULL;
 void ( *Magnetic_Field_Func_Ptr ) ( const int, float * ) = NULL;
 void ( *Velocity_Func_Ptr ) ( const int, float * ) = NULL;
 void ( *PostProcessing_Func_Ptr ) () = NULL;
