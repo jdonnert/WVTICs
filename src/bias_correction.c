@@ -17,14 +17,15 @@ void Calculate_Bias()
 
   for ( i = 0; i < Param.Npart; i++)
   {
-    bias +=  ( SphP[i].Rho - rho_mean ) /
+    bias +=  ( SphP[i].Rho - SphP[i].Rho_Model ) /
                ( SphP[i].Rho_Model - rho_mean +
                  ( SphP[i].Rho_Model - rho_mean) /
                  fabs( SphP[i].Rho_Model - rho_mean ) *
-                rho_mean * epsilon); // denominator
+                rho_mean * epsilon);
   }
 
   bias /= Param.Npart;
+  bias *= -1.0;
 
-  printf("\nDensity Bias: %g\n", bias);
+  printf("\nDensity Bias: %g\n\n", bias);
 }
