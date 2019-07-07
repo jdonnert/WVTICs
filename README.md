@@ -23,7 +23,7 @@ Please cite:
 - [Arth et al. 2017, MNRAS](http://adsabs.harvard.edu/cgi-bin/basic_connect?qsearch=%5EArth%202017 "WVTICs Paper") 
 
 ### *License*
-GPL-3.0
+MIT
 
 ### *Examples and post-processing*
 - For Python
