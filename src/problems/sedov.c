@@ -31,7 +31,7 @@ float Sedov_Blast_Density ( const int ipart , const double bias )
 float Sedov_Blast_abs ()
 {
 
-    int NNpart = 32;
+    int NNpart = 296;
 
     gsl_vector *abs_of_zero = gsl_vector_alloc ( Param.Npart );
 
@@ -57,7 +57,8 @@ float Sedov_Blast_kinetic ()
 {
 
     int NNpart = 32;
-    double Radius = partpos[3][32];
+    Radius =
+        double partpos[3][32];
 
     float maxDistance = Sedov_Blast_abs ();
 
@@ -77,11 +78,10 @@ float Sedov_Blast_kinetic ()
     }
 
 }
-
 #endif // KINETIC_SEDOV
 
 
-float Sedov_Blast_U ( const int ipart)
+float Sedov_Blast_U ( const int ipart )
 {
     return 0.0;
 }
