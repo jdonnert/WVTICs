@@ -30,7 +30,7 @@ float Evrard_Collapse_Density ( const int ipart , const double bias )
     if ( Radius < 1 ) {
         return 1.0 / ( 2 * pi * ( Radius + epsilon ) );
     } else {
-        return 0.0;
+        return 0.001;
     }
 
 }
