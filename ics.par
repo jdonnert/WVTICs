@@ -50,7 +50,7 @@ PNG_Filename logos/DarthVader.png
 %   0 - Sod Shock                       (# density for the high density region is very noisy)
 %   1 - Sedov Blast
 %   2 - Kelvin-Helmholtz Instability
-%   3 - Keplerian Ring
+%   3 - Keplerian Ring                  (# Error in result. Needs to be checked.)
 %   4 - Cold Blob
 %   5 - Hydrostatic Sphere              (# not implemented yet)
 %   6 - Evrard Collapse
