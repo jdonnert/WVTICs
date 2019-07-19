@@ -6,7 +6,7 @@ void setup_Keplerian_Ring ()
     Problem.Boxsize[1] = 4.0;
     Problem.Boxsize[2] = 0.4;
 
-    sprintf ( Problem.Name, "IC_Gresho" );
+    sprintf ( Problem.Name, "IC_KeplerianRing" );
 
     const double rho = 0.01 + ( 1 / 0.5 ) * ( 1 / 0.5 );
 
@@ -37,7 +37,6 @@ float Keplerian_Ring_Density ( const int ipart , const double bias )
 
 
 /* We set up the internal energy via the pressure profile and ideal equation of state */
-
 float Keplerian_Ring_U ( const int ipart )
 {
     const double gamma = 5.0 / 3.0;
