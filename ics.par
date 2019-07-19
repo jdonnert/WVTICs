@@ -25,8 +25,8 @@ BiasCorrection 0.0
 
 % Problem
 
-Problem_Flag 5
-Problem_Subflag 5
+Problem_Flag 0
+Problem_Subflag 0
 
 PNG_Filename logos/DarthVader.png
 
@@ -43,40 +43,40 @@ PNG_Filename logos/DarthVader.png
 %   0 - Magneticum
 %   1 - PNG
 % 3 - Double Shock test
-%    0 - Mach 2
-%    1 - Mach 3
-%    2 - Mach 4
+%    0 - Mach 2                         (# does not start for high particle numbers)
+%    1 - Mach 3                         (# does not start for high particle numbers)
+%    2 - Mach 4                         (# does not start for high particle numbers)
 % 4 - Classical hydrodynamics tests
-%   0 - Sod Shock                       (tested, density for the high density region is very noisy)
-%   1 - Sedov Blast                     (not fully implemented yet)
-%   2 - Kelvin-Helmholtz Instability    (tested, looks good)
-%   3 - Keplerian Ring                  (not implemented yet)
-%   4 - Cold Blob                       (nearly finished)
-%   5 - Hydrostatic Sphere              (not implemented yet)
-%   6 - Evrard Collapse                 (tested, but rejection sampling fails because of inf density)
-%   7 - Zel'dovic Pancake               (in principle implemented)
-%   8 - Box                             (tested, some issues because it is a 2d test set up for three dimensions...)
-%   9 - Gresho-Vortex  			        (tested, looks good)
-%   10 - Exponential Disk		        (implemented)
-%   11 - Boss-Bodenheimer test          (implemented)
+%   0 - Sod Shock                       (# density for the high density region is very noisy)
+%   1 - Sedov Blast
+%   2 - Kelvin-Helmholtz Instability
+%   3 - Keplerian Ring
+%   4 - Cold Blob
+%   5 - Hydrostatic Sphere              (# not implemented yet)
+%   6 - Evrard Collapse
+%   7 - Zel'dovic Pancake
+%   8 - Box
+%   9 - Gresho-Vortex
+%   10 - Exponential Disk		        (# does not work)
+%   11 - Boss-Bodenheimer test
 %   12 - Isolated Cluster of Galaxies
 % 5 - Classical magnetohydrodynamics tests
-%   0 - Fast Rotor                      (tested, seems to work)
-%   1 - Strong Blast                    (not tested yet)
-%   2 - Orszang-Tang Vortex             (tested, looks good)
-%   3 - Linear Alfvén Wave              (not tested yet)
-%   4 - Rayleigh-Taylor Instability     (not tested yet)
-%   5 - Ryu Jones Shocktube 1A          (not tested yet)
-%   6 - Ryu Jones Shocktube 1B          (not tested yet)
-%   7 - Ryu Jones Shocktube 2A          (not tested yet)
-%   8 - Ryu Jones Shocktube 2B          (not tested yet)
-%   9 - Ryu Jones Shocktube 3A          (not tested yet)
-%   10 - Ryu Jones Shocktube 3B         (not tested yet)
-%   11 - Ryu Jones Shocktube 4A         (not tested yet)
-%   12 - Ryu Jones Shocktube 4B         (not tested yet)
-%   13 - Ryu Jones Shocktube 4C         (not tested yet)
-%   14 - Ryu Jones Shocktube 4D         (not tested yet)
-%   15 - Ryu Jones Shocktube 5A         (not tested yet)
-%   16 - Ryu Jones Shocktube 5B         (not tested yet)
+%   0 - Fast Rotor
+%   1 - Strong Blast
+%   2 - Orszang-Tang Vortex
+%   3 - Linear Alfvén Wave
+%   4 - Rayleigh-Taylor Instability
+%   5 - Ryu Jones Shocktube 1A          (# not working)
+%   6 - Ryu Jones Shocktube 1B          (# not working)
+%   7 - Ryu Jones Shocktube 2A          (# not working)
+%   8 - Ryu Jones Shocktube 2B          (# not working)
+%   9 - Ryu Jones Shocktube 3A          (# not working)
+%   10 - Ryu Jones Shocktube 3B         (# not working)
+%   11 - Ryu Jones Shocktube 4A         (# not working)
+%   12 - Ryu Jones Shocktube 4B         (# not working)
+%   13 - Ryu Jones Shocktube 4C         (# not working)
+%   14 - Ryu Jones Shocktube 4D         (# not working)
+%   15 - Ryu Jones Shocktube 5A         (# not working)
+%   16 - Ryu Jones Shocktube 5B         (# not working)
 % 6 - Custom user defined ics
 %   X - All which you define in user.c
