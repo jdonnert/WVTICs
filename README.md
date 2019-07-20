@@ -24,7 +24,7 @@ Adjust the parameterfile `ics.par` and run the code. See the `examples` folder f
 |    Mach 2         | 0.4      | 0.19     | x        |
 |    Mach 3         | 0.4      | 0.19     | x        |
 |    Mach 4         | 0.4      | 0.19     | x        |
-|    Sod Shock      | 5.0e-6   | 0.19     | x        |
+|    Sod Shock      | 5.0e-6   | 2.0e-6   | x        |
 |    Sedov Blast    | 1.7      | 0.8      | 0.35     |
 | Kelvin-Helmholtz  | 15.0     | 9.0      | 12.0     |
 |  Keplarian Ring   | 14.0     | 6.0      | x        |
