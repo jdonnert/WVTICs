@@ -25,20 +25,6 @@ float Boss_Phi ( double const x, double const y )
 
 }
 
-// float Boss_Phi ( double const x, double const y )
-// {
-//     if ( x > 0 ) {
-//         return atan2( y , x );
-//     } else if ( x == 0 ) {
-//         return y / abs ( y ) * 0.5 * pi;
-//     } else if ( x < 0 && y >= 0 ) {
-//         return atan2( y , x ) + pi;
-//     } else {
-//         return atan2( y , x ) - pi;
-//     }
-//
-// }
-
 /* At first we set up a constant density in the Box */
 float Boss_Density ( const int ipart , const double bias )
 {

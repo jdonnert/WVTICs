@@ -47,11 +47,11 @@ Contributions are *welcome* and will be *credited*
 
 ### *Credits*
 Please cite:
-- [Donnert 2014, MNRAS](http://adsabs.harvard.edu/abs/2014MNRAS.438.1971D "Toycluster Paper")
-- [Arth et al. 2017, MNRAS](http://adsabs.harvard.edu/cgi-bin/basic_connect?qsearch=%5EArth%202017 "WVTICs Paper")
+- [Donnert 2017, MNRAS](http://adsabs.harvard.edu/abs/2017MNRAS.471.4587D "Toycluster Paper")
+- [Arth et al. 2019, MNRAS](http://adsabs.harvard.edu/cgi-bin/basic_connect?qsearch=%5EArth%202017 "WVTICs Paper") 
 
 ### *License*
-GPL-3.0
+MIT
 
 ### *Examples and post-processing*
 - For Python
@@ -61,4 +61,4 @@ GPL-3.0
   - Do we want to add example scripts?
 
 
-(c) Donnert, Arth, Steinwandel, Halbesma 2016-7
+(c) Donnert, Arth, Steinwandel, Halbesma, Boess 2016-9
