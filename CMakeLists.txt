@@ -62,6 +62,7 @@ message(STATUS "Compiling with ${CMAKE_C_FLAGS}\n   and definitions ${DirDefs}")
 
 set(SOURCE_FILES
         src/aux.c
+        src/bias_correction.c
         src/ids.c
         src/io.c
         src/main.c
