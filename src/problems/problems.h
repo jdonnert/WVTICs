@@ -141,4 +141,6 @@ void User_PostProcessing();
 
 void setup_GalaxyCluster();
 
+void setup_ClusterMerger();
+
 #endif //WVTICS_PROBLEMS_H_H

@@ -171,4 +171,10 @@ extern void ( *PostProcessing_Func_Ptr ) ();
 
 double G; // gravitational constant in code units
 
+
+// Array to store parent cluster for cluster merger
+// extern struct ParentCluster {
+//     int Cluster;
+// } *Parent;
+
 #endif

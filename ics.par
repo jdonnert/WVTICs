@@ -25,7 +25,7 @@ BiasCorrection 0.0
 
 % Problem
 
-Problem_Flag 0
+Problem_Flag 6
 Problem_Subflag 0
 
 PNG_Filename logos/DarthVader.png
@@ -38,7 +38,7 @@ PNG_Filename logos/DarthVader.png
 %   2 - Sawtooth Density
 %   3 - Sine wave
 % 1 - Simple non-periodic tests
-    0 - Gradient
+%   0 - Gradient
 % 2 - Write Logos
 %   0 - Magneticum
 %   1 - PNG
@@ -78,5 +78,7 @@ PNG_Filename logos/DarthVader.png
 %   14 - Ryu Jones Shocktube 4D         (# not working)
 %   15 - Ryu Jones Shocktube 5A         (# not working)
 %   16 - Ryu Jones Shocktube 5B         (# not working)
-% 6 - Custom user defined ics
+% 6 - Physical Problems
+%   0 - Cluster Merger
+% 7 - Custom user defined ics
 %   X - All which you define in user.c

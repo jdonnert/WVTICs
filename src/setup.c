@@ -221,6 +221,17 @@ void setup_problem ( const int Flag, const int Subflag )
         break;
 
     case 6:
+        switch ( Subflag ) {
+        case 0:
+            setup_ClusterMerger();
+            break;
+        default:
+            Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
+            break;
+        }
+        break;
+
+    case 7:
         setup_User_Density ( Subflag );
         break;
 
