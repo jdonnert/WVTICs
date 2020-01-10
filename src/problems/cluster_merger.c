@@ -30,7 +30,7 @@ void setup_ClusterMerger()
     Halo1.Pos[2] = 500.0;
 
     // allocate cluster parent array
-    size_t nBytes = Param.Npart * sizeof ( ParentCluster ); // allocate particles
+    size_t nBytes = Param.Npart * sizeof ( ParentCluster );
     Parent = Malloc ( nBytes );
     memset ( Parent, 0, nBytes );
 
@@ -93,9 +93,6 @@ float ClusterMerger_Density ( const int ipart, const double bias )
 
 void ClusterMerger_Velocity ( const int ipart, float out[3] )
 {
-    if (ipart == 0)
-        printf("Calling velocity function!\n");
-
     // left cluster
     if ( !Parent[ipart].Cluster )
     {

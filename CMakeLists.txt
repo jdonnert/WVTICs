@@ -104,7 +104,8 @@ set(SOURCE_FILES
         src/problems/disk.c
         src/problems/evrard.c
         src/problems/zeldovich_pancake.c
-        src/problems/keplerian_ring.c)
+        src/problems/keplerian_ring.c
+        src/problems/cluster_merger.c)
 
 add_executable(WVTICs ${SOURCE_FILES})
 
