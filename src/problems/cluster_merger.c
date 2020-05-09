@@ -10,7 +10,7 @@ static ParentCluster *Parent;
 void setup_ClusterMerger()
 {
     Problem.Boxsize[0] = 2000.0; // kpc
-    Problem.Boxsize[1] = Problem.Boxsize[2] = 1000;  // kpc
+    Problem.Boxsize[1] = Problem.Boxsize[2] = 2000;  // kpc
 
     // Setup of cluster properties
     // -- Convention: Halo0 on the left!
@@ -19,15 +19,15 @@ void setup_ClusterMerger()
     Halo0.Beta   = 2.0 / 3.0;
     Halo0.Rcore  = 20;    // kpc
     Halo0.Pos[0] = 500.0;
-    Halo0.Pos[1] = 500.0;
-    Halo0.Pos[2] = 500.0;
+    Halo0.Pos[1] = 1000.0;
+    Halo0.Pos[2] = 1000.0;
 
     Halo1.Rho0  = 1e-26;  // g/cm^3
     Halo1.Beta  = 2.0 / 3.0;
     Halo1.Rcore = 15;    // kpc
     Halo1.Pos[0] = 1500.0;
-    Halo1.Pos[1] = 510.0;
-    Halo1.Pos[2] = 500.0;
+    Halo1.Pos[1] = 1000.0;
+    Halo1.Pos[2] = 1000.0;
 
     // allocate cluster parent array
     size_t nBytes = Param.Npart * sizeof ( ParentCluster );
