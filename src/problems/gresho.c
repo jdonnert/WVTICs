@@ -27,16 +27,9 @@ float Gresho_Vortex_Density ( const int ipart , const double bias )
 
 float Gresho_Vortex_Phi ( const int ipart )
 {
-
-    if ( P[ipart].Pos[0] > 0 ) {
-        return atan ( P[ipart].Pos[1] / P[ipart].Pos[0] );
-    } else if ( P[ipart].Pos[0] == 0 ) {
-        return P[ipart].Pos[1] / abs ( P[ipart].Pos[1] ) * 0.5 * pi;
-    } else if ( P[ipart].Pos[0] < 0 && P[ipart].Pos[1] >= 0 ) {
-        return atan ( P[ipart].Pos[1] / P[ipart].Pos[0] ) + pi;
-    } else {
-        return atan ( P[ipart].Pos[1] / P[ipart].Pos[0] ) - pi;
-    }
+	double x = P[ipart].Pos[0] - Problem.Boxsize[0] * 0.5;
+	double y = P[ipart].Pos[1] - Problem.Boxsize[1] * 0.5;
+	return atan2 ( y,x );
 }
 
 /* The next step is setting up the velocity profile for the Vortex, following for example Hopkins 2015 or Hu 2014 */
