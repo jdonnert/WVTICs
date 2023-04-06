@@ -169,6 +169,5 @@ extern void ( *Velocity_Func_Ptr ) ( const int, float * );
 extern void ( *Magnetic_Field_Func_Ptr ) ( const int, float * );
 extern void ( *PostProcessing_Func_Ptr ) ();
 
-double G; // gravitational constant in code units
 
 #endif
