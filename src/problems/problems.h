@@ -94,6 +94,10 @@ void setup_Boss();
 float Boss_Phi ( double const x, double const y );
 float Boss_Density ( const int ipart , const double bias);
 
+void setup_Truelove1();
+float Truelove1_Phi ( double const x, double const y );
+float Truelove1_Density ( const int ipart , const double bias);
+
 void setup_Sphere();
 float Sphere_Density ( const int ipart , const double bias );
 
