@@ -8,13 +8,13 @@ void setup_Truelove1()
     Problem.Boxsize[1] = 0.032;
     Problem.Boxsize[2] = 0.032;
 
-    sprintf ( Problem.Name, "IC_Boss" );
+    sprintf ( Problem.Name, "IC_Truelove1" );
 
     const double rho =  234177.1; // 10^-16.8 g/cm^3 in solar masses / pc ^3 
 
     Problem.Rho_Max = rho * 1.1;
 
-    Density_Func_Ptr = &Boss_Density;
+    Density_Func_Ptr = &Truelove1_Density;
 
 }
 
@@ -36,6 +36,6 @@ float Truelove1_Density ( const int ipart , const double bias )
     double R1 = 9.398e-3;
     const double rho = 234177.1*exp(-pow(Radius/R1, 2));
 
-    return rho * ( 1 + 0.1 * cos ( 2 * Boss_Phi ( x, y ) ) );
+    return rho * ( 1 + 0.1 * cos ( 2 * Truelove1_Phi ( x, y ) ) );
 
 }

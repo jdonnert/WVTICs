@@ -146,6 +146,9 @@ void setup_problem ( const int Flag, const int Subflag )
         case 13:
             setup_Sphere();
             break;
+        case 14:
+            setup_Truelove1();
+            break;
         default:
             Assert ( false, "Effect %d.%d not implemented", Flag, Subflag );
             break;
