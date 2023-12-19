@@ -6,7 +6,5 @@ int Find_ngb ( const int ipart, const float hsml, int ngblist[NGBMAX] );
 int Find_ngb_tree ( const int ipart, const float hsml, int ngblist[NGBMAX] );
 int Find_ngb_simple ( const int ipart, const float hsml, int ngblist[NGBMAX] );
 float Guess_hsml ( const size_t ipart, const int DesNumNgb );
-int Ngbcnt ;
-int Ngblist[NGBMAX];
 
 #endif
